@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:itnew/Views/CoChuvaFontChu.dart';
+import 'package:itnew/Views/DaLuu.dart';
+import 'package:itnew/Views/LichSu.dart';
+import 'package:itnew/Views/TrangCaNhan.dart';
+import 'package:itnew/Views/TrangChiTiet.dart';
+import 'package:itnew/Views/TrangChu.dart';
+import 'package:itnew/Views/TrangVideo.dart';
 
 void main() {
   runApp(
@@ -11,12 +18,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false, // tắt chữ debug trên app
-      // initialRoute: '/',
-      // routes: {
-      //   '/': (context) => trangchu(),
-      // },
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const TrangChu(),
+        '/canhan': (context) => const CaNhan(),
+        '/video': (context) => const TrangVideo(),
+        '/daluu': (context) => const DaLuu(),
+        '/lichsu': (context) => const LichSu(),
+        '/cochuvafontchu': (context) => const CoChuvaFontChu(),
+        '/trangchitiet': (context) => const TrangChiTiet(),
+      },
     );
   }
 }
