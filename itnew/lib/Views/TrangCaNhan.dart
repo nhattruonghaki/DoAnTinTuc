@@ -49,7 +49,7 @@ class _CaNhanState extends State<CaNhan> {
                       color: Colors.black, // Màu của viền
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Đăng nhập',
                     style: TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0),
@@ -67,7 +67,7 @@ class _CaNhanState extends State<CaNhan> {
                     Navigator.popUntil(context, (route) => route.isFirst);
                     Navigator.pushNamed(context, '/daluu');
                   },
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
                         'Đã lưu',
@@ -87,7 +87,7 @@ class _CaNhanState extends State<CaNhan> {
                     Navigator.popUntil(context, (route) => route.isFirst);
                     Navigator.pushNamed(context, '/lichsu');
                   },
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
                         'Lịch sử',
@@ -113,7 +113,7 @@ class _CaNhanState extends State<CaNhan> {
               indent: 1, // ---------------------------- LÙI SANG TRÁI
               endIndent: 1, // ------------------------- LÙI SANG PHẢI
             ),
-            const Row(
+            Row(
               children: [
                 SizedBox(
                   width: 25,
@@ -139,7 +139,7 @@ class _CaNhanState extends State<CaNhan> {
                       Navigator.popUntil(context, (route) => route.isFirst);
                       Navigator.pushNamed(context, '/cochuvafontchu');
                     },
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(
                           Icons.format_color_text_outlined,
@@ -186,7 +186,7 @@ class _CaNhanState extends State<CaNhan> {
                 ),
                 GestureDetector(
                   onTap: () {},
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
                         'Xoá tài khoản',

@@ -11,7 +11,10 @@ class _TrangThongBaoState extends State<TrangThongBao> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Thông báo')),
+      appBar: AppBar(title: const Text('Thông báo',
+                    style: TextStyle(color: Colors.black),),
+      centerTitle: true,
+      iconTheme: IconThemeData(color: Colors.black),),
     );
   }
 }

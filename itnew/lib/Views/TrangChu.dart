@@ -80,7 +80,7 @@ class _TrangChuState extends State<TrangChu>
               indicatorColor: Colors.black,
               unselectedLabelColor: Colors.black, // unfocus
 
-              tabs: const [
+              tabs: [
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
