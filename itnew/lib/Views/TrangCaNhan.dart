@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:itnew/Views/BottomNavi.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import '../Models/ThemeProvider.dart';
 
 class CaNhan extends StatefulWidget {
   const CaNhan({super.key});
@@ -8,19 +11,25 @@ class CaNhan extends StatefulWidget {
   State<CaNhan> createState() => _CaNhanState();
 }
 
-class _CaNhanState extends State<CaNhan> {
-  bool light = true;
-  String status = 'Giao diện sáng';
+class _CaNhanState extends State<CaNhan>{
+  bool light = false;
+  String status = 'Giao diện tối';
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
+
+    Color scaffoldBackgroundColor = themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white;
+    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
+
     return Scaffold(
+      backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(222, 0, 183, 255),
         title: const Text(
-          'Cá Nhân',
+          'Cá nhân',
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+              fontWeight: FontWeight.bold, fontSize: 25, color: Color.fromARGB(255, 24, 24, 24)),
         ),
         centerTitle: true,
       ),
@@ -34,22 +43,22 @@ class _CaNhanState extends State<CaNhan> {
                 Container(
                   decoration: const BoxDecoration(shape: BoxShape.circle),
                   padding: const EdgeInsets.all(10),
-                  child: const ClipOval(
+                  child: ClipOval(
                     child: Icon(
                       Icons.account_circle,
                       size: 130,
-                      color: Colors.black,
+                      color: textColor,
                     ),
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    side: const BorderSide(
-                      color: Colors.black, // Màu của viền
+                    side: BorderSide(
+                      color: textColor, // Màu của viền
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Đăng nhập',
                     style: TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0),
@@ -64,14 +73,14 @@ class _CaNhanState extends State<CaNhan> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.popUntil(context, (route) => route.isFirst);
+                    Navigator.popUntil(context, (route) => route.isCurrent);
                     Navigator.pushNamed(context, '/daluu');
                   },
                   child: Row(
                     children: [
                       Text(
                         'Đã lưu',
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(fontSize: 25, color: textColor),
                       ),
                       Icon(
                         Icons
@@ -84,14 +93,14 @@ class _CaNhanState extends State<CaNhan> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.popUntil(context, (route) => route.isFirst);
+                    Navigator.popUntil(context, (route) => route.isCurrent);
                     Navigator.pushNamed(context, '/lichsu');
                   },
                   child: Row(
                     children: [
                       Text(
                         'Lịch sử',
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(fontSize: 25, color: textColor),
                       ),
                       Icon(
                         Icons
@@ -136,7 +145,7 @@ class _CaNhanState extends State<CaNhan> {
                 ),
                 GestureDetector(
                     onTap: () {
-                      Navigator.popUntil(context, (route) => route.isFirst);
+                      Navigator.popUntil(context, (route) => route.isCurrent);
                       Navigator.pushNamed(context, '/cochuvafontchu');
                     },
                     child: Row(
@@ -144,10 +153,11 @@ class _CaNhanState extends State<CaNhan> {
                         Icon(
                           Icons.format_color_text_outlined,
                           size: 40,
+                          color: textColor,
                         ),
                         Text(
                           'Cỡ chữ & font chữ',
-                          style: TextStyle(fontSize: 25),
+                          style: TextStyle(fontSize: 25, color: textColor),
                         ),
                       ],
                     ))
@@ -161,20 +171,17 @@ class _CaNhanState extends State<CaNhan> {
                 ),
                 Text(
                   status,
-                  style: const TextStyle(fontSize: 25),
+                  style: TextStyle(fontSize: 25, color: textColor),
                 ),
                 const SizedBox(
                   width: 10,
                 ),
                 Switch(
                     activeColor: Colors.green,
-                    inactiveThumbColor: Colors.black,
-                    value: light,
+                    inactiveThumbColor: Colors.green,
+                    value: themeProvider.isDarkMode,
                     onChanged: (bool value) {
-                      setState(() {
-                        light = value;
-                        status = value ? 'Giao diện sáng' : 'Giao diện tối';
-                      });
+                      themeProvider.toggleTheme();
                     })
               ],
             ),
@@ -190,7 +197,7 @@ class _CaNhanState extends State<CaNhan> {
                     children: [
                       Text(
                         'Xoá tài khoản',
-                        style: TextStyle(fontSize: 25),
+                        style: TextStyle(fontSize: 25, color: textColor),
                       ),
                     ],
                   ),
