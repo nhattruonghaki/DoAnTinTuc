@@ -10,7 +10,7 @@ class CaNhan extends StatefulWidget {
 
 class _CaNhanState extends State<CaNhan> {
   bool light = true;
-  String status = 'Giao diện sáng';
+  String status = 'Giao diện tối';
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +49,8 @@ class _CaNhanState extends State<CaNhan> {
                       color: Colors.black, // Màu của viền
                     ),
                   ),
-                  child: Text(
-                    'Đăng nhập',
+                  child: const Text(
+                    'Đăng nhập', // --------------------------------------------------- ĐĂNG NHẬP ----------------------------------
                     style: TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0),
                         fontSize: 25,
@@ -64,10 +64,10 @@ class _CaNhanState extends State<CaNhan> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.popUntil(context, (route) => route.isFirst);
+                    Navigator.popUntil(context, (route) => route.isActive);
                     Navigator.pushNamed(context, '/daluu');
                   },
-                  child: Row(
+                  child: const Row(
                     children: [
                       Text(
                         'Đã lưu',
@@ -84,10 +84,10 @@ class _CaNhanState extends State<CaNhan> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.popUntil(context, (route) => route.isFirst);
+                    Navigator.popUntil(context, (route) => route.isActive);
                     Navigator.pushNamed(context, '/lichsu');
                   },
-                  child: Row(
+                  child: const Row(
                     children: [
                       Text(
                         'Lịch sử',
@@ -113,7 +113,7 @@ class _CaNhanState extends State<CaNhan> {
               indent: 1, // ---------------------------- LÙI SANG TRÁI
               endIndent: 1, // ------------------------- LÙI SANG PHẢI
             ),
-            Row(
+            const Row(
               children: [
                 SizedBox(
                   width: 25,
@@ -136,10 +136,10 @@ class _CaNhanState extends State<CaNhan> {
                 ),
                 GestureDetector(
                     onTap: () {
-                      Navigator.popUntil(context, (route) => route.isFirst);
+                      Navigator.popUntil(context, (route) => route.isActive);
                       Navigator.pushNamed(context, '/cochuvafontchu');
                     },
-                    child: Row(
+                    child: const Row(
                       children: [
                         Icon(
                           Icons.format_color_text_outlined,
@@ -173,7 +173,6 @@ class _CaNhanState extends State<CaNhan> {
                     onChanged: (bool value) {
                       setState(() {
                         light = value;
-                        status = value ? 'Giao diện sáng' : 'Giao diện tối';
                       });
                     })
               ],
@@ -186,7 +185,7 @@ class _CaNhanState extends State<CaNhan> {
                 ),
                 GestureDetector(
                   onTap: () {},
-                  child: Row(
+                  child: const Row(
                     children: [
                       Text(
                         'Xoá tài khoản',
