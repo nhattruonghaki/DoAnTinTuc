@@ -13,6 +13,7 @@ class CaNhan extends StatefulWidget {
 
 class _CaNhanState extends State<CaNhan>{
   bool light = false;
+
   String status = 'Giao diện tối';
 
   @override
@@ -59,7 +60,7 @@ class _CaNhanState extends State<CaNhan>{
                     ),
                   ),
                   child: const Text(
-                    'Đăng nhập',
+                    'Đăng nhập', // --------------------------------------------------- ĐĂNG NHẬP ----------------------------------
                     style: TextStyle(
                         color: Color.fromARGB(255, 0, 0, 0),
                         fontSize: 25,
@@ -76,7 +77,7 @@ class _CaNhanState extends State<CaNhan>{
                     Navigator.popUntil(context, (route) => route.isCurrent);
                     Navigator.pushNamed(context, '/daluu');
                   },
-                  child: Row(
+                  child: const Row(
                     children: [
                       Icon(
                         Icons
@@ -96,7 +97,7 @@ class _CaNhanState extends State<CaNhan>{
                     Navigator.popUntil(context, (route) => route.isCurrent);
                     Navigator.pushNamed(context, '/lichsu');
                   },
-                  child: Row(
+                  child: const Row(
                     children: [
                       Icon(
                         Icons
@@ -122,7 +123,7 @@ class _CaNhanState extends State<CaNhan>{
               indent: 1, // ---------------------------- LÙI SANG TRÁI
               endIndent: 1, // ------------------------- LÙI SANG PHẢI
             ),
-            Row(
+            const Row(
               children: [
                 SizedBox(
                   width: 25,
@@ -148,7 +149,7 @@ class _CaNhanState extends State<CaNhan>{
                       Navigator.popUntil(context, (route) => route.isCurrent);
                       Navigator.pushNamed(context, '/cochuvafontchu');
                     },
-                    child: Row(
+                    child: const Row(
                       children: [
                         Icon(
                           Icons.format_color_text_outlined,
@@ -193,7 +194,7 @@ class _CaNhanState extends State<CaNhan>{
                 ),
                 GestureDetector(
                   onTap: () {},
-                  child: Row(
+                  child: const Row(
                     children: [
                       Text(
                         'Xoá tài khoản',

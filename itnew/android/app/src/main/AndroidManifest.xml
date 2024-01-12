@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="itnew"
+        android:label="IT Feeds"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/itfeeds">
         <activity
             android:name=".MainActivity"
             android:exported="true"
