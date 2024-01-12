@@ -18,9 +18,8 @@ class _TrangThongBaoState extends State<TrangThongBao> {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(222, 0, 183, 255),
         title: const Text('Thông báo',
-                    style: TextStyle(color: Colors.black),),
-      centerTitle: true,
-      iconTheme: IconThemeData(color: Colors.black),),
+                    style: TextStyle(color: Colors.white),),
+      centerTitle: true,),
     );
   }
 }

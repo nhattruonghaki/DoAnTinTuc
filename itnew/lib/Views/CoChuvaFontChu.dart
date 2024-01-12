@@ -60,6 +60,7 @@ Future<void> saveSelectedFont() async{
     return Scaffold(
       appBar: AppBar(
           backgroundColor: const Color.fromARGB(222, 0, 183, 255),
+          centerTitle: true,
           title: const Text(
             'Cỡ chữ và Font chữ',
             style: TextStyle(
