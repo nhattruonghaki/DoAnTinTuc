@@ -18,8 +18,9 @@ class _TrangVideoState extends State<TrangVideo> {
       backgroundColor: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
       appBar: AppBar(
         backgroundColor: Color.fromARGB(222, 0, 183, 255),
-        title: const Text('Các video'),
-        centerTitle: true,),
+        title: const Text('Watch', style: TextStyle(color: Colors.white),),
+        centerTitle: true,
+        ),
       bottomNavigationBar: const BottomNavi(index: 1),
     );
   }
