@@ -5,6 +5,8 @@ import 'package:itnew/Views/BottomNavi.dart';
 import 'package:itnew/Views/CoChuvaFontChu.dart';
 import 'package:itnew/Views/TimKiem.dart';
 import 'package:itnew/Views/TrangThongBao.dart';
+import 'package:itnew/Models/ThemeProvider.dart';
+import 'package:provider/provider.dart';
 
 class TrangChu extends StatefulWidget {
   const TrangChu({super.key});
@@ -33,7 +35,10 @@ class _TrangChuState extends State<TrangChu>
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
+    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
     return Scaffold(
+      backgroundColor: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(222, 0, 183, 255),
         title: const Text(
@@ -79,19 +84,20 @@ class _TrangChuState extends State<TrangChu>
           preferredSize:
               const Size.fromHeight(40), // kích thước tối ưu cho TabBar
           child: Container(
-            color: const Color.fromARGB(255, 255, 255, 255),
+            color: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
             child: TabBar(
               controller: _tabController,
               labelColor: Colors.blue,
-              indicatorColor: Colors.black,
-              unselectedLabelColor: Colors.black, // unfocus
+              indicatorColor: themeProvider.isDarkMode ? Colors.blue : Color.fromARGB(255, 24, 24, 24),
+              unselectedLabelColor: themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24), // unfocus
 
               tabs: const [
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.flash_on_sharp),
+                      Icon(
+                        Icons.flash_on_sharp,),
                       SizedBox(width: 1),
                       Text('Mới nhất')
                     ],
@@ -114,7 +120,14 @@ class _TrangChuState extends State<TrangChu>
       ),
 // ----------------------------------------------- DANH MỤC -------------------------------------------
       drawer: Drawer(
-        child: ListView(
+        child: Container(
+          decoration: BoxDecoration(
+             color: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
+              border: Border.all(
+                color: Colors.grey,
+      ),
+          ),
+          child: ListView(
           children: <Widget>[
             DrawerHeader(
                 decoration: const BoxDecoration(
@@ -126,8 +139,8 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(0); // hiệu ứng chuyển đến tab "Mới nhất"
               },
-              leading: const Icon(Icons.flash_on_sharp),
-              title: const Text('Mới nhất'),
+              leading: Icon(Icons.flash_on_sharp, color: textColor,),
+              title: Text('Mới nhất', style: TextStyle(color: textColor),),
             ),
             ListTile(
               onTap: () {
@@ -135,10 +148,11 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(1); // hiệu ứng chuyển đến tab "Xu hướng"
               },
-              leading: const Icon(Icons.trending_up_outlined),
-              title: const Text('Xu hướng'),
+              leading: Icon(Icons.trending_up_outlined, color: textColor),
+              title: Text('Xu hướng',style: TextStyle(color: textColor)),
             ),
           ],
+        ),
         ),
       ),
 // -------------------------------------------- FOOTER -----------------------------------------------------------------------------
