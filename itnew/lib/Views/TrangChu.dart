@@ -1,12 +1,20 @@
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:itnew/Models/FontsChu.dart';
+import 'package:itnew/Models/TangGiamFont.dart';
 import 'package:itnew/Views/BottomNavi.dart';
+import 'package:itnew/Views/CoChuvaFontChu.dart';
 import 'package:itnew/Views/TimKiem.dart';
 import 'package:itnew/Views/TrangChiTiet.dart';
 import 'package:itnew/Views/TrangThongBao.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
+
+import 'package:itnew/Models/ThemeProvider.dart';
+import 'package:provider/provider.dart';
+
 
 class TrangChu extends StatefulWidget {
   const TrangChu({super.key, required this.title});
@@ -17,6 +25,8 @@ class TrangChu extends StatefulWidget {
 
 class _TrangChuState extends State<TrangChu>
     with SingleTickerProviderStateMixin {
+  final TangGiamFont fontSize = TangGiamFont();
+  final FontsChu fontsChu = FontsChu();
   // minxin cung cấp đối tượng đối tượng TickerProvider
 // duy nhất và có thể sử dụng cho 1 Ticker (đối tượng thời gian) -> animation
   final Xml2Json xml2json = Xml2Json();
@@ -65,34 +75,39 @@ class _TrangChuState extends State<TrangChu>
   }
 
   TabController? _tabController;
+  //late int coChu;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
   }
 
+  
+
+
+
   @override
   Widget build(BuildContext context) {
-    //return DefaultTabController(
-    //  length: 2,
-    //child:
+
     NewsTechnologyFeed();
     NewsBusinessFeed();
     NewsEntertainmentFeed();
     NewsSportsFeed();
 
+    var themeProvider = Provider.of<ThemeProvider>(context);
+    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
     return Scaffold(
-// ----------------------------------------------- LOGO -----------------------------------------------
+      backgroundColor: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(222, 0, 183, 255),
         title: const Text(
-          'ITFEEDS Internet Society',
+          'ITFeeds',
           style: TextStyle(
-            //fontFamily: 'Roboto',
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
+        centerTitle: true,
         actions: [
           IconButton(
               onPressed: () {
@@ -130,15 +145,15 @@ class _TrangChuState extends State<TrangChu>
           preferredSize:
               const Size.fromHeight(40), // kích thước tối ưu cho TabBar
           child: Container(
-            color: const Color.fromARGB(255, 255, 255, 255),
+            color: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
             child: TabBar(
               controller: _tabController,
               isScrollable: true,
               labelColor: Colors.blue,
-              indicatorColor: Colors.black,
-              unselectedLabelColor: Colors.black, // unfocus
+              indicatorColor: themeProvider.isDarkMode ? Colors.blue : Color.fromARGB(255, 24, 24, 24),
+              unselectedLabelColor: themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24), // unfocus
 
-              tabs: [
+              tabs: const [
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -149,6 +164,12 @@ class _TrangChuState extends State<TrangChu>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [SizedBox(width: 1), Text('Business')],
+                    children: [
+                      Icon(
+                        Icons.flash_on_sharp,),
+                      SizedBox(width: 1),
+                      Text('Mới nhất')
+                    ],
                   ),
                 ),
                 Tab(
@@ -170,12 +191,19 @@ class _TrangChuState extends State<TrangChu>
       ),
 // ----------------------------------------------- DANH MỤC -------------------------------------------
       drawer: Drawer(
-        child: ListView(
+        child: Container(
+          decoration: BoxDecoration(
+             color: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
+              border: Border.all(
+                color: Colors.grey,
+      ),
+          ),
+          child: ListView(
           children: <Widget>[
             DrawerHeader(
                 decoration: const BoxDecoration(
                     color: Color.fromARGB(222, 0, 183, 255)),
-                child: Image.asset('assets/ITNew.png')),
+                child: Image.asset('assets/itfeeds.png')),
             ListTile(
               onTap: () {
                 Navigator.pop(context);
@@ -209,6 +237,7 @@ class _TrangChuState extends State<TrangChu>
               title: const Text('Sports'),
             ),
           ],
+        ),
         ),
       ),
 // -------------------------------------------- FOOTER -----------------------------------------------------------------------------
@@ -819,7 +848,128 @@ class _TrangChuState extends State<TrangChu>
                     );
             }),
       ]),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          SingleChildScrollView(
+            // --------THANH CUỘN CỦA TAB MỚI NHẤT -----------------------------
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                    Navigator.pushNamed(context, '/trangchitiet');
+                  },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Image.asset('assets/itfeeds.png'),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 15),
+                        child: Row(
+                          children: [
+                            Text(
+                              'ITNEWIS',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              '2 giờ',
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        key: UniqueKey(),
+                        padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                        child: Text(
+                          'App tin tức xịn nhất được phát triển gần đây',
+                          style:
+                              TextStyle(fontSize: fontSize.coChu.toDouble(), fontFamily: fontsChu.fontInter == 'Inter'? 'Inter':'Kalam'),
+                        ),
+                      ),
+                      const Divider(
+                        thickness: 2, // ------------------------- ĐỘ DÀY
+                        color: Color.fromARGB(
+                            255, 199, 199, 199), // ----------------- MÀU SẮC
+                        indent: 1, // ---------------------------- LÙI SANG TRÁI
+                        endIndent: 1, // ------------------------- LÙI SANG PHẢI
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.popUntil(context, (route) => route.isFirst);
+                        Navigator.pushNamed(context, '/trangchitiet');
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Image.asset('assets/itfeeds.png'),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 15),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'ITNEWIS',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '2 giờ',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                            child: Text(
+                              'Tin tức mới toanh',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SingleChildScrollView(
+            // --------THANH CUỘN CỦA TAB XU HƯỚNG -----------------------------
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                    Navigator.pushNamed(context, '/trangchitiet');
+                  },
+                  child: const Text('hãy chọn trang chi tiết'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+
     );
-    //);
   }
 }

@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:xml2json/xml2json.dart';
+import 'package:itnew/Models/ThemeProvider.dart';
+import 'package:provider/provider.dart';
 
 class TrangThongBao extends StatefulWidget {
   const TrangThongBao({super.key, required this.title});
@@ -208,6 +210,17 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                     ),
                   );
           }),
+
+    var themeProvider = Provider.of<ThemeProvider>(context);
+    return Scaffold(
+      backgroundColor: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(222, 0, 183, 255),
+        title: const Text('Thông báo',
+                    style: TextStyle(color: Colors.black),),
+      centerTitle: true,
+      iconTheme: IconThemeData(color: Colors.black),),
+
     );
   }
 }
