@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itnew/Models/TangGiamFont.dart';
 import 'package:itnew/Views/CoChuvaFontChu.dart';
 import 'package:itnew/Views/DaLuu.dart';
 import 'package:itnew/Views/LichSu.dart';
