@@ -78,15 +78,15 @@ class _CaNhanState extends State<CaNhan>{
                   },
                   child: Row(
                     children: [
-                      Text(
-                        'Đã lưu',
-                        style: TextStyle(fontSize: 25, color: textColor),
-                      ),
                       Icon(
                         Icons
                             .bookmark, // ------------------------------------------------- LƯU TIN TỨC --------------------------------
                         color: Colors.green,
                         size: 50,
+                      ),
+                      Text(
+                        'Đã lưu',
+                        style: TextStyle(fontSize: 25, color: textColor),
                       ),
                     ],
                   ),
@@ -98,15 +98,15 @@ class _CaNhanState extends State<CaNhan>{
                   },
                   child: Row(
                     children: [
-                      Text(
-                        'Lịch sử',
-                        style: TextStyle(fontSize: 25, color: textColor),
-                      ),
                       Icon(
                         Icons
                             .access_time_filled, // ---------------------------------------- LỊCH SỬ --------------------------------
                         color: Colors.green,
                         size: 50,
+                      ),
+                      Text(
+                        'Lịch sử',
+                        style: TextStyle(fontSize: 25, color: textColor),
                       ),
                     ],
                   ),

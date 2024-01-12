@@ -23,7 +23,7 @@ class _LichSuState extends State<LichSu> {
               iconTheme: IconThemeData(color: Colors.black),
               actions: [
                 IconButton(onPressed: (){}, 
-                          icon: Icon(Icons.delete,color: Colors.black,))
+                          icon: Icon(Icons.delete,color: Colors.black,size: 40))
               ],),
     );
   }
