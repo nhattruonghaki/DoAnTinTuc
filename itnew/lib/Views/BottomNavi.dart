@@ -17,7 +17,7 @@ class BottomNavi extends StatelessWidget {
       ),
       child: BottomNavigationBar(
       backgroundColor: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
-      fixedColor: themeProvider.isDarkMode ? Colors.blue : Color.fromARGB(255, 24, 24, 24),
+      selectedItemColor: Colors.blue,
       unselectedItemColor: themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24),
       items: const [
         BottomNavigationBarItem(
