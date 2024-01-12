@@ -16,7 +16,7 @@ class _NewsWebViewState extends State<NewsWebView> {
       url: widget.url,
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: const Text("NEWS NOW"),
+        title: const Text("ITFEEDS Internet Society"),
       ),
     );
   }

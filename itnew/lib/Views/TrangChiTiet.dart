@@ -76,12 +76,15 @@ class _TrangChiTietState extends State<TrangChiTiet> {
                             5, widget.link.toString().indexOf('}', 5))),
                   ));
             },
-            child: Text(
-              "Nhấn vào để xem chi tiết >>>",
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                color: Colors.blue, // Màu sắc có thể thay đổi tùy ý
+            child: Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Text(
+                "Xem chi tiết >>>",
+                style: TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                  color: Colors.blue, // Màu sắc có thể thay đổi tùy ý
+                ),
               ),
             ),
           )
