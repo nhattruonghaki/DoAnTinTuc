@@ -4,7 +4,7 @@ import 'package:itnew/Views/CoChuvaFontChu.dart';
 import 'package:itnew/Views/DaLuu.dart';
 import 'package:itnew/Views/LichSu.dart';
 import 'package:itnew/Views/TrangCaNhan.dart';
-import 'package:itnew/Views/TrangChiTiet.dart';
+
 import 'package:itnew/Views/TrangChu.dart';
 import 'package:itnew/Views/TrangVideo.dart';
 import 'package:provider/provider.dart';
@@ -28,13 +28,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false, // tắt chữ debug trên app
       initialRoute: '/',
       routes: {
-        '/': (context) => const TrangChu(),
+        '/': (context) => const TrangChu(
+              title: '',
+            ),
         '/canhan': (context) => const CaNhan(),
         '/video': (context) => const TrangVideo(),
         '/daluu': (context) => const DaLuu(),
         '/lichsu': (context) => const LichSu(),
         '/cochuvafontchu': (context) => const CoChuvaFontChu(),
-        '/trangchitiet': (context) => const TrangChiTiet(),
       },
     );
   }
