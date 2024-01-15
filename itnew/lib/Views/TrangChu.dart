@@ -1,54 +1,98 @@
+import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:itnew/Models/FontsChu.dart';
-import 'package:itnew/Models/TangGiamFont.dart';
 import 'package:itnew/Views/BottomNavi.dart';
-import 'package:itnew/Views/CoChuvaFontChu.dart';
 import 'package:itnew/Views/TimKiem.dart';
+import 'package:itnew/Views/TrangChiTiet.dart';
 import 'package:itnew/Views/TrangThongBao.dart';
-import 'package:itnew/Models/ThemeProvider.dart';
-import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:xml2json/xml2json.dart';
 
 class TrangChu extends StatefulWidget {
-  const TrangChu({super.key});
-
+  const TrangChu({super.key, required this.title});
+  final String title;
   @override
   State<TrangChu> createState() => _TrangChuState();
 }
 
 class _TrangChuState extends State<TrangChu>
     with SingleTickerProviderStateMixin {
-  final TangGiamFont fontSize = TangGiamFont();
-  final FontsChu fontsChu = FontsChu();
   // minxin cung cấp đối tượng đối tượng TickerProvider
 // duy nhất và có thể sử dụng cho 1 Ticker (đối tượng thời gian) -> animation
+  final Xml2Json xml2json = Xml2Json();
+  List NewsTechnology = [];
+  List NewsBusiness = [];
+  List NewsEntertainment = [];
+  List NewsSports = [];
+  Future NewsTechnologyFeed() async {
+    final url = Uri.parse('https://rss.app/feeds/LsUd1xHIfAg8itgQ.xml');
+    final response = await http.get(url);
+    xml2json.parse(response.body.toString());
+    var jsondata = await xml2json.toGData();
+    var data = json.decode(jsondata);
+    NewsTechnology = data['rss']['channel']['item'];
+    print(NewsTechnology);
+  }
+
+  Future NewsBusinessFeed() async {
+    final url = Uri.parse('https://rss.app/feeds/Zaja3mUJaDXWRS9I.xml');
+    final response = await http.get(url);
+    xml2json.parse(response.body.toString());
+    var jsondata = await xml2json.toGData();
+    var data = json.decode(jsondata);
+    NewsBusiness = data['rss']['channel']['item'];
+    print(NewsBusiness);
+  }
+
+  Future NewsEntertainmentFeed() async {
+    final url = Uri.parse('https://rss.app/feeds/xPJw6UXRS4zCnlTu.xml');
+    final response = await http.get(url);
+    xml2json.parse(response.body.toString());
+    var jsondata = await xml2json.toGData();
+    var data = json.decode(jsondata);
+    NewsEntertainment = data['rss']['channel']['item'];
+    print(NewsEntertainment);
+  }
+
+  Future NewsSportsFeed() async {
+    final url = Uri.parse('https://rss.app/feeds/vrXylEUtQ94wyXRK.xml');
+    final response = await http.get(url);
+    xml2json.parse(response.body.toString());
+    var jsondata = await xml2json.toGData();
+    var data = json.decode(jsondata);
+    NewsSports = data['rss']['channel']['item'];
+    print(NewsSports);
+  }
+
   TabController? _tabController;
-  //late int coChu;
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
-
-  
-
-
 
   @override
   Widget build(BuildContext context) {
-    var themeProvider = Provider.of<ThemeProvider>(context);
-    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
+    //return DefaultTabController(
+    //  length: 2,
+    //child:
+    NewsTechnologyFeed();
+    NewsBusinessFeed();
+    NewsEntertainmentFeed();
+    NewsSportsFeed();
+
     return Scaffold(
-      backgroundColor: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
+// ----------------------------------------------- LOGO -----------------------------------------------
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(222, 0, 183, 255),
         title: const Text(
-          'ITFeeds',
+          'ITFEEDS Internet Society',
           style: TextStyle(
+            //fontFamily: 'Roboto',
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
         ),
-        centerTitle: true,
         actions: [
           IconButton(
               onPressed: () {
@@ -69,7 +113,9 @@ class _TrangChuState extends State<TrangChu>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const TrangThongBao()),
+                      builder: (context) => const TrangThongBao(
+                            title: '',
+                          )),
                 );
               },
               icon: const Icon(
@@ -84,33 +130,37 @@ class _TrangChuState extends State<TrangChu>
           preferredSize:
               const Size.fromHeight(40), // kích thước tối ưu cho TabBar
           child: Container(
-            color: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
+            color: const Color.fromARGB(255, 255, 255, 255),
             child: TabBar(
               controller: _tabController,
+              isScrollable: true,
               labelColor: Colors.blue,
-              indicatorColor: themeProvider.isDarkMode ? Colors.blue : Color.fromARGB(255, 24, 24, 24),
-              unselectedLabelColor: themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24), // unfocus
+              indicatorColor: Colors.black,
+              unselectedLabelColor: Colors.black, // unfocus
 
-              tabs: const [
+              tabs: [
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.flash_on_sharp,),
-                      SizedBox(width: 1),
-                      Text('Mới nhất')
-                    ],
+                    children: [SizedBox(width: 1), Text('Technology')],
                   ),
                 ),
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.trending_up_outlined),
-                      SizedBox(width: 1),
-                      Text('Xu hướng')
-                    ],
+                    children: [SizedBox(width: 1), Text('Business')],
+                  ),
+                ),
+                Tab(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [SizedBox(width: 1), Text('Entertainment')],
+                  ),
+                ),
+                Tab(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [SizedBox(width: 1), Text('Sports')],
                   ),
                 ),
               ],
@@ -120,14 +170,7 @@ class _TrangChuState extends State<TrangChu>
       ),
 // ----------------------------------------------- DANH MỤC -------------------------------------------
       drawer: Drawer(
-        child: Container(
-          decoration: BoxDecoration(
-             color: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
-              border: Border.all(
-                color: Colors.grey,
-      ),
-          ),
-          child: ListView(
+        child: ListView(
           children: <Widget>[
             DrawerHeader(
                 decoration: const BoxDecoration(
@@ -139,8 +182,7 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(0); // hiệu ứng chuyển đến tab "Mới nhất"
               },
-              leading: Icon(Icons.flash_on_sharp, color: textColor,),
-              title: Text('Mới nhất', style: TextStyle(color: textColor),),
+              title: const Text('Technology'),
             ),
             ListTile(
               onTap: () {
@@ -148,138 +190,644 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(1); // hiệu ứng chuyển đến tab "Xu hướng"
               },
-              leading: Icon(Icons.trending_up_outlined, color: textColor),
-              title: Text('Xu hướng',style: TextStyle(color: textColor)),
+              title: const Text('Business'),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.pop(context);
+                _tabController
+                    ?.animateTo(2); // hiệu ứng chuyển đến tab "Xu hướng"
+              },
+              title: const Text('Entertainment'),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.pop(context);
+                _tabController
+                    ?.animateTo(3); // hiệu ứng chuyển đến tab "Xu hướng"
+              },
+              title: const Text('Sports'),
             ),
           ],
-        ),
         ),
       ),
 // -------------------------------------------- FOOTER -----------------------------------------------------------------------------
       bottomNavigationBar: const BottomNavi(index: 0),
 
 // -------------------------------------------- BODY --------TAB BAR VIEW ----------------------------------------------------------
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          SingleChildScrollView(
-            // --------THANH CUỘN CỦA TAB MỚI NHẤT -----------------------------
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.popUntil(context, (route) => route.isFirst);
-                    Navigator.pushNamed(context, '/trangchitiet');
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Image.asset('assets/itfeeds.png'),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 15),
-                        child: Row(
-                          children: [
-                            Text(
-                              'ITNEWIS',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              '2 giờ',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ],
+      body: TabBarView(controller: _tabController, children: [
+        FutureBuilder(
+            future: NewsTechnologyFeed(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              return snapshot.connectionState == ConnectionState.waiting
+                  ? Center(
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.blue),
                         ),
                       ),
-                      Padding(
-                        key: UniqueKey(),
-                        padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-                        child: Text(
-                          'App tin tức xịn nhất được phát triển gần đây',
-                          style:
-                              TextStyle(fontSize: fontSize.coChu.toDouble(), fontFamily: fontsChu.fontInter == 'Inter'? 'Inter':'Kalam'),
-                        ),
-                      ),
-                      const Divider(
-                        thickness: 2, // ------------------------- ĐỘ DÀY
-                        color: Color.fromARGB(
-                            255, 199, 199, 199), // ----------------- MÀU SẮC
-                        indent: 1, // ---------------------------- LÙI SANG TRÁI
-                        endIndent: 1, // ------------------------- LÙI SANG PHẢI
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.popUntil(context, (route) => route.isFirst);
-                        Navigator.pushNamed(context, '/trangchitiet');
-                      },
+                    )
+                  : SingleChildScrollView(
+                      padding: EdgeInsets.only(bottom: 16),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Image.asset('assets/itfeeds.png'),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(left: 15),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'ITNEWIS',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  '2 giờ',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                            child: Text(
-                              'Tin tức mới toanh',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ),
+                          ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: NewsTechnology.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 5),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                            return TrangChiTiet(
+                                              title: NewsTechnology[index]
+                                                  ['title']['__cdata'],
+                                              imagedata: NewsTechnology[index][
+                                                              'media\$content'] !=
+                                                          null &&
+                                                      NewsTechnology[index][
+                                                                  'media\$content']
+                                                              ['url'] !=
+                                                          null
+                                                  ? NewsTechnology[index]
+                                                      ['media\$content']['url']
+                                                  : null,
+                                              description: NewsTechnology[index]
+                                                              ['description'] !=
+                                                          null &&
+                                                      NewsTechnology[index][
+                                                                  'description']
+                                                              ['__cdata'] !=
+                                                          null
+                                                  ? NewsTechnology[index]
+                                                      ['description']['__cdata']
+                                                  : null,
+                                              date: NewsTechnology[index]
+                                                  ['pubDate'],
+                                              link: NewsTechnology[index]
+                                                  ['link'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: NewsTechnology[index]
+                                                      ['media\$content'] !=
+                                                  null
+                                              ? CachedNetworkImage(
+                                                  imageUrl:
+                                                      NewsTechnology[index]
+                                                              ['media\$content']
+                                                          ['url'],
+                                                  fit: BoxFit.cover,
+                                                  placeholder: (context, url) =>
+                                                      Center(
+                                                    child: SizedBox(
+                                                      width: 20,
+                                                      height: 20,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                                Colors.blue),
+                                                      ),
+                                                    ),
+                                                  ), // Hiển thị indicator khi đang tải
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      Container(), // Hiển thị icon lỗi nếu không tải được
+                                                )
+                                              : null, // Nếu không tìm thấy mục media\$content, không hiển thị gì lên giao diện
+                                        ),
+                                        SizedBox(width: 30),
+                                        Text(
+                                          NewsTechnology[index]['link']
+                                              .toString()
+                                              .substring(
+                                                  13,
+                                                  NewsTechnology[index]['link']
+                                                      .toString()
+                                                      .indexOf('/', 13)),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          NewsTechnology[index]['pubDate']
+                                              .toString()
+                                              .substring(5, 30),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(8),
+                                          child: Text(
+                                            NewsTechnology[index]['title']
+                                                ['__cdata'],
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
+                                        const Divider(
+                                          thickness:
+                                              10, // ------------------------- ĐỘ DÀY
+                                          color: Colors
+                                              .white, // ----------------- MÀU SẮC
+                                          indent:
+                                              1, // ---------------------------- LÙI SANG TRÁI
+                                          endIndent:
+                                              1, // ------------------------- LÙI SANG PHẢI
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              })
                         ],
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          SingleChildScrollView(
-            // --------THANH CUỘN CỦA TAB XU HƯỚNG -----------------------------
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.popUntil(context, (route) => route.isFirst);
-                    Navigator.pushNamed(context, '/trangchitiet');
-                  },
-                  child: const Text('hãy chọn trang chi tiết'),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+                    );
+            }),
+        FutureBuilder(
+            future: NewsBusinessFeed(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              return snapshot.connectionState == ConnectionState.waiting
+                  ? Center(
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.blue),
+                        ),
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      padding: EdgeInsets.only(bottom: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: NewsTechnology.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 5),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                            return TrangChiTiet(
+                                              title: NewsBusiness[index]
+                                                  ['title']['__cdata'],
+                                              imagedata: NewsBusiness[index][
+                                                              'media\$content'] !=
+                                                          null &&
+                                                      NewsBusiness[index][
+                                                                  'media\$content']
+                                                              ['url'] !=
+                                                          null
+                                                  ? NewsBusiness[index]
+                                                      ['media\$content']['url']
+                                                  : null,
+                                              description: NewsBusiness[index]
+                                                  ['description']['__cdata'],
+                                              date: NewsBusiness[index]
+                                                  ['pubDate'],
+                                              link: NewsBusiness[index]['link'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: NewsBusiness[index]
+                                                      ['media\$content'] !=
+                                                  null
+                                              ? CachedNetworkImage(
+                                                  imageUrl: NewsBusiness[index]
+                                                      ['media\$content']['url'],
+                                                  fit: BoxFit.cover,
+                                                  placeholder: (context, url) =>
+                                                      Center(
+                                                    child: SizedBox(
+                                                      width: 20,
+                                                      height: 20,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                                Colors.blue),
+                                                      ),
+                                                    ),
+                                                  ), // Hiển thị indicator khi đang tải
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      Container(), // Hiển thị icon lỗi nếu không tải được
+                                                )
+                                              : null, // Nếu không tìm thấy mục media\$content, không hiển thị gì lên giao diện
+                                        ),
+                                        SizedBox(width: 30),
+                                        Text(
+                                          NewsBusiness[index]['link']
+                                              .toString()
+                                              .substring(
+                                                  13,
+                                                  NewsBusiness[index]['link']
+                                                      .toString()
+                                                      .indexOf('/', 13)),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          NewsBusiness[index]['pubDate']
+                                              .toString()
+                                              .substring(5, 30),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(8),
+                                          child: Text(
+                                            NewsBusiness[index]['title']
+                                                ['__cdata'],
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
+                                        const Divider(
+                                          thickness:
+                                              10, // ------------------------- ĐỘ DÀY
+                                          color: Colors
+                                              .white, // ----------------- MÀU SẮC
+                                          indent:
+                                              1, // ---------------------------- LÙI SANG TRÁI
+                                          endIndent:
+                                              1, // ------------------------- LÙI SANG PHẢI
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              })
+                        ],
+                      ),
+                    );
+            }),
+        FutureBuilder(
+            future: NewsEntertainmentFeed(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              return snapshot.connectionState == ConnectionState.waiting
+                  ? Center(
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.blue),
+                        ),
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      padding: EdgeInsets.only(bottom: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: NewsEntertainment.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 5),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                            return TrangChiTiet(
+                                              title: NewsEntertainment[index]
+                                                  ['title']['__cdata'],
+                                              imagedata: NewsEntertainment[
+                                                                  index][
+                                                              'media\$content'] !=
+                                                          null &&
+                                                      NewsEntertainment[index][
+                                                                  'media\$content']
+                                                              ['url'] !=
+                                                          null
+                                                  ? NewsEntertainment[index]
+                                                      ['media\$content']['url']
+                                                  : null,
+                                              description:
+                                                  NewsEntertainment[index]
+                                                          ['description']
+                                                      ['__cdata'],
+                                              date: NewsEntertainment[index]
+                                                  ['pubDate'],
+                                              link: NewsEntertainment[index]
+                                                  ['link'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: NewsEntertainment[index]
+                                                      ['media\$content'] !=
+                                                  null
+                                              ? CachedNetworkImage(
+                                                  imageUrl:
+                                                      NewsEntertainment[index]
+                                                              ['media\$content']
+                                                          ['url'],
+                                                  fit: BoxFit.cover,
+                                                  placeholder: (context, url) =>
+                                                      Center(
+                                                    child: SizedBox(
+                                                      width: 20,
+                                                      height: 20,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                                Colors.blue),
+                                                      ),
+                                                    ),
+                                                  ), // Hiển thị indicator khi đang tải
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      Container(), // Hiển thị icon lỗi nếu không tải được
+                                                )
+                                              : null, // Nếu không tìm thấy mục media\$content, không hiển thị gì lên giao diện
+                                        ),
+                                        SizedBox(width: 30),
+                                        Text(
+                                          NewsEntertainment[index]['link']
+                                              .toString()
+                                              .substring(
+                                                  13,
+                                                  NewsEntertainment[index]
+                                                          ['link']
+                                                      .toString()
+                                                      .indexOf('/', 13)),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          NewsEntertainment[index]['pubDate']
+                                              .toString()
+                                              .substring(5, 30),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(8),
+                                          child: Text(
+                                            NewsEntertainment[index]['title']
+                                                ['__cdata'],
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
+                                        const Divider(
+                                          thickness:
+                                              10, // ------------------------- ĐỘ DÀY
+                                          color: Colors
+                                              .white, // ----------------- MÀU SẮC
+                                          indent:
+                                              1, // ---------------------------- LÙI SANG TRÁI
+                                          endIndent:
+                                              1, // ------------------------- LÙI SANG PHẢI
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              })
+                        ],
+                      ),
+                    );
+            }),
+        FutureBuilder(
+            future: NewsSportsFeed(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              return snapshot.connectionState == ConnectionState.waiting
+                  ? Center(
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.blue),
+                        ),
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      padding: EdgeInsets.only(bottom: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: NewsSports.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 5),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                            return TrangChiTiet(
+                                              title: NewsSports[index]['title']
+                                                  ['__cdata'],
+                                              imagedata: NewsSports[index][
+                                                              'media\$content'] !=
+                                                          null &&
+                                                      NewsSports[index][
+                                                                  'media\$content']
+                                                              ['url'] !=
+                                                          null
+                                                  ? NewsSports[index]
+                                                      ['media\$content']['url']
+                                                  : null,
+                                              description: NewsSports[index]
+                                                              ['description'] !=
+                                                          null &&
+                                                      NewsSports[index][
+                                                                  'description']
+                                                              ['__cdata'] !=
+                                                          null
+                                                  ? NewsSports[index]
+                                                      ['description']['__cdata']
+                                                  : null,
+                                              date: NewsSports[index]
+                                                  ['pubDate'],
+                                              link: NewsSports[index]['link'],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: NewsSports[index]
+                                                      ['media\$content'] !=
+                                                  null
+                                              ? CachedNetworkImage(
+                                                  imageUrl: NewsSports[index]
+                                                      ['media\$content']['url'],
+                                                  fit: BoxFit.cover,
+                                                  placeholder: (context, url) =>
+                                                      Center(
+                                                    child: SizedBox(
+                                                      width: 20,
+                                                      height: 20,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                                Colors.blue),
+                                                      ),
+                                                    ),
+                                                  ), // Hiển thị indicator khi đang tải
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      Container(), // Hiển thị icon lỗi nếu không tải được
+                                                )
+                                              : null, // Nếu không tìm thấy mục media\$content, không hiển thị gì lên giao diện
+                                        ),
+                                        SizedBox(width: 30),
+                                        Text(
+                                          NewsSports[index]['link']
+                                              .toString()
+                                              .substring(
+                                                  13,
+                                                  NewsSports[index]['link']
+                                                      .toString()
+                                                      .indexOf('/', 13)),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          NewsSports[index]['pubDate']
+                                              .toString()
+                                              .substring(5, 30),
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(8),
+                                          child: Text(
+                                            NewsSports[index]['title']
+                                                ['__cdata'],
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        ),
+                                        const Divider(
+                                          thickness:
+                                              10, // ------------------------- ĐỘ DÀY
+                                          color: Colors
+                                              .white, // ----------------- MÀU SẮC
+                                          indent:
+                                              1, // ---------------------------- LÙI SANG TRÁI
+                                          endIndent:
+                                              1, // ------------------------- LÙI SANG PHẢI
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              })
+                        ],
+                      ),
+                    );
+            }),
+      ]),
     );
+    //);
   }
 }

@@ -12,7 +12,7 @@ import 'Models/ThemeProvider.dart';
 
 void main() {
   runApp(
-   ChangeNotifierProvider(
+    ChangeNotifierProvider(
       create: (context) => ThemeProvider(),
       child: const MyApp(),
     ),
@@ -28,15 +28,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false, // tắt chữ debug trên app
       initialRoute: '/',
       routes: {
-        '/': (context) => const TrangChu(),
+        '/': (context) => const TrangChu(
+              title: '',
+            ),
         '/canhan': (context) => const CaNhan(),
-        '/video': (context) => const TrangVideo(),
+        '/video': (context) => TrangVideo(),
         '/daluu': (context) => const DaLuu(),
         '/lichsu': (context) => const LichSu(),
         '/cochuvafontchu': (context) => const CoChuvaFontChu(),
-        '/trangchitiet': (context) => const TrangChiTiet(),
       },
     );
   }
 }
-
