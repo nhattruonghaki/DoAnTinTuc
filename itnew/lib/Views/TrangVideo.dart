@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:itnew/Views/BottomNavi.dart';
-import 'package:provider/provider.dart';
-import '../Models/ThemeProvider.dart';
 
 class TrangVideo extends StatefulWidget {
   const TrangVideo({super.key});
@@ -13,13 +11,8 @@ class TrangVideo extends StatefulWidget {
 class _TrangVideoState extends State<TrangVideo> {
   @override
   Widget build(BuildContext context) {
-    var themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      backgroundColor: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(222, 0, 183, 255),
-        title: const Text('Các video'),
-        centerTitle: true,),
+      appBar: AppBar(title: const Text('Các video')),
       bottomNavigationBar: const BottomNavi(index: 1),
     );
   }
