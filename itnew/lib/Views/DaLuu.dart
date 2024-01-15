@@ -18,8 +18,9 @@ class _DaLuuState extends State<DaLuu> {
       appBar: AppBar(
               backgroundColor: Color.fromARGB(222, 0, 183, 255),
               title: const Text('Đã lưu',
-              style: TextStyle(color: Colors.white),),
+              style: TextStyle(color: Colors.black),),
               centerTitle: true,
+              iconTheme: IconThemeData(color: Colors.black),
               actions: [
                 IconButton(onPressed: (){}, 
                           icon: Icon(Icons.delete,color: Colors.black,size: 40,))

@@ -30,7 +30,7 @@ class _CaNhanState extends State<CaNhan>{
         title: const Text(
           'Cá nhân',
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+              fontWeight: FontWeight.bold, fontSize: 25, color: Color.fromARGB(255, 24, 24, 24)),
         ),
         centerTitle: true,
       ),
@@ -77,7 +77,7 @@ class _CaNhanState extends State<CaNhan>{
                     Navigator.popUntil(context, (route) => route.isCurrent);
                     Navigator.pushNamed(context, '/daluu');
                   },
-                  child: Row(
+                  child: const Row(
                     children: [
                       Icon(
                         Icons
@@ -97,7 +97,7 @@ class _CaNhanState extends State<CaNhan>{
                     Navigator.popUntil(context, (route) => route.isCurrent);
                     Navigator.pushNamed(context, '/lichsu');
                   },
-                  child: Row(
+                  child: const Row(
                     children: [
                       Icon(
                         Icons
@@ -149,7 +149,7 @@ class _CaNhanState extends State<CaNhan>{
                       Navigator.popUntil(context, (route) => route.isCurrent);
                       Navigator.pushNamed(context, '/cochuvafontchu');
                     },
-                    child: Row(
+                    child: const Row(
                       children: [
                         Icon(
                           Icons.format_color_text_outlined,
@@ -194,7 +194,7 @@ class _CaNhanState extends State<CaNhan>{
                 ),
                 GestureDetector(
                   onTap: () {},
-                  child: Row(
+                  child: const Row(
                     children: [
                       Text(
                         'Xoá tài khoản',
