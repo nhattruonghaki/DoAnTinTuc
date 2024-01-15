@@ -77,7 +77,7 @@ class _CaNhanState extends State<CaNhan>{
                     Navigator.popUntil(context, (route) => route.isCurrent);
                     Navigator.pushNamed(context, '/daluu');
                   },
-                  child: const Row(
+                  child: Row(
                     children: [
                       Icon(
                         Icons
@@ -97,7 +97,7 @@ class _CaNhanState extends State<CaNhan>{
                     Navigator.popUntil(context, (route) => route.isCurrent);
                     Navigator.pushNamed(context, '/lichsu');
                   },
-                  child: const Row(
+                  child: Row(
                     children: [
                       Icon(
                         Icons
@@ -149,7 +149,7 @@ class _CaNhanState extends State<CaNhan>{
                       Navigator.popUntil(context, (route) => route.isCurrent);
                       Navigator.pushNamed(context, '/cochuvafontchu');
                     },
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(
                           Icons.format_color_text_outlined,
@@ -194,7 +194,7 @@ class _CaNhanState extends State<CaNhan>{
                 ),
                 GestureDetector(
                   onTap: () {},
-                  child: const Row(
+                  child: Row(
                     children: [
                       Text(
                         'Xoá tài khoản',
