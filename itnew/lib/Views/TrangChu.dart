@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:itnew/Models/FontsChu.dart';
+import 'package:itnew/Models/TangGiamFont.dart';
 import 'package:itnew/Views/BottomNavi.dart';
 import 'package:itnew/Views/TimKiem.dart';
 import 'package:itnew/Views/TrangChiTiet.dart';
@@ -17,6 +19,8 @@ class TrangChu extends StatefulWidget {
 
 class _TrangChuState extends State<TrangChu>
     with SingleTickerProviderStateMixin {
+  FontsChu fontsChu = FontsChu();
+  TangGiamFont fontSize = TangGiamFont();
   // minxin cung cấp đối tượng đối tượng TickerProvider
 // duy nhất và có thể sử dụng cho 1 Ticker (đối tượng thời gian) -> animation
   final Xml2Json xml2json = Xml2Json();
@@ -28,7 +32,7 @@ class _TrangChuState extends State<TrangChu>
     final url = Uri.parse('https://rss.app/feeds/LsUd1xHIfAg8itgQ.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
-    var jsondata = await xml2json.toGData();
+    var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
     NewsTechnology = data['rss']['channel']['item'];
     print(NewsTechnology);
@@ -38,7 +42,7 @@ class _TrangChuState extends State<TrangChu>
     final url = Uri.parse('https://rss.app/feeds/Zaja3mUJaDXWRS9I.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
-    var jsondata = await xml2json.toGData();
+    var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
     NewsBusiness = data['rss']['channel']['item'];
     print(NewsBusiness);
@@ -48,7 +52,7 @@ class _TrangChuState extends State<TrangChu>
     final url = Uri.parse('https://rss.app/feeds/xPJw6UXRS4zCnlTu.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
-    var jsondata = await xml2json.toGData();
+    var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
     NewsEntertainment = data['rss']['channel']['item'];
     print(NewsEntertainment);
@@ -58,7 +62,7 @@ class _TrangChuState extends State<TrangChu>
     final url = Uri.parse('https://rss.app/feeds/vrXylEUtQ94wyXRK.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
-    var jsondata = await xml2json.toGData();
+    var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
     NewsSports = data['rss']['channel']['item'];
     print(NewsSports);
@@ -84,11 +88,12 @@ class _TrangChuState extends State<TrangChu>
     return Scaffold(
 // ----------------------------------------------- LOGO -----------------------------------------------
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: const Color.fromARGB(222, 0, 183, 255),
-        title: const Text(
-          'ITFEEDS Internet Society',
+        title: Text(
+          'ITFEEDS',
           style: TextStyle(
-            //fontFamily: 'Roboto',
+            fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -142,25 +147,61 @@ class _TrangChuState extends State<TrangChu>
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [SizedBox(width: 1), Text('Technology')],
+                    children: [
+                      const SizedBox(width: 1),
+                      Text(
+                        'Technology',
+                        style: TextStyle(
+                          fontFamily:
+                              fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [SizedBox(width: 1), Text('Business')],
+                    children: [
+                      const SizedBox(width: 1),
+                      Text(
+                        'Business',
+                        style: TextStyle(
+                          fontFamily:
+                              fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [SizedBox(width: 1), Text('Entertainment')],
+                    children: [
+                      const SizedBox(width: 1),
+                      Text(
+                        'Entertainment',
+                        style: TextStyle(
+                          fontFamily:
+                              fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [SizedBox(width: 1), Text('Sports')],
+                    children: [
+                      const SizedBox(width: 1),
+                      Text(
+                        'Sports',
+                        style: TextStyle(
+                          fontFamily:
+                              fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ],
@@ -175,14 +216,19 @@ class _TrangChuState extends State<TrangChu>
             DrawerHeader(
                 decoration: const BoxDecoration(
                     color: Color.fromARGB(222, 0, 183, 255)),
-                child: Image.asset('assets/itfeeds.png')),
+                child: Image.asset('assets/img/itfeeds.png')),
             ListTile(
               onTap: () {
                 Navigator.pop(context);
                 _tabController
                     ?.animateTo(0); // hiệu ứng chuyển đến tab "Mới nhất"
               },
-              title: const Text('Technology'),
+              title: Text(
+                'Technology',
+                style: TextStyle(
+                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                ),
+              ),
             ),
             ListTile(
               onTap: () {
@@ -190,7 +236,12 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(1); // hiệu ứng chuyển đến tab "Xu hướng"
               },
-              title: const Text('Business'),
+              title: Text(
+                'Business',
+                style: TextStyle(
+                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                ),
+              ),
             ),
             ListTile(
               onTap: () {
@@ -198,7 +249,12 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(2); // hiệu ứng chuyển đến tab "Xu hướng"
               },
-              title: const Text('Entertainment'),
+              title: Text(
+                'Entertainment',
+                style: TextStyle(
+                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                ),
+              ),
             ),
             ListTile(
               onTap: () {
@@ -206,13 +262,18 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(3); // hiệu ứng chuyển đến tab "Xu hướng"
               },
-              title: const Text('Sports'),
+              title: Text(
+                'Sports',
+                style: TextStyle(
+                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                ),
+              ),
             ),
           ],
         ),
       ),
 // -------------------------------------------- FOOTER -----------------------------------------------------------------------------
-      bottomNavigationBar: const BottomNavi(index: 0),
+      bottomNavigationBar: BottomNavi(index: 0),
 
 // -------------------------------------------- BODY --------TAB BAR VIEW ----------------------------------------------------------
       body: TabBarView(controller: _tabController, children: [
@@ -220,7 +281,7 @@ class _TrangChuState extends State<TrangChu>
             future: NewsTechnologyFeed(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               return snapshot.connectionState == ConnectionState.waiting
-                  ? Center(
+                  ? const Center(
                       child: SizedBox(
                         width: 50,
                         height: 50,
@@ -231,18 +292,20 @@ class _TrangChuState extends State<TrangChu>
                       ),
                     )
                   : SingleChildScrollView(
-                      padding: EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.only(bottom: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           ListView.builder(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              physics: NeverScrollableScrollPhysics(),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: NewsTechnology.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5),
                                   child: InkWell(
                                     onTap: () {
                                       Navigator.push(
@@ -297,7 +360,7 @@ class _TrangChuState extends State<TrangChu>
                                                           ['url'],
                                                   fit: BoxFit.cover,
                                                   placeholder: (context, url) =>
-                                                      Center(
+                                                      const Center(
                                                     child: SizedBox(
                                                       width: 20,
                                                       height: 20,
@@ -316,7 +379,7 @@ class _TrangChuState extends State<TrangChu>
                                                 )
                                               : null, // Nếu không tìm thấy mục media\$content, không hiển thị gì lên giao diện
                                         ),
-                                        SizedBox(width: 30),
+                                        const SizedBox(width: 30),
                                         Text(
                                           NewsTechnology[index]['link']
                                               .toString()
@@ -326,22 +389,30 @@ class _TrangChuState extends State<TrangChu>
                                                       .toString()
                                                       .indexOf('/', 13)),
                                           style: TextStyle(
+                                            fontFamily:
+                                                fontsChu.fontInter == 'Inter'
+                                                    ? 'Inter'
+                                                    : 'Kalam',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
                                           ),
                                         ),
-                                        SizedBox(width: 10),
+                                        const SizedBox(width: 10),
                                         Text(
                                           NewsTechnology[index]['pubDate']
                                               .toString()
                                               .substring(5, 30),
                                           style: TextStyle(
+                                            fontFamily:
+                                                fontsChu.fontInter == 'Inter'
+                                                    ? 'Inter'
+                                                    : 'Kalam',
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.all(8),
+                                          padding: const EdgeInsets.all(8),
                                           child: Text(
                                             NewsTechnology[index]['title']
                                                 ['__cdata'],
@@ -349,8 +420,12 @@ class _TrangChuState extends State<TrangChu>
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
+                                              fontFamily:
+                                                  fontsChu.fontInter == 'Inter'
+                                                      ? 'Inter'
+                                                      : 'Kalam',
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 17,
+                                              fontSize: fontSize.coChu.toDouble(),
                                             ),
                                           ),
                                         ),
@@ -377,7 +452,7 @@ class _TrangChuState extends State<TrangChu>
             future: NewsBusinessFeed(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               return snapshot.connectionState == ConnectionState.waiting
-                  ? Center(
+                  ? const Center(
                       child: SizedBox(
                         width: 50,
                         height: 50,
@@ -388,18 +463,20 @@ class _TrangChuState extends State<TrangChu>
                       ),
                     )
                   : SingleChildScrollView(
-                      padding: EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.only(bottom: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           ListView.builder(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              physics: NeverScrollableScrollPhysics(),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: NewsTechnology.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5),
                                   child: InkWell(
                                     onTap: () {
                                       Navigator.push(
@@ -443,7 +520,7 @@ class _TrangChuState extends State<TrangChu>
                                                       ['media\$content']['url'],
                                                   fit: BoxFit.cover,
                                                   placeholder: (context, url) =>
-                                                      Center(
+                                                      const Center(
                                                     child: SizedBox(
                                                       width: 20,
                                                       height: 20,
@@ -462,7 +539,7 @@ class _TrangChuState extends State<TrangChu>
                                                 )
                                               : null, // Nếu không tìm thấy mục media\$content, không hiển thị gì lên giao diện
                                         ),
-                                        SizedBox(width: 30),
+                                        const SizedBox(width: 30),
                                         Text(
                                           NewsBusiness[index]['link']
                                               .toString()
@@ -472,22 +549,30 @@ class _TrangChuState extends State<TrangChu>
                                                       .toString()
                                                       .indexOf('/', 13)),
                                           style: TextStyle(
+                                            fontFamily:
+                                                fontsChu.fontInter == 'Inter'
+                                                    ? 'Inter'
+                                                    : 'Kalam',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
                                           ),
                                         ),
-                                        SizedBox(width: 10),
+                                        const SizedBox(width: 10),
                                         Text(
                                           NewsBusiness[index]['pubDate']
                                               .toString()
                                               .substring(5, 30),
                                           style: TextStyle(
+                                            fontFamily:
+                                                fontsChu.fontInter == 'Inter'
+                                                    ? 'Inter'
+                                                    : 'Kalam',
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.all(8),
+                                          padding: const EdgeInsets.all(8),
                                           child: Text(
                                             NewsBusiness[index]['title']
                                                 ['__cdata'],
@@ -495,8 +580,12 @@ class _TrangChuState extends State<TrangChu>
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
+                                              fontFamily:
+                                                  fontsChu.fontInter == 'Inter'
+                                                      ? 'Inter'
+                                                      : 'Kalam',
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 17,
+                                              fontSize: fontSize.coChu.toDouble(),
                                             ),
                                           ),
                                         ),
@@ -523,7 +612,7 @@ class _TrangChuState extends State<TrangChu>
             future: NewsEntertainmentFeed(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               return snapshot.connectionState == ConnectionState.waiting
-                  ? Center(
+                  ? const Center(
                       child: SizedBox(
                         width: 50,
                         height: 50,
@@ -534,18 +623,20 @@ class _TrangChuState extends State<TrangChu>
                       ),
                     )
                   : SingleChildScrollView(
-                      padding: EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.only(bottom: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           ListView.builder(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              physics: NeverScrollableScrollPhysics(),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: NewsEntertainment.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5),
                                   child: InkWell(
                                     onTap: () {
                                       Navigator.push(
@@ -595,7 +686,7 @@ class _TrangChuState extends State<TrangChu>
                                                           ['url'],
                                                   fit: BoxFit.cover,
                                                   placeholder: (context, url) =>
-                                                      Center(
+                                                      const Center(
                                                     child: SizedBox(
                                                       width: 20,
                                                       height: 20,
@@ -614,7 +705,7 @@ class _TrangChuState extends State<TrangChu>
                                                 )
                                               : null, // Nếu không tìm thấy mục media\$content, không hiển thị gì lên giao diện
                                         ),
-                                        SizedBox(width: 30),
+                                        const SizedBox(width: 30),
                                         Text(
                                           NewsEntertainment[index]['link']
                                               .toString()
@@ -625,22 +716,30 @@ class _TrangChuState extends State<TrangChu>
                                                       .toString()
                                                       .indexOf('/', 13)),
                                           style: TextStyle(
+                                            fontFamily:
+                                                fontsChu.fontInter == 'Inter'
+                                                    ? 'Inter'
+                                                    : 'Kalam',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
                                           ),
                                         ),
-                                        SizedBox(width: 10),
+                                        const SizedBox(width: 10),
                                         Text(
                                           NewsEntertainment[index]['pubDate']
                                               .toString()
                                               .substring(5, 30),
                                           style: TextStyle(
+                                            fontFamily:
+                                                fontsChu.fontInter == 'Inter'
+                                                    ? 'Inter'
+                                                    : 'Kalam',
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.all(8),
+                                          padding: const EdgeInsets.all(8),
                                           child: Text(
                                             NewsEntertainment[index]['title']
                                                 ['__cdata'],
@@ -648,8 +747,12 @@ class _TrangChuState extends State<TrangChu>
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
+                                              fontFamily:
+                                                  fontsChu.fontInter == 'Inter'
+                                                      ? 'Inter'
+                                                      : 'Kalam',
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 17,
+                                              fontSize: fontSize.coChu.toDouble(),
                                             ),
                                           ),
                                         ),
@@ -676,7 +779,7 @@ class _TrangChuState extends State<TrangChu>
             future: NewsSportsFeed(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               return snapshot.connectionState == ConnectionState.waiting
-                  ? Center(
+                  ? const Center(
                       child: SizedBox(
                         width: 50,
                         height: 50,
@@ -687,18 +790,20 @@ class _TrangChuState extends State<TrangChu>
                       ),
                     )
                   : SingleChildScrollView(
-                      padding: EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.only(bottom: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           ListView.builder(
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              physics: NeverScrollableScrollPhysics(),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: NewsSports.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
-                                  margin: EdgeInsets.symmetric(vertical: 5),
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5),
                                   child: InkWell(
                                     onTap: () {
                                       Navigator.push(
@@ -750,7 +855,7 @@ class _TrangChuState extends State<TrangChu>
                                                       ['media\$content']['url'],
                                                   fit: BoxFit.cover,
                                                   placeholder: (context, url) =>
-                                                      Center(
+                                                      const Center(
                                                     child: SizedBox(
                                                       width: 20,
                                                       height: 20,
@@ -769,7 +874,7 @@ class _TrangChuState extends State<TrangChu>
                                                 )
                                               : null, // Nếu không tìm thấy mục media\$content, không hiển thị gì lên giao diện
                                         ),
-                                        SizedBox(width: 30),
+                                        const SizedBox(width: 30),
                                         Text(
                                           NewsSports[index]['link']
                                               .toString()
@@ -779,22 +884,30 @@ class _TrangChuState extends State<TrangChu>
                                                       .toString()
                                                       .indexOf('/', 13)),
                                           style: TextStyle(
+                                            fontFamily:
+                                                fontsChu.fontInter == 'Inter'
+                                                    ? 'Inter'
+                                                    : 'Kalam',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
                                           ),
                                         ),
-                                        SizedBox(width: 10),
+                                        const SizedBox(width: 10),
                                         Text(
                                           NewsSports[index]['pubDate']
                                               .toString()
                                               .substring(5, 30),
                                           style: TextStyle(
+                                            fontFamily:
+                                                fontsChu.fontInter == 'Inter'
+                                                    ? 'Inter'
+                                                    : 'Kalam',
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
                                           ),
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.all(8),
+                                          padding: const EdgeInsets.all(8),
                                           child: Text(
                                             NewsSports[index]['title']
                                                 ['__cdata'],
@@ -802,8 +915,12 @@ class _TrangChuState extends State<TrangChu>
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
+                                              fontFamily:
+                                                  fontsChu.fontInter == 'Inter'
+                                                      ? 'Inter'
+                                                      : 'Kalam',
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 17,
+                                              fontSize: fontSize.coChu.toDouble(),
                                             ),
                                           ),
                                         ),
