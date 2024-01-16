@@ -29,11 +29,6 @@ class TrangChiTiet extends StatefulWidget {
 class _TrangChiTietState extends State<TrangChiTiet> {
   @override
   Widget build(BuildContext context) {
-    String noidung = widget.description.toString();
-    int startDivIndex = noidung.indexOf('<div>', noidung.indexOf('<div>') + 1);
-    int endDivIndex = noidung.indexOf('</div>', startDivIndex);
-    String contentdescription =
-        noidung.substring(startDivIndex + 5, endDivIndex);
     return Scaffold(
       appBar: AppBar(title: const Text('Trang Chi Tiết')),
       body: ListView(
@@ -60,9 +55,21 @@ class _TrangChiTietState extends State<TrangChiTiet> {
                   ),
                 ),
                 Text(
-                  contentdescription,
+                  (widget.description != null &&
+                          widget.description.toString().contains('<div>'))
+                      ? (() {
+                          String noidung = widget.description.toString();
+                          int startDivIndex = noidung.indexOf(
+                              '<div>', noidung.indexOf('<div>') + 1);
+                          int endDivIndex =
+                              noidung.indexOf('</div>', startDivIndex);
+                          String contentdescription =
+                              noidung.substring(startDivIndex + 5, endDivIndex);
+                          return contentdescription;
+                        })()
+                      : 'Không có mô tả hoặc mô tả không hợp lệ',
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
-                )
+                ),
               ],
             ),
           ),
