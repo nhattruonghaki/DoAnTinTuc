@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:itnew/Models/FontsChu.dart';
 import 'package:itnew/Models/TangGiamFont.dart';
+import 'package:itnew/Views/TrangCaNhan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CoChuvaFontChu extends StatefulWidget {
@@ -13,12 +14,11 @@ class CoChuvaFontChu extends StatefulWidget {
 }
 
 class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
-  void updateFontsChus(String newFont) async {
+  void updateFontsChus(String newFont) {
     // ----------------------------------------------- CẬP NHẬT FONT CHỮ -------------------
     setState(() {
       fontsChu.updateFontsChu(newFont);
-      selectedFont = newFont; // cập nhật kiểu chữ đã chọn
-      saveSelectedFont(); // lưu kiểu chữ đã chọn voà sharepre
+      //selectedFont = newFont; // cập nhật kiểu chữ đã chọn
     });
   }
 
@@ -28,12 +28,6 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
       fontSize.updateFontSize(newFontSize);
     });
   }
-
-// lưu dữ liệu đã cài đặt
-Future<void> saveSelectedFont() async{
-  SharedPreferences saveShaPre = await SharedPreferences.getInstance();
-  await saveShaPre.setString('selectedFont', selectedFont);
-}
 
   late FontsChu fontsChu;
   late TangGiamFont fontSize;
@@ -45,24 +39,25 @@ Future<void> saveSelectedFont() async{
     fontsChu = FontsChu();
     fontSize = TangGiamFont();
     selectedFont = fontsChu.fontInter;
-    loadSelectedFont();
   }
 
-// tải dữ liệu đã cài đặt
-  Future<void> loadSelectedFont() async{
-    SharedPreferences shaPre = await SharedPreferences.getInstance();
-    setState(() {
-      selectedFont = shaPre.getString('selectedFont') ?? fontsChu.fontInter;
-    });
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
+          // leading: IconButton(
+          //   icon: const Icon(Icons.arrow_back),
+          //   onPressed: () {
+          //     //Navigator.popUntil(context, (route) => route.isCurrent);
+          //     Navigator.pushNamed(context, '/canhan');
+          //   },
+          // ),
           backgroundColor: const Color.fromARGB(222, 0, 183, 255),
-          title: const Text(
+          title: Text(
             'Cỡ chữ và Font chữ',
             style: TextStyle(
+              fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
@@ -74,7 +69,7 @@ Future<void> saveSelectedFont() async{
           Padding(
             padding: const EdgeInsets.all(15),
             child: Image.asset(
-              'assets/g63.jpg',
+              'assets/img/g63.jpg',
               width: double.infinity, // Đặt kích thước theo chiều ngang
               height: 200, // Đặt kích thước theo chiều dọc
               fit: BoxFit.cover,
@@ -111,8 +106,11 @@ Future<void> saveSelectedFont() async{
                       width: 15,
                       height: 120,
                     ),
-                    const Text('Cỡ chữ',
+                    Text('Cỡ chữ',
                         style: TextStyle(
+                            fontFamily: fontsChu.fontInter == 'Inter'
+                                ? 'Inter'
+                                : 'Kalam',
                             fontSize: 20,
                             fontWeight: FontWeight
                                 .bold)), // ----------------------------------CỠ CHỮ ------------------------
@@ -130,8 +128,12 @@ Future<void> saveSelectedFont() async{
                     ),
                     const SizedBox(width: 30),
                     Text(fontSize.coChu.toString(),
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                        style: TextStyle(
+                            fontFamily: fontsChu.fontInter == 'Inter'
+                                ? 'Inter'
+                                : 'Kalam',
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
                     const SizedBox(width: 30),
                     IconButton(
                       onPressed: () {
@@ -152,9 +154,13 @@ Future<void> saveSelectedFont() async{
                     const SizedBox(
                       width: 4,
                     ),
-                    const Text('Font chữ',
+                    Text('Font chữ',
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                            fontFamily: fontsChu.fontInter == 'Inter'
+                                ? 'Inter'
+                                : 'Kalam',
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
                     const SizedBox(width: 50),
                     ElevatedButton(
                       onPressed: () {
@@ -170,8 +176,12 @@ Future<void> saveSelectedFont() async{
                             ? Colors.green
                             : Colors.white,
                       ),
-                      child: const Text('Inter',
-                          style: TextStyle(color: Colors.black)),
+                      child: Text('Inter',
+                          style: TextStyle(
+                              fontFamily: fontsChu.fontInter == 'Inter'
+                                  ? 'Inter'
+                                  : 'Kalam',
+                              color: Colors.black)),
                     ),
                     const SizedBox(width: 30),
                     ElevatedButton(
@@ -187,8 +197,12 @@ Future<void> saveSelectedFont() async{
                             ? Colors.green
                             : Colors.white,
                       ),
-                      child: const Text('Kalam',
-                          style: TextStyle(color: Colors.black)),
+                      child: Text('Kalam',
+                          style: TextStyle(
+                              fontFamily: fontsChu.fontInter == 'Inter'
+                                  ? 'Inter'
+                                  : 'Kalam',
+                              color: Colors.black)),
                     ),
                   ],
                 ),
