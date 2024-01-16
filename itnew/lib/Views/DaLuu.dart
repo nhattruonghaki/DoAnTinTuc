@@ -20,12 +20,13 @@ class _DaLuuState extends State<DaLuu> {
           ? const Color.fromARGB(255, 24, 24, 24)
           : Colors.white,
       appBar: AppBar(
+
         backgroundColor: const Color.fromARGB(222, 0, 183, 255),
         title: Text(
           'Đã lưu',
           style: TextStyle(
               fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
-              color: Colors.black),
+              color: Colors.white),
         ),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.black),
@@ -39,6 +40,7 @@ class _DaLuuState extends State<DaLuu> {
               ))
         ],
       ),
+
     );
   }
 }

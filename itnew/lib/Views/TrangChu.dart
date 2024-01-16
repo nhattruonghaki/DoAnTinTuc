@@ -9,6 +9,8 @@ import 'package:itnew/Views/TrangChiTiet.dart';
 import 'package:itnew/Views/TrangThongBao.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
+import 'package:provider/provider.dart';
+import '../Models/ThemeProvider.dart';
 
 class TrangChu extends StatefulWidget {
   const TrangChu({super.key, required this.title});
@@ -85,8 +87,14 @@ class _TrangChuState extends State<TrangChu>
     NewsEntertainmentFeed();
     NewsSportsFeed();
 
+    var themeProvider = Provider.of<ThemeProvider>(context);
+
+    Color scaffoldBackgroundColor = themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white;
+    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
+
     return Scaffold(
 // ----------------------------------------------- LOGO -----------------------------------------------
+      backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: const Color.fromARGB(222, 0, 183, 255),
@@ -135,13 +143,13 @@ class _TrangChuState extends State<TrangChu>
           preferredSize:
               const Size.fromHeight(40), // kích thước tối ưu cho TabBar
           child: Container(
-            color: const Color.fromARGB(255, 255, 255, 255),
+            color: scaffoldBackgroundColor,
             child: TabBar(
               controller: _tabController,
               isScrollable: true,
               labelColor: Colors.blue,
-              indicatorColor: Colors.black,
-              unselectedLabelColor: Colors.black, // unfocus
+              indicatorColor: themeProvider.isDarkMode ? Colors.blue : Color.fromARGB(255, 24, 24, 24),
+              unselectedLabelColor: themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24),
 
               tabs: [
                 Tab(
@@ -211,7 +219,14 @@ class _TrangChuState extends State<TrangChu>
       ),
 // ----------------------------------------------- DANH MỤC -------------------------------------------
       drawer: Drawer(
-        child: ListView(
+        child: Container(
+          decoration: BoxDecoration(
+            color: scaffoldBackgroundColor,
+            border: Border.all(
+              color: Colors.grey
+            ),
+          ),
+          child: ListView(
           children: <Widget>[
             DrawerHeader(
                 decoration: const BoxDecoration(
@@ -223,10 +238,12 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(0); // hiệu ứng chuyển đến tab "Mới nhất"
               },
+
               title: Text(
                 'Technology',
                 style: TextStyle(
                   fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                  color: textColor
                 ),
               ),
             ),
@@ -236,12 +253,14 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(1); // hiệu ứng chuyển đến tab "Xu hướng"
               },
+
               title: Text(
                 'Business',
                 style: TextStyle(
-                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',color: textColor
                 ),
               ),
+
             ),
             ListTile(
               onTap: () {
@@ -249,12 +268,14 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(2); // hiệu ứng chuyển đến tab "Xu hướng"
               },
+
               title: Text(
                 'Entertainment',
                 style: TextStyle(
-                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',color: textColor
                 ),
               ),
+
             ),
             ListTile(
               onTap: () {
@@ -262,15 +283,18 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(3); // hiệu ứng chuyển đến tab "Xu hướng"
               },
+
               title: Text(
                 'Sports',
                 style: TextStyle(
-                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',color: textColor
                 ),
               ),
+
             ),
           ],
         ),
+        )
       ),
 // -------------------------------------------- FOOTER -----------------------------------------------------------------------------
       bottomNavigationBar: BottomNavi(index: 0),
@@ -395,6 +419,7 @@ class _TrangChuState extends State<TrangChu>
                                                     : 'Kalam',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
+                                            color: textColor
                                           ),
                                         ),
                                         const SizedBox(width: 10),
@@ -409,6 +434,7 @@ class _TrangChuState extends State<TrangChu>
                                                     : 'Kalam',
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
+                                            color: textColor
                                           ),
                                         ),
                                         Padding(
@@ -425,7 +451,11 @@ class _TrangChuState extends State<TrangChu>
                                                       ? 'Inter'
                                                       : 'Kalam',
                                               fontWeight: FontWeight.bold,
+
+                                              color: textColor
+
                                               fontSize: fontSize.coChu.toDouble(),
+
                                             ),
                                           ),
                                         ),
@@ -555,6 +585,7 @@ class _TrangChuState extends State<TrangChu>
                                                     : 'Kalam',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
+                                            color: textColor
                                           ),
                                         ),
                                         const SizedBox(width: 10),
@@ -569,6 +600,7 @@ class _TrangChuState extends State<TrangChu>
                                                     : 'Kalam',
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
+                                            color: textColor
                                           ),
                                         ),
                                         Padding(
@@ -585,7 +617,11 @@ class _TrangChuState extends State<TrangChu>
                                                       ? 'Inter'
                                                       : 'Kalam',
                                               fontWeight: FontWeight.bold,
+
+                                              color: textColor
+
                                               fontSize: fontSize.coChu.toDouble(),
+
                                             ),
                                           ),
                                         ),
@@ -722,6 +758,7 @@ class _TrangChuState extends State<TrangChu>
                                                     : 'Kalam',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
+                                            color: textColor
                                           ),
                                         ),
                                         const SizedBox(width: 10),
@@ -736,6 +773,7 @@ class _TrangChuState extends State<TrangChu>
                                                     : 'Kalam',
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
+                                            color: textColor
                                           ),
                                         ),
                                         Padding(
@@ -752,7 +790,11 @@ class _TrangChuState extends State<TrangChu>
                                                       ? 'Inter'
                                                       : 'Kalam',
                                               fontWeight: FontWeight.bold,
+
+                                              color: textColor
+
                                               fontSize: fontSize.coChu.toDouble(),
+
                                             ),
                                           ),
                                         ),
@@ -890,6 +932,7 @@ class _TrangChuState extends State<TrangChu>
                                                     : 'Kalam',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
+                                            color: textColor
                                           ),
                                         ),
                                         const SizedBox(width: 10),
@@ -904,6 +947,7 @@ class _TrangChuState extends State<TrangChu>
                                                     : 'Kalam',
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
+                                            color: textColor
                                           ),
                                         ),
                                         Padding(
@@ -920,7 +964,11 @@ class _TrangChuState extends State<TrangChu>
                                                       ? 'Inter'
                                                       : 'Kalam',
                                               fontWeight: FontWeight.bold,
+
+                                              color: textColor
+
                                               fontSize: fontSize.coChu.toDouble(),
+
                                             ),
                                           ),
                                         ),

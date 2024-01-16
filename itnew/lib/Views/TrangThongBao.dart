@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:xml2json/xml2json.dart';
+import 'package:provider/provider.dart';
+import '../Models/ThemeProvider.dart';
 
 class TrangThongBao extends StatefulWidget {
   const TrangThongBao({super.key, required this.title});
@@ -36,16 +38,25 @@ class _TrangThongBaoState extends State<TrangThongBao> {
   @override
   Widget build(BuildContext context) {
     newsFeed();
+    var themeProvider = Provider.of<ThemeProvider>(context);
+
+    Color scaffoldBackgroundColor = themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white;
+    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
+    Color containerColor = themeProvider.isDarkMode ? const Color.fromARGB(255, 72, 71, 71) : const Color.fromARGB(255, 220, 218, 218);
     return Scaffold(
+      backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
           'Thông báo mới',
+
           style: TextStyle(
               fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
-              color: Colors.black),
+              color: Colors.white),
         ),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.black),
+      backgroundColor: const Color.fromARGB(222, 0, 183, 255),
+
       ),
       body: FutureBuilder(
           future: newsFeed(),
@@ -108,8 +119,7 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                       Container(
                                         padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
-                                          color: Colors.grey[
-                                              200], // Chọn màu xám cho nền khung
+                                          color: containerColor, // Chọn màu xám cho nền khung
                                           borderRadius: BorderRadius.circular(
                                               10), // Bo tròn góc của khung
                                         ),
@@ -174,6 +184,7 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontSize: 10,
+                                                      color: textColor
                                                     ),
                                                   ),
                                                   Text(
@@ -189,6 +200,7 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontSize: 9,
+                                                      color: textColor
                                                     ),
                                                   ),
                                                   Padding(
@@ -211,8 +223,12 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                                 : 'Kalam',
                                                         fontWeight:
                                                             FontWeight.bold,
+
+                                                        color: textColor
+
                                                         fontSize: fontSize.coChu
                                                             .toDouble(),
+
                                                       ),
                                                     ),
                                                   ),

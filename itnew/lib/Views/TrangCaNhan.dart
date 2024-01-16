@@ -39,7 +39,7 @@ class _CaNhanState extends State<CaNhan> {
               fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
               fontWeight: FontWeight.bold,
               fontSize: 25,
-              color: const Color.fromARGB(255, 24, 24, 24)),
+              color: Colors.white),
         ),
         centerTitle: true,
       ),

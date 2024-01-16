@@ -3,6 +3,8 @@ import 'package:itnew/Models/FontsChu.dart';
 import 'package:itnew/Models/TangGiamFont.dart';
 import 'package:itnew/Views/TrangCaNhan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import '../Models/ThemeProvider.dart';
 
 class CoChuvaFontChu extends StatefulWidget {
   const CoChuvaFontChu({Key? key}) : super(key: key);
@@ -43,7 +45,12 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
 
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
+
+    Color scaffoldBackgroundColor = themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white;
+    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
     return Scaffold(
+      backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
           iconTheme: const IconThemeData(color: Colors.white),
           // leading: IconButton(
@@ -54,7 +61,11 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
           //   },
           // ),
           backgroundColor: const Color.fromARGB(222, 0, 183, 255),
+
+          centerTitle: true,
+
           title: Text(
+
             'Cỡ chữ và Font chữ',
             style: TextStyle(
               fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
@@ -86,8 +97,9 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                     style: TextStyle(
                         fontSize: fontSize.coChu.toDouble(),
                         fontFamily:
-                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam'
+                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
                         //fontFamily: 'Inter'
+                        color: textColor
                         ),
                   ),
                 ),
@@ -112,23 +124,24 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                                 ? 'Inter'
                                 : 'Kalam',
                             fontSize: 20,
-                            fontWeight: FontWeight
-                                .bold)), // ----------------------------------CỠ CHỮ ------------------------
+                            fontWeight: FontWeight.bold,
+                            color: textColor)), // ----------------------------------CỠ CHỮ ------------------------
                     const SizedBox(width: 60),
                     IconButton(
                       onPressed: () {
                         updateFontSize_CoChu(fontSize.coChu -
                             2); // ---------------------- GIẢM CỠ CHỮ ---------------------
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_down_outlined,
-                        color: Colors.black,
+                        color: textColor,
                         size: 50,
                       ),
                     ),
                     const SizedBox(width: 30),
                     Text(fontSize.coChu.toString(),
                         style: TextStyle(
+                            color: textColor,
                             fontFamily: fontsChu.fontInter == 'Inter'
                                 ? 'Inter'
                                 : 'Kalam',
@@ -140,9 +153,9 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                         updateFontSize_CoChu(fontSize.coChu +
                             2); // ------------------------ TĂNG CỠ CHỮ ---------------------
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_up_outlined,
-                        color: Colors.black,
+                        color: textColor,
                         size: 50,
                       ),
                     ),
@@ -156,11 +169,15 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                     ),
                     Text('Font chữ',
                         style: TextStyle(
+
+                            color: textColor,
+
                             fontFamily: fontsChu.fontInter == 'Inter'
                                 ? 'Inter'
                                 : 'Kalam',
                             fontSize: 20,
                             fontWeight: FontWeight.bold)),
+
                     const SizedBox(width: 50),
                     ElevatedButton(
                       onPressed: () {

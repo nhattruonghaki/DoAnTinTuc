@@ -19,13 +19,16 @@ class _TrangVideoState extends State<TrangVideo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
           centerTitle: true,
+        backgroundColor: const Color.fromARGB(222, 0, 183, 255),),
           title: Text(
             'Video Tin Tức',
             style: TextStyle(
-              fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+              fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',fontWeight: FontWeight.bold, color: Colors.white
             ),
           )),
+
       body: PageView.builder(
         onPageChanged: (int page) => {print("Page change to$page")},
         scrollDirection: Axis.vertical,
