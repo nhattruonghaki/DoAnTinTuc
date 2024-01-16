@@ -47,8 +47,12 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
 
-    Color scaffoldBackgroundColor = themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white;
-    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
+    Color scaffoldBackgroundColor = themeProvider.isDarkMode
+        ? Color.fromARGB(255, 24, 24, 24)
+        : Colors.white;
+    Color textColor = themeProvider.isDarkMode
+        ? Colors.white
+        : Color.fromARGB(255, 24, 24, 24);
     return Scaffold(
       backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
@@ -61,11 +65,8 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
           //   },
           // ),
           backgroundColor: const Color.fromARGB(222, 0, 183, 255),
-
           centerTitle: true,
-
           title: Text(
-
             'Cỡ chữ và Font chữ',
             style: TextStyle(
               fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
@@ -74,63 +75,61 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
             ),
           )),
       body: Column(
-        //mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Image.asset(
-              'assets/img/g63.jpg',
-              width: double.infinity, // Đặt kích thước theo chiều ngang
-              height: 200, // Đặt kích thước theo chiều dọc
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-            child: Row(
+          Expanded(
+            child: Column(
               key: UniqueKey(),
               children: [
-                Expanded(
-                  child: Text(
-                    'App tin tức đang phát triển, đang cố gắng hết sức',
-                    style: TextStyle(
-                        fontSize: fontSize.coChu.toDouble(),
-                        fontFamily:
-                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
-                        //fontFamily: 'Inter'
-                        color: textColor
-                        ),
+                Container(
+                  margin: EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    'assets/img/g63.jpg',
+                    width: double.infinity,
+                    height: 200,
+                    fit: BoxFit.cover,
                   ),
                 ),
+                SizedBox(height: 5),
+                Text(
+                  'App tin tức đang phát triển, đang cố gắng hết sức',
+                  style: TextStyle(
+                    fontSize: fontSize.coChu.toDouble(),
+                    fontFamily:
+                        fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                    color: textColor,
+                  ),
+                ),
+                // Các phần khác của mã ở đây
+                // ...
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 50),
+          SizedBox(height: 10),
+          Expanded(
             child: Column(
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       width: 15,
                       height: 120,
                     ),
-                    Text('Cỡ chữ',
-                        style: TextStyle(
-                            fontFamily: fontsChu.fontInter == 'Inter'
-                                ? 'Inter'
-                                : 'Kalam',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: textColor)), // ----------------------------------CỠ CHỮ ------------------------
-                    const SizedBox(width: 60),
+                    Text(
+                      'Cỡ chữ',
+                      style: TextStyle(
+                        fontFamily:
+                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
+                      ),
+                    ),
+                    SizedBox(width: 60),
                     IconButton(
                       onPressed: () {
-                        updateFontSize_CoChu(fontSize.coChu -
-                            2); // ---------------------- GIẢM CỠ CHỮ ---------------------
+                        updateFontSize_CoChu(fontSize.coChu - 2);
                       },
                       icon: Icon(
                         Icons.arrow_circle_down_outlined,
@@ -138,20 +137,21 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                         size: 50,
                       ),
                     ),
-                    const SizedBox(width: 30),
-                    Text(fontSize.coChu.toString(),
-                        style: TextStyle(
-                            color: textColor,
-                            fontFamily: fontsChu.fontInter == 'Inter'
-                                ? 'Inter'
-                                : 'Kalam',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold)),
-                    const SizedBox(width: 30),
+                    SizedBox(width: 30),
+                    Text(
+                      fontSize.coChu.toString(),
+                      style: TextStyle(
+                        color: textColor,
+                        fontFamily:
+                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 30),
                     IconButton(
                       onPressed: () {
-                        updateFontSize_CoChu(fontSize.coChu +
-                            2); // ------------------------ TĂNG CỠ CHỮ ---------------------
+                        updateFontSize_CoChu(fontSize.coChu + 2);
                       },
                       icon: Icon(
                         Icons.arrow_circle_up_outlined,
@@ -164,27 +164,24 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       width: 4,
                     ),
-                    Text('Font chữ',
-                        style: TextStyle(
-
-                            color: textColor,
-
-                            fontFamily: fontsChu.fontInter == 'Inter'
-                                ? 'Inter'
-                                : 'Kalam',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold)),
-
-                    const SizedBox(width: 50),
+                    Text(
+                      'Font chữ',
+                      style: TextStyle(
+                        color: textColor,
+                        fontFamily:
+                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 50),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          updateFontsChus(selectedFont =
-                              'Inter'); // ------------------------------------------ ĐỔI FONT CHỮ ------------------------
-                          // selectedFont = 'Inter';
+                          updateFontsChus('Inter');
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -193,19 +190,20 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                             ? Colors.green
                             : Colors.white,
                       ),
-                      child: Text('Inter',
-                          style: TextStyle(
-                              fontFamily: fontsChu.fontInter == 'Inter'
-                                  ? 'Inter'
-                                  : 'Kalam',
-                              color: Colors.black)),
+                      child: Text(
+                        'Inter',
+                        style: TextStyle(
+                          fontFamily:
+                              fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
-                    const SizedBox(width: 30),
+                    SizedBox(width: 30),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          updateFontsChus(selectedFont =
-                              'Kalam'); // ------------------------------------------ ĐỔI FONT CHỮ ------------------------
+                          updateFontsChus('Kalam');
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -214,12 +212,14 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                             ? Colors.green
                             : Colors.white,
                       ),
-                      child: Text('Kalam',
-                          style: TextStyle(
-                              fontFamily: fontsChu.fontInter == 'Inter'
-                                  ? 'Inter'
-                                  : 'Kalam',
-                              color: Colors.black)),
+                      child: Text(
+                        'Kalam',
+                        style: TextStyle(
+                          fontFamily:
+                              fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ],
                 ),

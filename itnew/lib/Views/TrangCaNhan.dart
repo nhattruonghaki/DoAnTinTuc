@@ -96,6 +96,7 @@ class _CaNhanState extends State<CaNhan> {
                         color: Colors.green,
                         size: 50,
                       ),
+                      SizedBox(width: 5),
                       Text(
                         'Đã lưu',
                         style: TextStyle(
@@ -121,6 +122,7 @@ class _CaNhanState extends State<CaNhan> {
                         color: Colors.green,
                         size: 50,
                       ),
+                      SizedBox(width: 10),
                       Text(
                         'Lịch sử',
                         style: TextStyle(

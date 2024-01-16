@@ -14,7 +14,7 @@ class TrangVideo extends StatefulWidget {
 
 class _TrangVideoState extends State<TrangVideo> {
   FontsChu fontsChu = FontsChu();
-  final int _snappedPageIndex = 0;
+  int _snappedPageIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +29,11 @@ class _TrangVideoState extends State<TrangVideo> {
                 color: Colors.white),
           )),
       body: PageView.builder(
-        onPageChanged: (int page) => {print("Page change to$page")},
+        onPageChanged: (int page) => {
+          setState(() {
+            _snappedPageIndex = page;
+          }),
+        },
         scrollDirection: Axis.vertical,
         itemCount: videos.length,
         itemBuilder: (context, index) {

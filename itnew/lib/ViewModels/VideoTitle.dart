@@ -19,6 +19,7 @@ class VideoTitle extends StatefulWidget {
 class _VideoTitleState extends State<VideoTitle> {
   late VideoPlayerController _videoController;
   late Future _initializeVideoPlayer;
+  bool _isVideoPlaying = true;
   @override
   void initState() {
     _videoController =
@@ -36,21 +37,43 @@ class _VideoTitleState extends State<VideoTitle> {
     super.dispose();
   }
 
+  void _pausePlayVideo() {
+    _isVideoPlaying ? _videoController.pause() : _videoController.play();
+
+    setState(() {
+      _isVideoPlaying = !_isVideoPlaying;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    (widget.snappedPageIndex == widget.currentIndex)
+    (widget.snappedPageIndex == widget.currentIndex && _isVideoPlaying)
         ? _videoController.play()
         : _videoController.pause();
     return Container(
-      color: Colors.blue,
+      color: Colors.black,
       child: FutureBuilder(
         future: _initializeVideoPlayer,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return VideoPlayer(_videoController);
+            return GestureDetector(
+              onTap: () => {_pausePlayVideo()},
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  VideoPlayer(_videoController),
+                  IconButton(
+                    onPressed: () => {_pausePlayVideo()},
+                    icon: Icon(Icons.play_arrow),
+                    color: Colors.white.withOpacity(_isVideoPlaying ? 0 : 0.5),
+                    iconSize: 70,
+                  )
+                ],
+              ),
+            );
           } else {
             return Container(
-              color: Colors.blue,
+              color: Colors.black,
             );
           }
         },
