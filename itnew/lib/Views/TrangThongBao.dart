@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:itnew/Models/FontsChu.dart';
+import 'package:itnew/Models/TangGiamFont.dart';
 import 'package:itnew/Views/TrangChiTiet.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:http/http.dart' as http;
@@ -19,13 +21,15 @@ class TrangThongBao extends StatefulWidget {
 }
 
 class _TrangThongBaoState extends State<TrangThongBao> {
+  FontsChu fontsChu = FontsChu();
+  TangGiamFont fontSize = TangGiamFont();
   final Xml2Json xml2json = Xml2Json();
   List NewsTop = [];
   Future newsFeed() async {
     final url = Uri.parse('https://rss.app/feeds/gfHt3tVFhNSilX87.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
-    var jsondata = await xml2json.toGData();
+    var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
     NewsTop = data['rss']['channel']['item'];
     print(NewsTop);
@@ -42,19 +46,23 @@ class _TrangThongBaoState extends State<TrangThongBao> {
     return Scaffold(
       backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Thông báo mới',
-          style: TextStyle(color: Colors.white),
+
+          style: TextStyle(
+              fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+              color: Colors.white),
         ),
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: const Color.fromARGB(222, 0, 183, 255),
+        iconTheme: const IconThemeData(color: Colors.black),
+      backgroundColor: const Color.fromARGB(222, 0, 183, 255),
+
       ),
       body: FutureBuilder(
           future: newsFeed(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             return snapshot.connectionState == ConnectionState.waiting
-                ? Center(
+                ? const Center(
                     child: SizedBox(
                       width: 50,
                       height: 50,
@@ -64,18 +72,18 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                     ),
                   )
                 : SingleChildScrollView(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.only(bottom: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         ListView.builder(
-                            padding: EdgeInsets.symmetric(horizontal: 16),
-                            physics: NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: NewsTop.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Container(
-                                margin: EdgeInsets.symmetric(vertical: 5),
+                                margin: const EdgeInsets.symmetric(vertical: 5),
                                 child: InkWell(
                                   onTap: () {
                                     Navigator.push(
@@ -109,7 +117,7 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        padding: EdgeInsets.all(10),
+                                        padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                           color: containerColor, // Chọn màu xám cho nền khung
                                           borderRadius: BorderRadius.circular(
@@ -131,7 +139,7 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                       ['media\$content']['url'],
                                                   fit: BoxFit.cover,
                                                   placeholder: (context, url) =>
-                                                      Center(
+                                                      const Center(
                                                     child: SizedBox(
                                                       width: 20,
                                                       height: 20,
@@ -149,7 +157,7 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                           Container(),
                                                 ),
                                               ),
-                                            SizedBox(
+                                            const SizedBox(
                                                 width:
                                                     5), // Tạo khoảng cách giữa hình ảnh và văn bản
                                             Expanded(
@@ -168,6 +176,11 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                                 .indexOf(
                                                                     '/', 13)),
                                                     style: TextStyle(
+                                                      fontFamily:
+                                                          fontsChu.fontInter ==
+                                                                  'Inter'
+                                                              ? 'Inter'
+                                                              : 'Kalam',
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontSize: 10,
@@ -179,6 +192,11 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                         .toString()
                                                         .substring(5, 30),
                                                     style: TextStyle(
+                                                      fontFamily:
+                                                          fontsChu.fontInter ==
+                                                                  'Inter'
+                                                              ? 'Inter'
+                                                              : 'Kalam',
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontSize: 9,
@@ -186,8 +204,9 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                     ),
                                                   ),
                                                   Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 8, bottom: 8),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 8, bottom: 8),
                                                     child: Text(
                                                       NewsTop[index]['title']
                                                           ['__cdata'],
@@ -197,10 +216,19 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                       textAlign:
                                                           TextAlign.start,
                                                       style: TextStyle(
+                                                        fontFamily:
+                                                            fontsChu.fontInter ==
+                                                                    'Inter'
+                                                                ? 'Inter'
+                                                                : 'Kalam',
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        fontSize: 13,
+
                                                         color: textColor
+
+                                                        fontSize: fontSize.coChu
+                                                            .toDouble(),
+
                                                       ),
                                                     ),
                                                   ),

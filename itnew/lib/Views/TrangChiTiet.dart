@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:itnew/Models/FontsChu.dart';
+import 'package:itnew/Models/TangGiamFont.dart';
 import 'package:itnew/ViewModels/News.dart';
 import 'package:provider/provider.dart';
 import '../Models/ThemeProvider.dart';
@@ -29,6 +31,8 @@ class TrangChiTiet extends StatefulWidget {
 }
 
 class _TrangChiTietState extends State<TrangChiTiet> {
+  FontsChu fontsChu = FontsChu();
+  TangGiamFont fontSize = TangGiamFont();
   @override
   Widget build(BuildContext context) {
     String noidung = widget.description.toString();
@@ -55,24 +59,45 @@ class _TrangChiTietState extends State<TrangChiTiet> {
             fit: BoxFit.cover,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.title ?? Container(),
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: textColor),
+
+                  style: TextStyle(
+                    fontFamily:
+                        fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                    fontWeight: FontWeight.w500,
+                    fontSize: fontSize.coChu.toDouble(),
+                    color: textColor
+                  ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Text(
                     widget.date.toString().substring(5, 34),
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: textColor),
+
+                    style: TextStyle(
+                        fontFamily:
+                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 13,
+                    color: textColor),
+
                   ),
                 ),
                 Text(
                   contentdescription,
-                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: textColor),
+
+                  style: TextStyle(
+                      fontFamily:
+                          fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                  color: textColor),
+
                 )
               ],
             ),
@@ -88,10 +113,11 @@ class _TrangChiTietState extends State<TrangChiTiet> {
                   ));
             },
             child: Padding(
-              padding: EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(left: 20),
               child: Text(
                 "Xem chi tiết >>>",
                 style: TextStyle(
+                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
                   color: Colors.blue, // Màu sắc có thể thay đổi tùy ý

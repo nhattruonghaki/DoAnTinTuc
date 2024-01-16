@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itnew/Models/FontsChu.dart';
 import 'package:itnew/Models/ThemeProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ class LichSu extends StatefulWidget {
 }
 
 class _LichSuState extends State<LichSu> {
+  FontsChu fontsChu = FontsChu();
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
@@ -17,8 +19,8 @@ class _LichSuState extends State<LichSu> {
       backgroundColor: themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white,
       appBar: AppBar(
               backgroundColor: Color.fromARGB(222, 0, 183, 255),
-              title: const Text('Lịch Sử',
-              style: TextStyle(color: Colors.white),),
+              title: Text('Lịch Sử',
+              style: TextStyle(fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',color: Colors.white),),
               centerTitle: true,
               iconTheme: IconThemeData(color: Colors.black),
               actions: [

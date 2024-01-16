@@ -22,7 +22,7 @@ class _VideoTitleState extends State<VideoTitle> {
   @override
   void initState() {
     _videoController =
-        VideoPlayerController.asset('assets/${widget.video.videoUrl}');
+        VideoPlayerController.asset('assets/video/${widget.video.videoUrl}');
 
     _initializeVideoPlayer = _videoController.initialize();
     _videoController.setLooping(true);

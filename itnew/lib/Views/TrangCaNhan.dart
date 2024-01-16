@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itnew/Models/FontsChu.dart';
 import 'package:itnew/Views/BottomNavi.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,8 @@ class CaNhan extends StatefulWidget {
   State<CaNhan> createState() => _CaNhanState();
 }
 
-class _CaNhanState extends State<CaNhan>{
+class _CaNhanState extends State<CaNhan> {
+  FontsChu fontsChu = FontsChu();
   bool light = false;
 
   String status = 'Giao diện tối';
@@ -20,21 +22,28 @@ class _CaNhanState extends State<CaNhan>{
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
 
-    Color scaffoldBackgroundColor = themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white;
-    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
+    Color scaffoldBackgroundColor = themeProvider.isDarkMode
+        ? const Color.fromARGB(255, 24, 24, 24)
+        : Colors.white;
+    Color textColor = themeProvider.isDarkMode
+        ? Colors.white
+        : const Color.fromARGB(255, 24, 24, 24);
 
     return Scaffold(
       backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(222, 0, 183, 255),
-        title: const Text(
+        title: Text(
           'Cá nhân',
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
+              fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+              color: Colors.white),
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: const BottomNavi(index: 2),
+      bottomNavigationBar: BottomNavi(index: 2),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -59,10 +68,12 @@ class _CaNhanState extends State<CaNhan>{
                       color: textColor, // Màu của viền
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Đăng nhập', // --------------------------------------------------- ĐĂNG NHẬP ----------------------------------
                     style: TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontFamily:
+                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                        color: const Color.fromARGB(255, 0, 0, 0),
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
@@ -79,7 +90,7 @@ class _CaNhanState extends State<CaNhan>{
                   },
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons
                             .bookmark, // ------------------------------------------------- LƯU TIN TỨC --------------------------------
                         color: Colors.green,
@@ -87,7 +98,12 @@ class _CaNhanState extends State<CaNhan>{
                       ),
                       Text(
                         'Đã lưu',
-                        style: TextStyle(fontSize: 25, color: textColor),
+                        style: TextStyle(
+                            fontFamily: fontsChu.fontInter == 'Inter'
+                                ? 'Inter'
+                                : 'Kalam',
+                            fontSize: 25,
+                            color: textColor),
                       ),
                     ],
                   ),
@@ -99,7 +115,7 @@ class _CaNhanState extends State<CaNhan>{
                   },
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons
                             .access_time_filled, // ---------------------------------------- LỊCH SỬ --------------------------------
                         color: Colors.green,
@@ -107,7 +123,12 @@ class _CaNhanState extends State<CaNhan>{
                       ),
                       Text(
                         'Lịch sử',
-                        style: TextStyle(fontSize: 25, color: textColor),
+                        style: TextStyle(
+                            fontFamily: fontsChu.fontInter == 'Inter'
+                                ? 'Inter'
+                                : 'Kalam',
+                            fontSize: 25,
+                            color: textColor),
                       ),
                     ],
                   ),
@@ -123,15 +144,17 @@ class _CaNhanState extends State<CaNhan>{
               indent: 1, // ---------------------------- LÙI SANG TRÁI
               endIndent: 1, // ------------------------- LÙI SANG PHẢI
             ),
-            const Row(
+            Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 25,
                   height: 70,
                 ),
                 Text(
                   'Cài đặt',
                   style: TextStyle(
+                      fontFamily:
+                          fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
                       fontSize: 30,
                       color: Colors.green,
                       fontWeight: FontWeight.bold),
@@ -158,7 +181,12 @@ class _CaNhanState extends State<CaNhan>{
                         ),
                         Text(
                           'Cỡ chữ & font chữ',
-                          style: TextStyle(fontSize: 25, color: textColor),
+                          style: TextStyle(
+                              fontFamily: fontsChu.fontInter == 'Inter'
+                                  ? 'Inter'
+                                  : 'Kalam',
+                              fontSize: 25,
+                              color: textColor),
                         ),
                       ],
                     ))
@@ -172,7 +200,11 @@ class _CaNhanState extends State<CaNhan>{
                 ),
                 Text(
                   status,
-                  style: TextStyle(fontSize: 25, color: textColor),
+                  style: TextStyle(
+                      fontFamily:
+                          fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                      fontSize: 25,
+                      color: textColor),
                 ),
                 const SizedBox(
                   width: 10,
@@ -198,7 +230,12 @@ class _CaNhanState extends State<CaNhan>{
                     children: [
                       Text(
                         'Xoá tài khoản',
-                        style: TextStyle(fontSize: 25, color: textColor),
+                        style: TextStyle(
+                            fontFamily: fontsChu.fontInter == 'Inter'
+                                ? 'Inter'
+                                : 'Kalam',
+                            fontSize: 25,
+                            color: textColor),
                       ),
                     ],
                   ),
@@ -218,10 +255,12 @@ class _CaNhanState extends State<CaNhan>{
                       color: Colors.black, // Màu của viền
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Đăng Xuất',
                     style: TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontFamily:
+                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                        color: const Color.fromARGB(255, 0, 0, 0),
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
