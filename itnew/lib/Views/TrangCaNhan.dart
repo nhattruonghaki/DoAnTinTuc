@@ -30,7 +30,7 @@ class _CaNhanState extends State<CaNhan>{
         title: const Text(
           'Cá nhân',
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 25, color: Color.fromARGB(255, 24, 24, 24)),
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
         ),
         centerTitle: true,
       ),

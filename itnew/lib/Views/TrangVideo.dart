@@ -16,7 +16,10 @@ class _TrangVideoState extends State<TrangVideo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Các video')),
+      appBar: AppBar(
+        title: const Text('Các video', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(222, 0, 183, 255),),
       body: PageView.builder(
         onPageChanged: (int page) => {print("Page change to$page")},
         scrollDirection: Axis.vertical,

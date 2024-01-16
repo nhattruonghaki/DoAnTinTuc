@@ -18,7 +18,7 @@ class _LichSuState extends State<LichSu> {
       appBar: AppBar(
               backgroundColor: Color.fromARGB(222, 0, 183, 255),
               title: const Text('Lịch Sử',
-              style: TextStyle(color: Colors.black),),
+              style: TextStyle(color: Colors.white),),
               centerTitle: true,
               iconTheme: IconThemeData(color: Colors.black),
               actions: [

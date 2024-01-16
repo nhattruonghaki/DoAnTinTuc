@@ -7,6 +7,8 @@ import 'package:itnew/Views/TrangChiTiet.dart';
 import 'package:itnew/Views/TrangThongBao.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
+import 'package:provider/provider.dart';
+import '../Models/ThemeProvider.dart';
 
 class TrangChu extends StatefulWidget {
   const TrangChu({super.key, required this.title});
@@ -81,8 +83,14 @@ class _TrangChuState extends State<TrangChu>
     NewsEntertainmentFeed();
     NewsSportsFeed();
 
+    var themeProvider = Provider.of<ThemeProvider>(context);
+
+    Color scaffoldBackgroundColor = themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white;
+    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
+
     return Scaffold(
 // ----------------------------------------------- LOGO -----------------------------------------------
+      backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(222, 0, 183, 255),
         title: const Text(
@@ -130,13 +138,13 @@ class _TrangChuState extends State<TrangChu>
           preferredSize:
               const Size.fromHeight(40), // kích thước tối ưu cho TabBar
           child: Container(
-            color: const Color.fromARGB(255, 255, 255, 255),
+            color: scaffoldBackgroundColor,
             child: TabBar(
               controller: _tabController,
               isScrollable: true,
               labelColor: Colors.blue,
-              indicatorColor: Colors.black,
-              unselectedLabelColor: Colors.black, // unfocus
+              indicatorColor: themeProvider.isDarkMode ? Colors.blue : Color.fromARGB(255, 24, 24, 24),
+              unselectedLabelColor: themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24),
 
               tabs: [
                 Tab(
@@ -170,7 +178,14 @@ class _TrangChuState extends State<TrangChu>
       ),
 // ----------------------------------------------- DANH MỤC -------------------------------------------
       drawer: Drawer(
-        child: ListView(
+        child: Container(
+          decoration: BoxDecoration(
+            color: scaffoldBackgroundColor,
+            border: Border.all(
+              color: Colors.grey
+            ),
+          ),
+          child: ListView(
           children: <Widget>[
             DrawerHeader(
                 decoration: const BoxDecoration(
@@ -182,7 +197,7 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(0); // hiệu ứng chuyển đến tab "Mới nhất"
               },
-              title: const Text('Technology'),
+              title: Text('Technology', style: TextStyle(color: textColor),),
             ),
             ListTile(
               onTap: () {
@@ -190,7 +205,7 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(1); // hiệu ứng chuyển đến tab "Xu hướng"
               },
-              title: const Text('Business'),
+              title: Text('Business', style: TextStyle(color: textColor)),
             ),
             ListTile(
               onTap: () {
@@ -198,7 +213,7 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(2); // hiệu ứng chuyển đến tab "Xu hướng"
               },
-              title: const Text('Entertainment'),
+              title: Text('Entertainment', style: TextStyle(color: textColor)),
             ),
             ListTile(
               onTap: () {
@@ -206,10 +221,11 @@ class _TrangChuState extends State<TrangChu>
                 _tabController
                     ?.animateTo(3); // hiệu ứng chuyển đến tab "Xu hướng"
               },
-              title: const Text('Sports'),
+              title: Text('Sports', style: TextStyle(color: textColor)),
             ),
           ],
         ),
+        )
       ),
 // -------------------------------------------- FOOTER -----------------------------------------------------------------------------
       bottomNavigationBar: const BottomNavi(index: 0),
@@ -328,6 +344,7 @@ class _TrangChuState extends State<TrangChu>
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
+                                            color: textColor
                                           ),
                                         ),
                                         SizedBox(width: 10),
@@ -338,6 +355,7 @@ class _TrangChuState extends State<TrangChu>
                                           style: TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
+                                            color: textColor
                                           ),
                                         ),
                                         Padding(
@@ -351,6 +369,7 @@ class _TrangChuState extends State<TrangChu>
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 17,
+                                              color: textColor
                                             ),
                                           ),
                                         ),
@@ -474,6 +493,7 @@ class _TrangChuState extends State<TrangChu>
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
+                                            color: textColor
                                           ),
                                         ),
                                         SizedBox(width: 10),
@@ -484,6 +504,7 @@ class _TrangChuState extends State<TrangChu>
                                           style: TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
+                                            color: textColor
                                           ),
                                         ),
                                         Padding(
@@ -497,6 +518,7 @@ class _TrangChuState extends State<TrangChu>
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 17,
+                                              color: textColor
                                             ),
                                           ),
                                         ),
@@ -627,6 +649,7 @@ class _TrangChuState extends State<TrangChu>
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
+                                            color: textColor
                                           ),
                                         ),
                                         SizedBox(width: 10),
@@ -637,6 +660,7 @@ class _TrangChuState extends State<TrangChu>
                                           style: TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
+                                            color: textColor
                                           ),
                                         ),
                                         Padding(
@@ -650,6 +674,7 @@ class _TrangChuState extends State<TrangChu>
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 17,
+                                              color: textColor
                                             ),
                                           ),
                                         ),
@@ -781,6 +806,7 @@ class _TrangChuState extends State<TrangChu>
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 15,
+                                            color: textColor
                                           ),
                                         ),
                                         SizedBox(width: 10),
@@ -791,6 +817,7 @@ class _TrangChuState extends State<TrangChu>
                                           style: TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 13,
+                                            color: textColor
                                           ),
                                         ),
                                         Padding(
@@ -804,6 +831,7 @@ class _TrangChuState extends State<TrangChu>
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 17,
+                                              color: textColor
                                             ),
                                           ),
                                         ),

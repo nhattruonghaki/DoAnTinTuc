@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:itnew/ViewModels/News.dart';
+import 'package:provider/provider.dart';
+import '../Models/ThemeProvider.dart';
 
 // import 'package:flutter/src/widgets/container.dart';
 
@@ -34,8 +36,17 @@ class _TrangChiTietState extends State<TrangChiTiet> {
     int endDivIndex = noidung.indexOf('</div>', startDivIndex);
     String contentdescription =
         noidung.substring(startDivIndex + 5, endDivIndex);
+
+    var themeProvider = Provider.of<ThemeProvider>(context);
+
+    Color scaffoldBackgroundColor = themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white;
+    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
     return Scaffold(
-      appBar: AppBar(title: const Text('Trang Chi Tiết')),
+      backgroundColor: scaffoldBackgroundColor,
+      appBar: AppBar(
+        title: const Text('Trang Chi Tiết', style: TextStyle(color: Colors.white),),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(222, 0, 183, 255),),
       body: ListView(
         children: [
           Image.network(
@@ -50,18 +61,18 @@ class _TrangChiTietState extends State<TrangChiTiet> {
               children: [
                 Text(
                   widget.title ?? Container(),
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: textColor),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 12),
                   child: Text(
                     widget.date.toString().substring(5, 34),
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13),
+                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 13, color: textColor),
                   ),
                 ),
                 Text(
                   contentdescription,
-                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: textColor),
                 )
               ],
             ),

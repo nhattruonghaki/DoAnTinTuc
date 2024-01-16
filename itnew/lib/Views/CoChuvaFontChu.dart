@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:itnew/Models/FontsChu.dart';
 import 'package:itnew/Models/TangGiamFont.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import '../Models/ThemeProvider.dart';
 
 class CoChuvaFontChu extends StatefulWidget {
   const CoChuvaFontChu({Key? key}) : super(key: key);
@@ -57,9 +59,15 @@ Future<void> saveSelectedFont() async{
   }
   @override
   Widget build(BuildContext context) {
+    var themeProvider = Provider.of<ThemeProvider>(context);
+
+    Color scaffoldBackgroundColor = themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white;
+    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
     return Scaffold(
+      backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
           backgroundColor: const Color.fromARGB(222, 0, 183, 255),
+          centerTitle: true,
           title: const Text(
             'Cỡ chữ và Font chữ',
             style: TextStyle(
@@ -91,8 +99,9 @@ Future<void> saveSelectedFont() async{
                     style: TextStyle(
                         fontSize: fontSize.coChu.toDouble(),
                         fontFamily:
-                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam'
+                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
                         //fontFamily: 'Inter'
+                        color: textColor
                         ),
                   ),
                 ),
@@ -111,36 +120,36 @@ Future<void> saveSelectedFont() async{
                       width: 15,
                       height: 120,
                     ),
-                    const Text('Cỡ chữ',
+                    Text('Cỡ chữ',
                         style: TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight
-                                .bold)), // ----------------------------------CỠ CHỮ ------------------------
+                            fontWeight: FontWeight.bold,
+                            color: textColor)), // ----------------------------------CỠ CHỮ ------------------------
                     const SizedBox(width: 60),
                     IconButton(
                       onPressed: () {
                         updateFontSize_CoChu(fontSize.coChu -
                             2); // ---------------------- GIẢM CỠ CHỮ ---------------------
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_down_outlined,
-                        color: Colors.black,
+                        color: textColor,
                         size: 50,
                       ),
                     ),
                     const SizedBox(width: 30),
                     Text(fontSize.coChu.toString(),
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold, color: textColor)),
                     const SizedBox(width: 30),
                     IconButton(
                       onPressed: () {
                         updateFontSize_CoChu(fontSize.coChu +
                             2); // ------------------------ TĂNG CỠ CHỮ ---------------------
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_circle_up_outlined,
-                        color: Colors.black,
+                        color: textColor,
                         size: 50,
                       ),
                     ),
@@ -152,9 +161,9 @@ Future<void> saveSelectedFont() async{
                     const SizedBox(
                       width: 4,
                     ),
-                    const Text('Font chữ',
+                    Text('Font chữ',
                         style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                            fontSize: 20, fontWeight: FontWeight.bold, color: textColor)),
                     const SizedBox(width: 50),
                     ElevatedButton(
                       onPressed: () {
