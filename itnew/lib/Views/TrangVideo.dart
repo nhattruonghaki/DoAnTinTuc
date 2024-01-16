@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:itnew/Models/FontsChu.dart';
 import 'package:itnew/Models/VideoData.dart';
 import 'package:itnew/ViewModels/HomeSideBar.dart';
 import 'package:itnew/ViewModels/VideoDetail.dart';
@@ -12,11 +13,22 @@ class TrangVideo extends StatefulWidget {
 }
 
 class _TrangVideoState extends State<TrangVideo> {
-  int _snappedPageIndex = 0;
+  FontsChu fontsChu = FontsChu();
+  final int _snappedPageIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Các video')),
+      appBar: AppBar(
+
+          centerTitle: true,
+        backgroundColor: const Color.fromARGB(222, 0, 183, 255),),
+          title: Text(
+            'Video Tin Tức',
+            style: TextStyle(
+              fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',fontWeight: FontWeight.bold, color: Colors.white
+            ),
+          )),
+
       body: PageView.builder(
         onPageChanged: (int page) => {print("Page change to$page")},
         scrollDirection: Axis.vertical,
@@ -36,6 +48,7 @@ class _TrangVideoState extends State<TrangVideo> {
                   Expanded(
                     flex: 4,
                     child: Container(
+
                       height: MediaQuery.of(context).size.height / 5,
                       child: VideoDetail(
                         video: videos[index],
@@ -43,7 +56,7 @@ class _TrangVideoState extends State<TrangVideo> {
                     ),
                   ),
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                       height: MediaQuery.of(context).size.height / 2.5,
                       child: HomeSideBar(
                         video: videos[index],
@@ -56,7 +69,7 @@ class _TrangVideoState extends State<TrangVideo> {
           );
         },
       ),
-      bottomNavigationBar: const BottomNavi(index: 1),
+      bottomNavigationBar: BottomNavi(index: 1),
     );
   }
 }
