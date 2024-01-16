@@ -35,6 +35,7 @@ class _TrangChiTietState extends State<TrangChiTiet> {
   TangGiamFont fontSize = TangGiamFont();
   @override
   Widget build(BuildContext context) {
+
     String noidung = widget.description.toString();
     int startDivIndex = noidung.indexOf('<div>', noidung.indexOf('<div>') + 1);
     int endDivIndex = noidung.indexOf('</div>', startDivIndex);
@@ -45,6 +46,7 @@ class _TrangChiTietState extends State<TrangChiTiet> {
 
     Color scaffoldBackgroundColor = themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white;
     Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
+
     return Scaffold(
       backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
@@ -89,16 +91,28 @@ class _TrangChiTietState extends State<TrangChiTiet> {
                   ),
                 ),
                 Text(
-                  contentdescription,
 
+                  (widget.description != null &&
+                          widget.description.toString().contains('<div>'))
+                      ? (() {
+                          String noidung = widget.description.toString();
+                          int startDivIndex = noidung.indexOf(
+                              '<div>', noidung.indexOf('<div>') + 1);
+                          int endDivIndex =
+                              noidung.indexOf('</div>', startDivIndex);
+                          String contentdescription =
+                              noidung.substring(startDivIndex + 5, endDivIndex);
+                          return contentdescription;
+                        })()
+                      : 'Không có mô tả hoặc mô tả không hợp lệ',
                   style: TextStyle(
                       fontFamily:
                           fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                   color: textColor),
+                ),
 
-                )
               ],
             ),
           ),

@@ -46,8 +46,9 @@ class _TrangVideoState extends State<TrangVideo> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Expanded(
-                    flex: 3,
-                    child: SizedBox(
+                    flex: 4,
+                    child: Container(
+
                       height: MediaQuery.of(context).size.height / 5,
                       child: VideoDetail(
                         video: videos[index],

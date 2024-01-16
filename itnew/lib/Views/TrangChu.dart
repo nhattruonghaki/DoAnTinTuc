@@ -28,10 +28,10 @@ class _TrangChuState extends State<TrangChu>
   final Xml2Json xml2json = Xml2Json();
   List NewsTechnology = [];
   List NewsBusiness = [];
-  List NewsEntertainment = [];
+  List NewsScience = [];
   List NewsSports = [];
   Future NewsTechnologyFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/LsUd1xHIfAg8itgQ.xml');
+    final url = Uri.parse('https://rss.app/feeds/4FGuBtpfMOLaWfw7.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
@@ -41,7 +41,7 @@ class _TrangChuState extends State<TrangChu>
   }
 
   Future NewsBusinessFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/Zaja3mUJaDXWRS9I.xml');
+    final url = Uri.parse('https://rss.app/feeds/fGINtZMwa8BkiOrW.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
@@ -50,14 +50,14 @@ class _TrangChuState extends State<TrangChu>
     print(NewsBusiness);
   }
 
-  Future NewsEntertainmentFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/xPJw6UXRS4zCnlTu.xml');
+  Future NewsScienceFeed() async {
+    final url = Uri.parse('https://rss.app/feeds/tVgCJMHl1jUIuvk5.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
-    NewsEntertainment = data['rss']['channel']['item'];
-    print(NewsEntertainment);
+    NewsScience = data['rss']['channel']['item'];
+    print(NewsScience);
   }
 
   Future NewsSportsFeed() async {
@@ -84,7 +84,7 @@ class _TrangChuState extends State<TrangChu>
     //child:
     NewsTechnologyFeed();
     NewsBusinessFeed();
-    NewsEntertainmentFeed();
+    NewsScienceFeed();
     NewsSportsFeed();
 
     var themeProvider = Provider.of<ThemeProvider>(context);
@@ -145,13 +145,19 @@ class _TrangChuState extends State<TrangChu>
           child: Container(
             color: scaffoldBackgroundColor,
             child: TabBar(
+              isScrollable: false,
               controller: _tabController,
-              isScrollable: true,
               labelColor: Colors.blue,
-              indicatorColor: themeProvider.isDarkMode ? Colors.blue : Color.fromARGB(255, 24, 24, 24),
-              unselectedLabelColor: themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24),
 
-              tabs: [
+             indicatorColor: themeProvider.isDarkMode ? Colors.blue : Color.fromARGB(255, 24, 24, 24),
+             unselectedLabelColor: themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24),
+              indicatorPadding: EdgeInsets.zero,
+              labelPadding: EdgeInsets.symmetric(horizontal: 1),
+
+
+              // unfocus
+
+              tabs: const [
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -185,16 +191,12 @@ class _TrangChuState extends State<TrangChu>
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(width: 1),
-                      Text(
-                        'Entertainment',
-                        style: TextStyle(
+
+                    children: [SizedBox(width: 1), Text('Science',style: TextStyle(
                           fontFamily:
                               fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
-                        ),
-                      )
-                    ],
+                        ),)],
+
                   ),
                 ),
                 Tab(
@@ -269,12 +271,9 @@ class _TrangChuState extends State<TrangChu>
                     ?.animateTo(2); // hiệu ứng chuyển đến tab "Xu hướng"
               },
 
-              title: Text(
-                'Entertainment',
-                style: TextStyle(
+              title: Text('Science',style: TextStyle(
                   fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',color: textColor
-                ),
-              ),
+                ),),
 
             ),
             ListTile(
@@ -359,10 +358,22 @@ class _TrangChuState extends State<TrangChu>
                                                   ? NewsTechnology[index]
                                                       ['description']['__cdata']
                                                   : null,
-                                              date: NewsTechnology[index]
-                                                  ['pubDate'],
-                                              link: NewsTechnology[index]
-                                                  ['link'],
+                                              date: NewsTechnology[index] !=
+                                                          null &&
+                                                      NewsTechnology[index]
+                                                              ['pubDate'] !=
+                                                          null
+                                                  ? NewsTechnology[index]
+                                                      ['pubDate']
+                                                  : null,
+                                              link: NewsTechnology[index] !=
+                                                          null &&
+                                                      NewsTechnology[index]
+                                                              ['link'] !=
+                                                          null
+                                                  ? NewsTechnology[index]
+                                                      ['link']
+                                                  : null,
                                             );
                                           },
                                         ),
@@ -502,7 +513,7 @@ class _TrangChuState extends State<TrangChu>
                                   const EdgeInsets.symmetric(horizontal: 16),
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: NewsTechnology.length,
+                              itemCount: NewsBusiness.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
                                   margin:
@@ -527,10 +538,30 @@ class _TrangChuState extends State<TrangChu>
                                                       ['media\$content']['url']
                                                   : null,
                                               description: NewsBusiness[index]
-                                                  ['description']['__cdata'],
-                                              date: NewsBusiness[index]
-                                                  ['pubDate'],
-                                              link: NewsBusiness[index]['link'],
+                                                              ['description'] !=
+                                                          null &&
+                                                      NewsBusiness[index][
+                                                                  'description']
+                                                              ['__cdata'] !=
+                                                          null
+                                                  ? NewsBusiness[index]
+                                                      ['description']['__cdata']
+                                                  : null,
+                                              date:
+                                                  NewsBusiness[index] != null &&
+                                                          NewsBusiness[index]
+                                                                  ['pubDate'] !=
+                                                              null
+                                                      ? NewsBusiness[index]
+                                                          ['pubDate']
+                                                      : null,
+                                              link: NewsBusiness[index] !=
+                                                          null &&
+                                                      NewsBusiness[index]
+                                                              ['link'] !=
+                                                          null
+                                                  ? NewsBusiness[index]['link']
+                                                  : null,
                                             );
                                           },
                                         ),
@@ -645,7 +676,7 @@ class _TrangChuState extends State<TrangChu>
                     );
             }),
         FutureBuilder(
-            future: NewsEntertainmentFeed(),
+            future: NewsScienceFeed(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               return snapshot.connectionState == ConnectionState.waiting
                   ? const Center(
@@ -668,7 +699,7 @@ class _TrangChuState extends State<TrangChu>
                                   const EdgeInsets.symmetric(horizontal: 16),
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: NewsEntertainment.length,
+                              itemCount: NewsScience.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Container(
                                   margin:
@@ -680,27 +711,43 @@ class _TrangChuState extends State<TrangChu>
                                         MaterialPageRoute(
                                           builder: (BuildContext context) {
                                             return TrangChiTiet(
-                                              title: NewsEntertainment[index]
-                                                  ['title']['__cdata'],
-                                              imagedata: NewsEntertainment[
-                                                                  index][
+                                              title: NewsScience[index]['title']
+                                                  ['__cdata'],
+                                              imagedata: NewsScience[index][
                                                               'media\$content'] !=
                                                           null &&
-                                                      NewsEntertainment[index][
+                                                      NewsScience[index][
                                                                   'media\$content']
                                                               ['url'] !=
                                                           null
-                                                  ? NewsEntertainment[index]
+                                                  ? NewsScience[index]
                                                       ['media\$content']['url']
                                                   : null,
-                                              description:
-                                                  NewsEntertainment[index]
-                                                          ['description']
-                                                      ['__cdata'],
-                                              date: NewsEntertainment[index]
-                                                  ['pubDate'],
-                                              link: NewsEntertainment[index]
-                                                  ['link'],
+                                              description: NewsScience[index]
+                                                              ['description'] !=
+                                                          null &&
+                                                      NewsScience[index][
+                                                                  'description']
+                                                              ['__cdata'] !=
+                                                          null
+                                                  ? NewsScience[index]
+                                                      ['description']['__cdata']
+                                                  : null,
+                                              date:
+                                                  NewsScience[index] != null &&
+                                                          NewsScience[index]
+                                                                  ['pubDate'] !=
+                                                              null
+                                                      ? NewsScience[index]
+                                                          ['pubDate']
+                                                      : null,
+                                              link: NewsScience[index] !=
+                                                          null &&
+                                                      NewsScience[index]
+                                                              ['link'] !=
+                                                          null
+                                                  ? NewsScience[index]['link']
+                                                  : null,
                                             );
                                           },
                                         ),
@@ -712,14 +759,12 @@ class _TrangChuState extends State<TrangChu>
                                       children: [
                                         SizedBox(
                                           width: double.infinity,
-                                          child: NewsEntertainment[index]
+                                          child: NewsScience[index]
                                                       ['media\$content'] !=
                                                   null
                                               ? CachedNetworkImage(
-                                                  imageUrl:
-                                                      NewsEntertainment[index]
-                                                              ['media\$content']
-                                                          ['url'],
+                                                  imageUrl: NewsScience[index]
+                                                      ['media\$content']['url'],
                                                   fit: BoxFit.cover,
                                                   placeholder: (context, url) =>
                                                       const Center(
@@ -743,12 +788,11 @@ class _TrangChuState extends State<TrangChu>
                                         ),
                                         const SizedBox(width: 30),
                                         Text(
-                                          NewsEntertainment[index]['link']
+                                          NewsScience[index]['link']
                                               .toString()
                                               .substring(
                                                   13,
-                                                  NewsEntertainment[index]
-                                                          ['link']
+                                                  NewsScience[index]['link']
                                                       .toString()
                                                       .indexOf('/', 13)),
                                           style: TextStyle(
@@ -763,7 +807,7 @@ class _TrangChuState extends State<TrangChu>
                                         ),
                                         const SizedBox(width: 10),
                                         Text(
-                                          NewsEntertainment[index]['pubDate']
+                                          NewsScience[index]['pubDate']
                                               .toString()
                                               .substring(5, 30),
                                           style: TextStyle(
@@ -779,7 +823,7 @@ class _TrangChuState extends State<TrangChu>
                                         Padding(
                                           padding: const EdgeInsets.all(8),
                                           child: Text(
-                                            NewsEntertainment[index]['title']
+                                            NewsScience[index]['title']
                                                 ['__cdata'],
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
@@ -875,9 +919,18 @@ class _TrangChuState extends State<TrangChu>
                                                   ? NewsSports[index]
                                                       ['description']['__cdata']
                                                   : null,
-                                              date: NewsSports[index]
-                                                  ['pubDate'],
-                                              link: NewsSports[index]['link'],
+                                              date: NewsSports[index] != null &&
+                                                      NewsSports[index]
+                                                              ['pubDate'] !=
+                                                          null
+                                                  ? NewsSports[index]['pubDate']
+                                                  : null,
+                                              link: NewsSports[index] != null &&
+                                                      NewsSports[index]
+                                                              ['link'] !=
+                                                          null
+                                                  ? NewsSports[index]['link']
+                                                  : null,
                                             );
                                           },
                                         ),
