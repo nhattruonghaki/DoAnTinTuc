@@ -26,13 +26,23 @@ class _TrangThongBaoState extends State<TrangThongBao> {
   final Xml2Json xml2json = Xml2Json();
   List NewsTop = [];
   Future newsFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/gfHt3tVFhNSilX87.xml');
+    final url = Uri.parse('https://rss.app/feeds/tQI9XMFBdxR7jOcq.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
-    NewsTop = data['rss']['channel']['item'];
-    print(NewsTop);
+    if (data['rss'] != null &&
+        data['rss']['channel'] != null &&
+        data['rss']['channel']['item'] != null) {
+      if (data['rss']['channel']['item'] is List) {
+        NewsTop = data['rss']['channel']['item'];
+        print(NewsTop);
+      } else {
+        print('Dữ liệu không hợp lệ');
+      }
+    } else {
+      print('Cấu trúc dữ liệu không đúng');
+    }
   }
 
   @override
@@ -40,23 +50,27 @@ class _TrangThongBaoState extends State<TrangThongBao> {
     newsFeed();
     var themeProvider = Provider.of<ThemeProvider>(context);
 
-    Color scaffoldBackgroundColor = themeProvider.isDarkMode ? Color.fromARGB(255, 24, 24, 24) : Colors.white;
-    Color textColor = themeProvider.isDarkMode ? Colors.white : Color.fromARGB(255, 24, 24, 24);
-    Color containerColor = themeProvider.isDarkMode ? const Color.fromARGB(255, 72, 71, 71) : const Color.fromARGB(255, 220, 218, 218);
+    Color scaffoldBackgroundColor = themeProvider.isDarkMode
+        ? Color.fromARGB(255, 24, 24, 24)
+        : Colors.white;
+    Color textColor = themeProvider.isDarkMode
+        ? Colors.white
+        : Color.fromARGB(255, 24, 24, 24);
+    Color containerColor = themeProvider.isDarkMode
+        ? const Color.fromARGB(255, 72, 71, 71)
+        : const Color.fromARGB(255, 220, 218, 218);
     return Scaffold(
       backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
           'Thông báo mới',
-
           style: TextStyle(
               fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
               color: Colors.white),
         ),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.black),
-      backgroundColor: const Color.fromARGB(222, 0, 183, 255),
-
+        backgroundColor: const Color.fromARGB(222, 0, 183, 255),
       ),
       body: FutureBuilder(
           future: newsFeed(),
@@ -104,9 +118,25 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                     ['media\$content']['url']
                                                 : null,
                                             description: NewsTop[index]
-                                                ['description']['__cdata'],
-                                            date: NewsTop[index]['pubDate'],
-                                            link: NewsTop[index]['link'],
+                                                            ['description'] !=
+                                                        null &&
+                                                    NewsTop[index]
+                                                                ['description']
+                                                            ['__cdata'] !=
+                                                        null
+                                                ? NewsTop[index]['description']
+                                                    ['__cdata']
+                                                : null,
+                                            date: NewsTop[index] != null &&
+                                                    NewsTop[index]['pubDate'] !=
+                                                        null
+                                                ? NewsTop[index]['pubDate']
+                                                : null,
+                                            link: NewsTop[index] != null &&
+                                                    NewsTop[index]['link'] !=
+                                                        null
+                                                ? NewsTop[index]['link']
+                                                : null,
                                           );
                                         },
                                       ),
@@ -117,9 +147,10 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        padding: const EdgeInsets.all(10),
+                                        padding: const EdgeInsets.all(5.0),
                                         decoration: BoxDecoration(
-                                          color: containerColor, // Chọn màu xám cho nền khung
+                                          color:
+                                              containerColor, // Chọn màu xám cho nền khung
                                           borderRadius: BorderRadius.circular(
                                               10), // Bo tròn góc của khung
                                         ),
@@ -134,6 +165,7 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                 width:
                                                     80, // Điều chỉnh kích thước của hình ảnh tại đây
                                                 height: 80,
+
                                                 child: CachedNetworkImage(
                                                   imageUrl: NewsTop[index]
                                                       ['media\$content']['url'],
@@ -176,32 +208,30 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                                 .indexOf(
                                                                     '/', 13)),
                                                     style: TextStyle(
-                                                      fontFamily:
-                                                          fontsChu.fontInter ==
-                                                                  'Inter'
-                                                              ? 'Inter'
-                                                              : 'Kalam',
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 10,
-                                                      color: textColor
-                                                    ),
+                                                        fontFamily:
+                                                            fontsChu.fontInter ==
+                                                                    'Inter'
+                                                                ? 'Inter'
+                                                                : 'Kalam',
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 10,
+                                                        color: textColor),
                                                   ),
                                                   Text(
                                                     NewsTop[index]['pubDate']
                                                         .toString()
                                                         .substring(5, 30),
                                                     style: TextStyle(
-                                                      fontFamily:
-                                                          fontsChu.fontInter ==
-                                                                  'Inter'
-                                                              ? 'Inter'
-                                                              : 'Kalam',
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 9,
-                                                      color: textColor
-                                                    ),
+                                                        fontFamily:
+                                                            fontsChu.fontInter ==
+                                                                    'Inter'
+                                                                ? 'Inter'
+                                                                : 'Kalam',
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 9,
+                                                        color: textColor),
                                                   ),
                                                   Padding(
                                                     padding:
@@ -223,12 +253,9 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                                 : 'Kalam',
                                                         fontWeight:
                                                             FontWeight.bold,
-
-                                                        color: textColor
-
+                                                        color: textColor,
                                                         fontSize: fontSize.coChu
                                                             .toDouble(),
-
                                                       ),
                                                     ),
                                                   ),
