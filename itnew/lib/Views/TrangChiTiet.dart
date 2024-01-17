@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:itnew/Models/FontsChu.dart';
-import 'package:itnew/Models/TangGiamFont.dart';
+// import 'package:itnew/Models/FontsChu.dart';
+import 'package:itnew/Models/FontChange.dart';
 import 'package:itnew/ViewModels/News.dart';
 import 'package:provider/provider.dart';
 import '../Models/ThemeProvider.dart';
@@ -31,25 +31,29 @@ class TrangChiTiet extends StatefulWidget {
 }
 
 class _TrangChiTietState extends State<TrangChiTiet> {
-  FontsChu fontsChu = FontsChu();
-  TangGiamFont fontSize = TangGiamFont();
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => ThemeProvider()..init(),
-      child: Consumer<ThemeProvider>(
-          builder: (context, ThemeProvider notifier, child) {
-        Color textColor = notifier.isDarkMode
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => FontTextProvider()..init()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()..init()),
+      ],
+      child: Consumer2<FontTextProvider, ThemeProvider>(
+          builder: (context, fontProvider, themeProvider, child) {
+        Color textColor = themeProvider.isDarkMode
             ? Colors.white
             : const Color.fromARGB(255, 24, 24, 24);
         return Scaffold(
-          backgroundColor: notifier.isDarkMode ? Colors.black : Colors.white,
+          backgroundColor:
+              themeProvider.isDarkMode ? Colors.black : Colors.white,
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: const Color.fromARGB(222, 0, 183, 255),
             title: Text(
               'ITFEEDS',
               style: TextStyle(
-                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                  fontFamily:
+                      fontProvider.selectedFont == 'Inter' ? 'Inter' : 'Kalam',
                   color: Colors.white),
             ),
             centerTitle: true,
@@ -80,10 +84,11 @@ class _TrangChiTietState extends State<TrangChiTiet> {
                     Text(
                       widget.title ?? Container(),
                       style: TextStyle(
-                          fontFamily:
-                              fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                          fontFamily: fontProvider.selectedFont == 'Inter'
+                              ? 'Inter'
+                              : 'Kalam',
                           fontWeight: FontWeight.w500,
-                          fontSize: fontSize.coChu.toDouble(),
+                          fontSize: fontProvider.fontSize.toDouble(),
                           color: textColor),
                     ),
                     Padding(
@@ -91,7 +96,7 @@ class _TrangChiTietState extends State<TrangChiTiet> {
                       child: Text(
                         widget.date.toString().substring(5, 34),
                         style: TextStyle(
-                            fontFamily: fontsChu.fontInter == 'Inter'
+                            fontFamily: fontProvider.selectedFont == 'Inter'
                                 ? 'Inter'
                                 : 'Kalam',
                             fontWeight: FontWeight.w400,
@@ -114,8 +119,9 @@ class _TrangChiTietState extends State<TrangChiTiet> {
                             })()
                           : 'Không có mô tả hoặc mô tả không hợp lệ',
                       style: TextStyle(
-                          fontFamily:
-                              fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                          fontFamily: fontProvider.selectedFont == 'Inter'
+                              ? 'Inter'
+                              : 'Kalam',
                           fontWeight: FontWeight.w400,
                           fontSize: 16,
                           color: textColor),
@@ -138,8 +144,9 @@ class _TrangChiTietState extends State<TrangChiTiet> {
                   child: Text(
                     "Xem chi tiết >>>",
                     style: TextStyle(
-                      fontFamily:
-                          fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                      fontFamily: fontProvider.selectedFont == 'Inter'
+                          ? 'Inter'
+                          : 'Kalam',
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                       color: Colors.blue, // Màu sắc có thể thay đổi tùy ý

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:itnew/Models/FontsChu.dart';
+
+import 'package:itnew/Models/FontChange.dart';
 import 'package:itnew/Views/BottomNavi.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../Models/ThemeProvider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CaNhan extends StatefulWidget {
   const CaNhan({super.key});
@@ -14,28 +14,39 @@ class CaNhan extends StatefulWidget {
 }
 
 class _CaNhanState extends State<CaNhan> {
-  FontsChu fontsChu = FontsChu();
   bool light = false;
 
   String status = 'Dark Theme';
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => ThemeProvider()..init(),
-      child: Consumer<ThemeProvider>(
-          builder: (context, ThemeProvider notifier, child) {
-        Color textColor = notifier.isDarkMode
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => FontTextProvider()..init()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()..init()),
+      ],
+      child: Consumer2<FontTextProvider, ThemeProvider>(
+          builder: (context, fontProvider, themeProvider, child) {
+        Color textColor = themeProvider.isDarkMode
             ? Colors.white
             : const Color.fromARGB(255, 24, 24, 24);
         return Scaffold(
-          backgroundColor: notifier.isDarkMode ? Colors.black : Colors.white,
+          backgroundColor:
+              themeProvider.isDarkMode ? Colors.black : Colors.white,
           appBar: AppBar(
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.popUntil(context, (route) => route.isActive);
+                Navigator.pushNamed(context, '/');
+              },
+            ),
             backgroundColor: const Color.fromARGB(222, 0, 183, 255),
             title: Text(
               'Setting',
               style: TextStyle(
-                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                  fontFamily:
+                      fontProvider.selectedFont == 'Inter' ? 'Inter' : 'Kalam',
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
                   color: Colors.white),
@@ -70,7 +81,7 @@ class _CaNhanState extends State<CaNhan> {
                       child: Text(
                         'Login', // --------------------------------------------------- ĐĂNG NHẬP ----------------------------------
                         style: TextStyle(
-                            fontFamily: fontsChu.fontInter == 'Inter'
+                            fontFamily: fontProvider.selectedFont == 'Inter'
                                 ? 'Inter'
                                 : 'Kalam',
                             color: const Color.fromARGB(255, 0, 0, 0),
@@ -100,7 +111,7 @@ class _CaNhanState extends State<CaNhan> {
                           Text(
                             'Saved',
                             style: TextStyle(
-                                fontFamily: fontsChu.fontInter == 'Inter'
+                                fontFamily: fontProvider.selectedFont == 'Inter'
                                     ? 'Inter'
                                     : 'Kalam',
                                 fontSize: 25,
@@ -126,7 +137,7 @@ class _CaNhanState extends State<CaNhan> {
                           Text(
                             'History',
                             style: TextStyle(
-                                fontFamily: fontsChu.fontInter == 'Inter'
+                                fontFamily: fontProvider.selectedFont == 'Inter'
                                     ? 'Inter'
                                     : 'Kalam',
                                 fontSize: 25,
@@ -155,8 +166,9 @@ class _CaNhanState extends State<CaNhan> {
                     Text(
                       'Setting',
                       style: TextStyle(
-                          fontFamily:
-                              fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                          fontFamily: fontProvider.selectedFont == 'Inter'
+                              ? 'Inter'
+                              : 'Kalam',
                           fontSize: 30,
                           color: Colors.green,
                           fontWeight: FontWeight.bold),
@@ -185,9 +197,10 @@ class _CaNhanState extends State<CaNhan> {
                             Text(
                               'Font & Size Text',
                               style: TextStyle(
-                                  fontFamily: fontsChu.fontInter == 'Inter'
-                                      ? 'Inter'
-                                      : 'Kalam',
+                                  fontFamily:
+                                      fontProvider.selectedFont == 'Inter'
+                                          ? 'Inter'
+                                          : 'Kalam',
                                   fontSize: 25,
                                   color: textColor),
                             ),
@@ -204,8 +217,9 @@ class _CaNhanState extends State<CaNhan> {
                     Text(
                       status,
                       style: TextStyle(
-                          fontFamily:
-                              fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                          fontFamily: fontProvider.selectedFont == 'Inter'
+                              ? 'Inter'
+                              : 'Kalam',
                           fontSize: 25,
                           color: textColor),
                     ),
@@ -216,8 +230,8 @@ class _CaNhanState extends State<CaNhan> {
                         activeColor: Colors.green,
                         inactiveThumbColor: Colors.green,
                         // value: themeProvider.isDarkMode,
-                        value: notifier.isDarkMode,
-                        onChanged: (value) => notifier.changeTheme())
+                        value: themeProvider.isDarkMode,
+                        onChanged: (value) => themeProvider.changeTheme())
                   ],
                 ),
                 Row(
@@ -233,7 +247,7 @@ class _CaNhanState extends State<CaNhan> {
                           Text(
                             'Delete account',
                             style: TextStyle(
-                                fontFamily: fontsChu.fontInter == 'Inter'
+                                fontFamily: fontProvider.selectedFont == 'Inter'
                                     ? 'Inter'
                                     : 'Kalam',
                                 fontSize: 25,
@@ -260,7 +274,7 @@ class _CaNhanState extends State<CaNhan> {
                       child: Text(
                         'Logout',
                         style: TextStyle(
-                            fontFamily: fontsChu.fontInter == 'Inter'
+                            fontFamily: fontProvider.selectedFont == 'Inter'
                                 ? 'Inter'
                                 : 'Kalam',
                             color: const Color.fromARGB(255, 0, 0, 0),

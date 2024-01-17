@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:itnew/Models/FontsChu.dart';
+// import 'package:itnew/Models/FontsChu.dart';
+import 'package:itnew/Models/FontChange.dart';
 import 'package:itnew/Models/ThemeProvider.dart';
 import 'package:itnew/Models/VideoData.dart';
 import 'package:itnew/ViewModels/HomeSideBar.dart';
@@ -15,24 +16,35 @@ class TrangVideo extends StatefulWidget {
 }
 
 class _TrangVideoState extends State<TrangVideo> {
-  FontsChu fontsChu = FontsChu();
   int _snappedPageIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => ThemeProvider()..init(),
-      child: Consumer<ThemeProvider>(
-          builder: (context, ThemeProvider notifier, child) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => FontTextProvider()..init()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()..init()),
+      ],
+      child: Consumer2<FontTextProvider, ThemeProvider>(
+          builder: (context, fontProvider, themeProvider, child) {
         return Scaffold(
-          backgroundColor: notifier.isDarkMode ? Colors.black : Colors.white,
+          backgroundColor:
+              themeProvider.isDarkMode ? Colors.black : Colors.white,
           appBar: AppBar(
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.popUntil(context, (route) => route.isActive);
+                  Navigator.pushNamed(context, '/');
+                },
+              ),
               centerTitle: true,
               backgroundColor: const Color.fromARGB(222, 0, 183, 255),
               title: Text(
                 'Watch',
                 style: TextStyle(
-                    fontFamily:
-                        fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                    fontFamily: fontProvider.selectedFont == 'Inter'
+                        ? 'Inter'
+                        : 'Kalam',
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
               )),

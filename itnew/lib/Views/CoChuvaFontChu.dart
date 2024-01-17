@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:itnew/Models/FontsChu.dart';
-import 'package:itnew/Models/TangGiamFont.dart';
-import 'package:itnew/Views/TrangCaNhan.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:itnew/Models/FontChange.dart';
 import 'package:provider/provider.dart';
 import '../Models/ThemeProvider.dart';
 
@@ -16,59 +14,65 @@ class CoChuvaFontChu extends StatefulWidget {
 }
 
 class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
-  void updateFontsChus(String newFont) {
-    // ----------------------------------------------- CẬP NHẬT FONT CHỮ -------------------
-    setState(() {
-      fontsChu.updateFontsChu(newFont);
-      //selectedFont = newFont; // cập nhật kiểu chữ đã chọn
-    });
-  }
+  // void updateFontsChus(String newFont) {
+  //   // ----------------------------------------------- CẬP NHẬT FONT CHỮ -------------------
+  //   setState(() {
+  //     fontsChu.updateFontsChu(newFont);
+  //     //selectedFont = newFont; // cập nhật kiểu chữ đã chọn
+  //   });
+  // }
 
-  void updateFontSize_CoChu(int newFontSize) {
-    // ----------------------------------------------- CẬP NHẬT CỠ CHỮ -------------------
-    setState(() {
-      fontSize.updateFontSize(newFontSize);
-    });
-  }
+  // void updateFontSize_CoChu(int newFontSize) {
+  //   // ----------------------------------------------- CẬP NHẬT CỠ CHỮ -------------------
+  //   setState(() {
+  //     fontSize.updateFontSize(newFontSize);
+  //   });
+  // }
 
-  late FontsChu fontsChu;
-  late TangGiamFont fontSize;
-  late String selectedFont;
+  // late FontsChu fontsChu;
+  // late TangGiamFont fontSize;
+  // late String selectedFont;
 
-  @override
-  void initState() {
-    super.initState();
-    fontsChu = FontsChu();
-    fontSize = TangGiamFont();
-    selectedFont = fontsChu.fontInter;
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   fontsChu = FontsChu();
+  //   fontSize = TangGiamFont();
+  //   selectedFont = fontsChu.fontInter;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => ThemeProvider()..init(),
-      child: Consumer<ThemeProvider>(
-          builder: (context, ThemeProvider notifier, child) {
-        Color textColor = notifier.isDarkMode
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => FontTextProvider()..init()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()..init()),
+      ],
+      child: Consumer2<FontTextProvider, ThemeProvider>(
+          builder: (context, fontProvider, themeProvider, child) {
+        Color textColor = themeProvider.isDarkMode
             ? Colors.white
             : const Color.fromARGB(255, 24, 24, 24);
         return Scaffold(
-          backgroundColor: notifier.isDarkMode ? Colors.black : Colors.white,
+          backgroundColor:
+              themeProvider.isDarkMode ? Colors.black : Colors.white,
           appBar: AppBar(
-              iconTheme: const IconThemeData(color: Colors.black),
-              // leading: IconButton(
-              //   icon: const Icon(Icons.arrow_back),
-              //   onPressed: () {
-              //     //Navigator.popUntil(context, (route) => route.isCurrent);
-              //     Navigator.pushNamed(context, '/canhan');
-              //   },
-              // ),
+              // automaticallyImplyLeading: false,
+              // iconTheme: const IconThemeData(color: Colors.black),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.popUntil(context, (route) => route.isActive);
+                  Navigator.pushNamed(context, '/canhan');
+                },
+              ),
               backgroundColor: const Color.fromARGB(222, 0, 183, 255),
               centerTitle: true,
               title: Text(
                 'Font and Size Text',
                 style: TextStyle(
-                  fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                  fontFamily:
+                      fontProvider.selectedFont == 'Inter' ? 'Inter' : 'Kalam',
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -92,9 +96,10 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                     Text(
                       'The news app is growing, trying its best...',
                       style: TextStyle(
-                        fontSize: fontSize.coChu.toDouble(),
-                        fontFamily:
-                            fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                        fontSize: fontProvider.fontSize,
+                        fontFamily: fontProvider.selectedFont == 'Inter'
+                            ? 'Inter'
+                            : 'Kalam',
                         color: textColor,
                       ),
                     ),
@@ -118,7 +123,7 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                         Text(
                           'Size Text',
                           style: TextStyle(
-                            fontFamily: fontsChu.fontInter == 'Inter'
+                            fontFamily: fontProvider.selectedFont == 'Inter'
                                 ? 'Inter'
                                 : 'Kalam',
                             fontSize: 20,
@@ -129,7 +134,7 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                         SizedBox(width: 60),
                         IconButton(
                           onPressed: () {
-                            updateFontSize_CoChu(fontSize.coChu - 2);
+                            fontProvider.decreaseFontSize();
                           },
                           icon: Icon(
                             Icons.arrow_circle_down_outlined,
@@ -139,10 +144,10 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                         ),
                         SizedBox(width: 30),
                         Text(
-                          fontSize.coChu.toString(),
+                          fontProvider.fontSize.toInt().toString(),
                           style: TextStyle(
                             color: textColor,
-                            fontFamily: fontsChu.fontInter == 'Inter'
+                            fontFamily: fontProvider.selectedFont == 'Inter'
                                 ? 'Inter'
                                 : 'Kalam',
                             fontSize: 20,
@@ -152,7 +157,7 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                         SizedBox(width: 30),
                         IconButton(
                           onPressed: () {
-                            updateFontSize_CoChu(fontSize.coChu + 2);
+                            fontProvider.increaseFontSize();
                           },
                           icon: Icon(
                             Icons.arrow_circle_up_outlined,
@@ -172,7 +177,7 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                           'Font Text',
                           style: TextStyle(
                             color: textColor,
-                            fontFamily: fontsChu.fontInter == 'Inter'
+                            fontFamily: fontProvider.selectedFont == 'Inter'
                                 ? 'Inter'
                                 : 'Kalam',
                             fontSize: 20,
@@ -183,21 +188,20 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                         ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              updateFontsChus('Inter');
+                              fontProvider.changeFont('Inter');
                             });
                           },
                           style: ElevatedButton.styleFrom(
                             side: const BorderSide(color: Colors.black),
-                            backgroundColor: selectedFont == 'Inter'
-                                ? Colors.green
-                                : Colors.white,
+                            backgroundColor:
+                                fontProvider.selectedFont == 'Inter'
+                                    ? Colors.green
+                                    : Colors.white,
                           ),
                           child: Text(
                             'Inter',
                             style: TextStyle(
-                              fontFamily: fontsChu.fontInter == 'Inter'
-                                  ? 'Inter'
-                                  : 'Kalam',
+                              fontFamily: fontProvider.selectedFont,
                               color: Colors.black,
                             ),
                           ),
@@ -206,21 +210,20 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                         ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              updateFontsChus('Kalam');
+                              fontProvider.changeFont('Kalam');
                             });
                           },
                           style: ElevatedButton.styleFrom(
                             side: const BorderSide(color: Colors.black),
-                            backgroundColor: selectedFont == 'Kalam'
-                                ? Colors.green
-                                : Colors.white,
+                            backgroundColor:
+                                fontProvider.selectedFont == 'Kalam'
+                                    ? Colors.green
+                                    : Colors.white,
                           ),
                           child: Text(
                             'Kalam',
                             style: TextStyle(
-                              fontFamily: fontsChu.fontInter == 'Inter'
-                                  ? 'Inter'
-                                  : 'Kalam',
+                              fontFamily: fontProvider.selectedFont,
                               color: Colors.black,
                             ),
                           ),

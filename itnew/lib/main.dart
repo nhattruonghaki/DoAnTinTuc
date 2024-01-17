@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:itnew/Models/TangGiamFont.dart';
 import 'package:itnew/Views/CoChuvaFontChu.dart';
 import 'package:itnew/Views/DaLuu.dart';
 import 'package:itnew/Views/LichSu.dart';
-import 'package:itnew/Views/TrangCaNhan.dart';
+import 'package:itnew/Views/TrangCaiDat.dart';
 import 'package:itnew/Views/TrangChu.dart';
 import 'package:itnew/Views/TrangVideo.dart';
 import 'package:provider/provider.dart';
