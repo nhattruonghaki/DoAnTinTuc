@@ -53,6 +53,26 @@ class _CaNhanState extends State<CaNhan> {
     prefs.setString('userName', userName);
   }
 
+  void _showLoginAlertDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Yêu cầu đăng nhập'),
+          content: Text('Vui lòng đăng nhập để sử dụng chức năng này.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Đóng dialog
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
@@ -338,27 +358,7 @@ class _CaNhanState extends State<CaNhan> {
                           isUserLoggedIn = false;
                         });
                       } else {
-                        // Đăng nhập
-                        final GoogleSignInAccount? googleUser =
-                            await _googleSignIn.signIn();
-                        final GoogleSignInAuthentication googleAuth =
-                            await googleUser!.authentication;
-                        final AuthCredential credential =
-                            GoogleAuthProvider.credential(
-                          accessToken: googleAuth.accessToken,
-                          idToken: googleAuth.idToken,
-                        );
-
-                        final UserCredential authResult =
-                            await _auth.signInWithCredential(credential);
-                        final User? user = authResult.user;
-
-                        if (user != null) {
-                          setState(() {
-                            userName = user.displayName ?? '';
-                            isUserLoggedIn = true;
-                          });
-                        }
+                        _showLoginAlertDialog();
                       }
                     } catch (error) {
                       print('Error signing in/out with Google: $error');
