@@ -63,7 +63,7 @@ class _TrangThongBaoState extends State<TrangThongBao> {
       backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          'Thông báo mới',
+          'New Feeds',
           style: TextStyle(
               fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
               color: Colors.white),

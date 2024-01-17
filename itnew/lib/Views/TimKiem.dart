@@ -56,7 +56,7 @@ class _TimKiemState extends State<TimKiem> {
                   ),
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: "Tìm kiếm",
+                    hintText: "Search",
                     hintStyle: TextStyle(
                         fontFamily:
                             fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
@@ -83,7 +83,7 @@ class _TimKiemState extends State<TimKiem> {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: Text(
-                "Đóng",
+                "Close",
                 style: TextStyle(
                     fontFamily:
                         fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',

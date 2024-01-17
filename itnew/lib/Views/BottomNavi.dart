@@ -28,13 +28,12 @@ class BottomNavi extends StatelessWidget {
             : const Color.fromARGB(255, 24, 24, 24),
         items: const [
           BottomNavigationBarItem(
-            label: 'Tin Tức',
+            label: 'News',
             icon: Icon(Icons.mail_outline),
           ),
           BottomNavigationBarItem(
               label: 'Video', icon: Icon(Icons.video_collection_outlined)),
-          BottomNavigationBarItem(
-              label: 'Cá nhân', icon: Icon(Icons.account_circle_outlined)),
+          BottomNavigationBarItem(label: 'Setting', icon: Icon(Icons.settings)),
         ],
         currentIndex: index,
         onTap: (int indexOfItem) {

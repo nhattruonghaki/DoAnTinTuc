@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:itnew/Models/FontsChu.dart';
+import 'package:itnew/Models/ThemeProvider.dart';
 import 'package:itnew/Models/VideoData.dart';
 import 'package:itnew/ViewModels/HomeSideBar.dart';
 import 'package:itnew/ViewModels/VideoDetail.dart';
 import 'package:itnew/ViewModels/VideoTitle.dart';
 import 'package:itnew/Views/BottomNavi.dart';
+import 'package:provider/provider.dart';
 
 class TrangVideo extends StatefulWidget {
   TrangVideo({Key? key});
@@ -17,61 +19,69 @@ class _TrangVideoState extends State<TrangVideo> {
   int _snappedPageIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: const Color.fromARGB(222, 0, 183, 255),
-          title: Text(
-            'Video Tin Tức',
-            style: TextStyle(
-                fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
-          )),
-      body: PageView.builder(
-        onPageChanged: (int page) => {
-          setState(() {
-            _snappedPageIndex = page;
-          }),
-        },
-        scrollDirection: Axis.vertical,
-        itemCount: videos.length,
-        itemBuilder: (context, index) {
-          return Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              VideoTitle(
-                video: videos[index],
-                currentIndex: index,
-                snappedPageIndex: _snappedPageIndex,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => ThemeProvider()..init(),
+      child: Consumer<ThemeProvider>(
+          builder: (context, ThemeProvider notifier, child) {
+        return Scaffold(
+          backgroundColor: notifier.isDarkMode ? Colors.black : Colors.white,
+          appBar: AppBar(
+              centerTitle: true,
+              backgroundColor: const Color.fromARGB(222, 0, 183, 255),
+              title: Text(
+                'Watch',
+                style: TextStyle(
+                    fontFamily:
+                        fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              )),
+          body: PageView.builder(
+            onPageChanged: (int page) => {
+              setState(() {
+                _snappedPageIndex = page;
+              }),
+            },
+            scrollDirection: Axis.vertical,
+            itemCount: videos.length,
+            itemBuilder: (context, index) {
+              return Stack(
+                alignment: Alignment.bottomCenter,
                 children: [
-                  Expanded(
-                    flex: 4,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height / 5,
-                      child: VideoDetail(
-                        video: videos[index],
-                      ),
-                    ),
+                  VideoTitle(
+                    video: videos[index],
+                    currentIndex: index,
+                    snappedPageIndex: _snappedPageIndex,
                   ),
-                  Expanded(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height / 2.5,
-                      child: HomeSideBar(
-                        video: videos[index],
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 5,
+                          child: VideoDetail(
+                            video: videos[index],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                      Expanded(
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height / 2.5,
+                          child: HomeSideBar(
+                            video: videos[index],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
-              )
-            ],
-          );
-        },
-      ),
-      bottomNavigationBar: BottomNavi(index: 1),
+              );
+            },
+          ),
+          bottomNavigationBar: BottomNavi(index: 1),
+        );
+      }),
     );
   }
 }
