@@ -52,7 +52,19 @@ class _TrangChiTietState extends State<TrangChiTiet> {
       appBar: AppBar(
         title: const Text('Trang Chi Tiết', style: TextStyle(color: Colors.white),),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(222, 0, 183, 255),),
+        backgroundColor: const Color.fromARGB(222, 0, 183, 255),
+        actions: [
+          IconButton(
+              onPressed: () {
+                
+              },
+              icon: const Icon(
+                Icons
+                    .bookmark,
+                color: Colors.black,
+                size: 40.0,
+              )),
+        ],),
       body: ListView(
         children: [
           Image.network(
@@ -67,11 +79,10 @@ class _TrangChiTietState extends State<TrangChiTiet> {
               children: [
                 Text(
                   widget.title ?? Container(),
-
                   style: TextStyle(
                     fontFamily:
                         fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.bold,
                     fontSize: fontSize.coChu.toDouble(),
                     color: textColor
                   ),
@@ -86,7 +97,7 @@ class _TrangChiTietState extends State<TrangChiTiet> {
                             fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
                         fontWeight: FontWeight.w400,
                         fontSize: 13,
-                    color: textColor),
+                    color: Colors.grey),
 
                   ),
                 ),

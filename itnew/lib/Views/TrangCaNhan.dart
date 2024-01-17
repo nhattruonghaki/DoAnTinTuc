@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:itnew/Models/FontsChu.dart';
 import 'package:itnew/Views/BottomNavi.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../Models/ThemeProvider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CaNhan extends StatefulWidget {
   const CaNhan({super.key});
@@ -13,10 +17,41 @@ class CaNhan extends StatefulWidget {
 }
 
 class _CaNhanState extends State<CaNhan> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+  
   FontsChu fontsChu = FontsChu();
   bool light = false;
 
   String status = 'Giao diện tối';
+  String userName = '';
+  bool isUserLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Khởi tạo trạng thái đăng nhập từ SharedPreferences khi widget được tạo ra
+    _loadUserLoginStatus();
+  }
+
+  // Hàm để lấy trạng thái đăng nhập từ SharedPreferences
+  void _loadUserLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    String savedUserName = prefs.getString('userName') ?? '';
+
+    setState(() {
+      isUserLoggedIn = isLoggedIn;
+      userName = savedUserName;
+    });
+  }
+
+  // Hàm để lưu trạng thái đăng nhập vào SharedPreferences
+  void _saveUserLoginStatus(bool isLoggedIn, String userName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', isLoggedIn);
+    prefs.setString('userName', userName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +96,52 @@ class _CaNhanState extends State<CaNhan> {
                     ),
                   ),
                 ),
+                isUserLoggedIn
+                    ? Text(
+                        userName,
+                        style: TextStyle(
+                          fontFamily: fontsChu.fontInter == 'Inter'
+                              ? 'Inter'
+                              : 'Kalam',
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    :
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    try {
+                        // Đăng xuất tài khoản Google hiện tại (nếu có)
+                        await _googleSignIn.signOut();
+
+                        // Đăng nhập với tài khoản Google mới
+                        GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+                        if (googleUser == null) {
+                          // Người dùng hủy đăng nhập hoặc không chọn tài khoản
+                          return;
+                        }
+
+                        GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+                        AuthCredential credential = GoogleAuthProvider.credential(
+                          accessToken: googleAuth.accessToken,
+                          idToken: googleAuth.idToken,
+                        );
+
+                        UserCredential authResult = await _auth.signInWithCredential(credential);
+                        User? user = authResult.user;
+
+                        if (user != null) {
+                          setState(() {
+                            userName = user.displayName ?? '';
+                            isUserLoggedIn = true;
+                          });
+                          _saveUserLoginStatus(true, userName);
+                        }
+                      } catch (error) {
+                        print('Error signing in with Google: $error');
+                      }
+                  },
                   style: ElevatedButton.styleFrom(
                     side: BorderSide(
                       color: textColor, // Màu của viền
@@ -249,7 +328,42 @@ class _CaNhanState extends State<CaNhan> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    try {
+                      if (isUserLoggedIn) {
+                        // Đăng xuất
+                        await _auth.signOut();
+                        setState(() {
+                          userName = '';
+                          isUserLoggedIn = false;
+                        });
+                      } else {
+                        // Đăng nhập
+                        final GoogleSignInAccount? googleUser =
+                            await _googleSignIn.signIn();
+                        final GoogleSignInAuthentication googleAuth =
+                            await googleUser!.authentication;
+                        final AuthCredential credential =
+                            GoogleAuthProvider.credential(
+                          accessToken: googleAuth.accessToken,
+                          idToken: googleAuth.idToken,
+                        );
+
+                        final UserCredential authResult =
+                            await _auth.signInWithCredential(credential);
+                        final User? user = authResult.user;
+
+                        if (user != null) {
+                          setState(() {
+                            userName = user.displayName ?? '';
+                            isUserLoggedIn = true;
+                          });
+                        }
+                      }
+                    } catch (error) {
+                      print('Error signing in/out with Google: $error');
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     side: const BorderSide(
                       color: Colors.black, // Màu của viền

@@ -8,8 +8,11 @@ import 'package:itnew/Views/TrangChu.dart';
 import 'package:itnew/Views/TrangVideo.dart';
 import 'package:provider/provider.dart';
 import 'Models/ThemeProvider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(),

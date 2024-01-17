@@ -21,6 +21,7 @@ class TrangChu extends StatefulWidget {
 
 class _TrangChuState extends State<TrangChu>
     with SingleTickerProviderStateMixin {
+      //late Future<List<Article>> future; 
   FontsChu fontsChu = FontsChu();
   TangGiamFont fontSize = TangGiamFont();
   // minxin cung cấp đối tượng đối tượng TickerProvider
@@ -73,6 +74,7 @@ class _TrangChuState extends State<TrangChu>
   TabController? _tabController;
   @override
   void initState() {
+    
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
   }
@@ -475,9 +477,9 @@ class _TrangChuState extends State<TrangChu>
                                         ),
                                         const Divider(
                                           thickness:
-                                              10, // ------------------------- ĐỘ DÀY
+                                              2, // ------------------------- ĐỘ DÀY
                                           color: Colors
-                                              .white, // ----------------- MÀU SẮC
+                                              .grey, // ----------------- MÀU SẮC
                                           indent:
                                               1, // ---------------------------- LÙI SANG TRÁI
                                           endIndent:
@@ -657,9 +659,9 @@ class _TrangChuState extends State<TrangChu>
                                         ),
                                         const Divider(
                                           thickness:
-                                              10, // ------------------------- ĐỘ DÀY
+                                              2, // ------------------------- ĐỘ DÀY
                                           color: Colors
-                                              .white, // ----------------- MÀU SẮC
+                                              .grey, // ----------------- MÀU SẮC
                                           indent:
                                               1, // ---------------------------- LÙI SANG TRÁI
                                           endIndent:
@@ -839,9 +841,9 @@ class _TrangChuState extends State<TrangChu>
                                         ),
                                         const Divider(
                                           thickness:
-                                              10, // ------------------------- ĐỘ DÀY
+                                              2, // ------------------------- ĐỘ DÀY
                                           color: Colors
-                                              .white, // ----------------- MÀU SẮC
+                                              .grey, // ----------------- MÀU SẮC
                                           indent:
                                               1, // ---------------------------- LÙI SANG TRÁI
                                           endIndent:
@@ -1018,9 +1020,9 @@ class _TrangChuState extends State<TrangChu>
                                         ),
                                         const Divider(
                                           thickness:
-                                              10, // ------------------------- ĐỘ DÀY
+                                              2, // ------------------------- ĐỘ DÀY
                                           color: Colors
-                                              .white, // ----------------- MÀU SẮC
+                                              .grey, // ----------------- MÀU SẮC
                                           indent:
                                               1, // ---------------------------- LÙI SANG TRÁI
                                           endIndent:
