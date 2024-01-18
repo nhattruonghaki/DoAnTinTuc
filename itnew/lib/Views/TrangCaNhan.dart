@@ -53,11 +53,36 @@ class _CaNhanState extends State<CaNhan> {
     prefs.setString('userName', userName);
   }
 
+  // Hàm để lưu trạng thái đăng xuất vào SharedPreferences
   void _saveUserLogoutStatus() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool('isLoggedIn', false);
   prefs.remove('userName');
   }
+
+  // Hàm để xóa tài khoản trên firebase
+  Future<void> _deleteAccount() async {
+  try {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      // Xóa tài khoản trên Firebase
+      await user.delete();
+
+      // Đăng xuất người dùng
+      await _auth.signOut();
+
+      setState(() {
+        userName = '';
+        isUserLoggedIn = false;
+      });
+      _saveUserLogoutStatus();
+    } else {
+      _showLoginAlertDialog();
+    }
+  } catch (error) {
+    print('Error deleting account: $error');
+  }
+}
 
   void _showLoginAlertDialog() {
     showDialog(
@@ -69,7 +94,7 @@ class _CaNhanState extends State<CaNhan> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Đóng dialog
+                Navigator.of(context).pop();
               },
               child: Text('OK'),
             ),
@@ -330,7 +355,9 @@ class _CaNhanState extends State<CaNhan> {
                   height: 70,
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    _deleteAccount();
+                  },
                   child: Row(
                     children: [
                       Text(
