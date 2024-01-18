@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-// import 'package:itnew/Models/FontsChu.dart';
+
 import 'package:itnew/Models/FontChange.dart';
 import 'package:itnew/Views/BottomNavi.dart';
 import 'package:itnew/Views/TimKiem.dart';
@@ -11,7 +11,6 @@ import 'package:http/http.dart' as http;
 import 'package:xml2json/xml2json.dart';
 import 'package:provider/provider.dart';
 import '../Models/ThemeProvider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TrangChu extends StatefulWidget {
   const TrangChu({super.key, required this.title});

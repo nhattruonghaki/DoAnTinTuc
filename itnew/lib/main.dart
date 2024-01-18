@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const TrangChu(
               title: '',
             ),
-        '/canhan': (context) => const CaNhan(),
+        '/caidat': (context) => const CaiDat(),
         '/video': (context) => TrangVideo(),
         '/daluu': (context) => const DaLuu(),
         '/lichsu': (context) => const LichSu(),

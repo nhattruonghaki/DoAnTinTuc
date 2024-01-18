@@ -47,7 +47,6 @@ class _TrangChiTietState extends State<TrangChiTiet> {
           backgroundColor:
               themeProvider.isDarkMode ? Colors.black : Colors.white,
           appBar: AppBar(
-            automaticallyImplyLeading: false,
             backgroundColor: const Color.fromARGB(222, 0, 183, 255),
             title: Text(
               'ITFEEDS',

@@ -60,9 +60,9 @@ class BottomNavi extends StatelessWidget {
                 Navigator.popUntil(context, (route) => route.isFirst);
                 Navigator.pushNamed(context, '/video');
               } else if (indexOfItem == 2 &&
-                  ModalRoute.of(context)?.settings.name != '/canhan') {
+                  ModalRoute.of(context)?.settings.name != '/caidat') {
                 Navigator.popUntil(context, (route) => route.isFirst);
-                Navigator.pushNamed(context, '/canhan');
+                Navigator.pushNamed(context, '/caidat');
               }
             },
             selectedLabelStyle: labelStyle,

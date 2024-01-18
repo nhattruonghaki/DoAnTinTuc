@@ -6,14 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../Models/ThemeProvider.dart';
 
-class CaNhan extends StatefulWidget {
-  const CaNhan({super.key});
+class CaiDat extends StatefulWidget {
+  const CaiDat({super.key});
 
   @override
-  State<CaNhan> createState() => _CaNhanState();
+  State<CaiDat> createState() => _CaiDatState();
 }
 
-class _CaNhanState extends State<CaNhan> {
+class _CaiDatState extends State<CaiDat> {
   bool light = false;
 
   String status = 'Dark Theme';

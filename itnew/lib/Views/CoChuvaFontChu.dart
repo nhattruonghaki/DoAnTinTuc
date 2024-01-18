@@ -63,7 +63,7 @@ class _CoChuvaFontChuState extends State<CoChuvaFontChu> {
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
                   Navigator.popUntil(context, (route) => route.isActive);
-                  Navigator.pushNamed(context, '/canhan');
+                  Navigator.pushNamed(context, '/caidat');
                 },
               ),
               backgroundColor: const Color.fromARGB(222, 0, 183, 255),
