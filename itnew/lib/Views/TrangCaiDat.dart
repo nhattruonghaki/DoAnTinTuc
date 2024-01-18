@@ -229,8 +229,25 @@ class _CaiDatState extends State<CaiDat> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.popUntil(context, (route) => route.isCurrent);
+
+                    late User? user = FirebaseAuth.instance.currentUser;
+
+  
+
+
+if (user != null) {
+  Navigator.popUntil(context, (route) => route.isCurrent);
                         Navigator.pushNamed(context, '/daluu');
+} else {
+  _showLoginAlertDialog();
+}
+
+
+
+
+
+
+                      
                       },
                       child: Row(
                         children: [
