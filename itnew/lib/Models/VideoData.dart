@@ -1,17 +1,17 @@
 import 'package:itnew/Models/User.dart';
 import 'package:itnew/Models/Video.dart';
 
-User currentUser = User('www.baomoi.com', '');
-User user1 = User('indianexpress.com', '');
-User user2 = User('tech.hindustantimes.com', '');
-User user3 = User('indiatechnologynews.in', '');
-User user4 = User('dunyanews.tv', '');
-User user5 = User('usnews.com', '');
-User user6 = User('indiatoday.in', '');
-User user7 = User('financialexpress.com', '');
-User user8 = User('etnownews.com', '');
-User user9 = User('thepress.net', '');
-User user10 = User('advocateanddemocrat.com', '');
+User currentUser = User('www.baomoi.com');
+User user1 = User('indianexpress.com');
+User user2 = User('tech.hindustantimes.com');
+User user3 = User('indiatechnologynews.in');
+User user4 = User('dunyanews.tv');
+User user5 = User('usnews.com');
+User user6 = User('indiatoday.in');
+User user7 = User('financialexpress.com');
+User user8 = User('etnownews.com');
+User user9 = User('thepress.net');
+User user10 = User('advocateanddemocrat.com');
 
 final List<Video> videos = <Video>[
   Video('v1.mp4', user1, 'Which story gets you stoked?', '12.5K', '123'),

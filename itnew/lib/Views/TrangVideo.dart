@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:itnew/Models/FontsChu.dart';
+// import 'package:itnew/Models/FontsChu.dart';
+import 'package:itnew/Models/FontChange.dart';
+import 'package:itnew/Models/ThemeProvider.dart';
 import 'package:itnew/Models/VideoData.dart';
 import 'package:itnew/ViewModels/HomeSideBar.dart';
 import 'package:itnew/ViewModels/VideoDetail.dart';
 import 'package:itnew/ViewModels/VideoTitle.dart';
 import 'package:itnew/Views/BottomNavi.dart';
+import 'package:provider/provider.dart';
 
 class TrangVideo extends StatefulWidget {
   TrangVideo({Key? key});
@@ -13,61 +16,84 @@ class TrangVideo extends StatefulWidget {
 }
 
 class _TrangVideoState extends State<TrangVideo> {
-  FontsChu fontsChu = FontsChu();
-  final int _snappedPageIndex = 0;
+  int _snappedPageIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: const Color.fromARGB(222, 0, 183, 255),
-          title: Text(
-            'Video Tin Tức',
-            style: TextStyle(
-                fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
-          )),
-      body: PageView.builder(
-        onPageChanged: (int page) => {print("Page change to$page")},
-        scrollDirection: Axis.vertical,
-        itemCount: videos.length,
-        itemBuilder: (context, index) {
-          return Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              VideoTitle(
-                video: videos[index],
-                currentIndex: index,
-                snappedPageIndex: _snappedPageIndex,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => FontTextProvider()..init()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()..init()),
+      ],
+      child: Consumer2<FontTextProvider, ThemeProvider>(
+          builder: (context, fontProvider, themeProvider, child) {
+        return Scaffold(
+          backgroundColor:
+              themeProvider.isDarkMode ? Colors.black : Colors.white,
+          appBar: AppBar(
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.popUntil(context, (route) => route.isActive);
+                  Navigator.pushNamed(context, '/');
+                },
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              centerTitle: true,
+              backgroundColor: const Color.fromARGB(222, 0, 183, 255),
+              title: Text(
+                'Watch',
+                style: TextStyle(
+                    fontFamily: fontProvider.selectedFont == 'Inter'
+                        ? 'Inter'
+                        : 'Kalam',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              )),
+          body: PageView.builder(
+            onPageChanged: (int page) => {
+              setState(() {
+                _snappedPageIndex = page;
+              }),
+            },
+            scrollDirection: Axis.vertical,
+            itemCount: videos.length,
+            itemBuilder: (context, index) {
+              return Stack(
+                alignment: Alignment.bottomCenter,
                 children: [
-                  Expanded(
-                    flex: 4,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height / 5,
-                      child: VideoDetail(
-                        video: videos[index],
-                      ),
-                    ),
+                  VideoTitle(
+                    video: videos[index],
+                    currentIndex: index,
+                    snappedPageIndex: _snappedPageIndex,
                   ),
-                  Expanded(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height / 2.5,
-                      child: HomeSideBar(
-                        video: videos[index],
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 5,
+                          child: VideoDetail(
+                            video: videos[index],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                      Expanded(
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height / 2.5,
+                          child: HomeSideBar(
+                            video: videos[index],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
-              )
-            ],
-          );
-        },
-      ),
-      bottomNavigationBar: BottomNavi(index: 1),
+              );
+            },
+          ),
+          bottomNavigationBar: BottomNavi(index: 1),
+        );
+      }),
     );
   }
 }

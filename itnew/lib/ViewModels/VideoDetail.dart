@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../Models/Video.dart';
+import 'package:itnew/Models/Video.dart';
 
 class VideoDetail extends StatelessWidget {
   const VideoDetail({super.key, required this.video});
@@ -29,8 +28,6 @@ class VideoDetail extends StatelessWidget {
                   color: Colors.white,
                   fontWeight: FontWeight.w100,
                 ),
-            // expandText: 'more',
-            // collapseText: 'less',
           ),
           const SizedBox(
             height: 8,

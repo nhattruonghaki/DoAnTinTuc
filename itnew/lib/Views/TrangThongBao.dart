@@ -1,12 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:itnew/Models/FontsChu.dart';
-import 'package:itnew/Models/TangGiamFont.dart';
+
+import 'package:itnew/Models/FontChange.dart';
 import 'package:itnew/Views/TrangChiTiet.dart';
-import 'package:webfeed/webfeed.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:xml2json/xml2json.dart';
 import 'package:provider/provider.dart';
@@ -21,8 +19,6 @@ class TrangThongBao extends StatefulWidget {
 }
 
 class _TrangThongBaoState extends State<TrangThongBao> {
-  FontsChu fontsChu = FontsChu();
-  TangGiamFont fontSize = TangGiamFont();
   final Xml2Json xml2json = Xml2Json();
   List NewsTop = [];
   Future newsFeed() async {
@@ -47,6 +43,7 @@ class _TrangThongBaoState extends State<TrangThongBao> {
 
   @override
   Widget build(BuildContext context) {
+    var fontProvider = Provider.of<FontTextProvider>(context);
     newsFeed();
     var themeProvider = Provider.of<ThemeProvider>(context);
 
@@ -63,9 +60,10 @@ class _TrangThongBaoState extends State<TrangThongBao> {
       backgroundColor: scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
-          'Thông báo mới',
+          'New Feeds',
           style: TextStyle(
-              fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',
+              fontFamily:
+                  fontProvider.selectedFont == 'Inter' ? 'Inter' : 'Kalam',
               color: Colors.white),
         ),
         centerTitle: true,
@@ -208,11 +206,11 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                                 .indexOf(
                                                                     '/', 13)),
                                                     style: TextStyle(
-                                                        fontFamily:
-                                                            fontsChu.fontInter ==
-                                                                    'Inter'
-                                                                ? 'Inter'
-                                                                : 'Kalam',
+                                                        fontFamily: fontProvider
+                                                                    .selectedFont ==
+                                                                'Inter'
+                                                            ? 'Inter'
+                                                            : 'Kalam',
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontSize: 10,
@@ -223,11 +221,11 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                         .toString()
                                                         .substring(5, 30),
                                                     style: TextStyle(
-                                                        fontFamily:
-                                                            fontsChu.fontInter ==
-                                                                    'Inter'
-                                                                ? 'Inter'
-                                                                : 'Kalam',
+                                                        fontFamily: fontProvider
+                                                                    .selectedFont ==
+                                                                'Inter'
+                                                            ? 'Inter'
+                                                            : 'Kalam',
                                                         fontWeight:
                                                             FontWeight.w400,
                                                         fontSize: 9,
@@ -246,15 +244,16 @@ class _TrangThongBaoState extends State<TrangThongBao> {
                                                       textAlign:
                                                           TextAlign.start,
                                                       style: TextStyle(
-                                                        fontFamily:
-                                                            fontsChu.fontInter ==
-                                                                    'Inter'
-                                                                ? 'Inter'
-                                                                : 'Kalam',
+                                                        fontFamily: fontProvider
+                                                                    .selectedFont ==
+                                                                'Inter'
+                                                            ? 'Inter'
+                                                            : 'Kalam',
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: textColor,
-                                                        fontSize: fontSize.coChu
+                                                        fontSize: fontProvider
+                                                            .fontSize
                                                             .toDouble(),
                                                       ),
                                                     ),
