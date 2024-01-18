@@ -53,6 +53,12 @@ class _CaNhanState extends State<CaNhan> {
     prefs.setString('userName', userName);
   }
 
+  void _saveUserLogoutStatus() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setBool('isLoggedIn', false);
+  prefs.remove('userName');
+  }
+
   void _showLoginAlertDialog() {
     showDialog(
       context: context,
@@ -357,6 +363,7 @@ class _CaNhanState extends State<CaNhan> {
                           userName = '';
                           isUserLoggedIn = false;
                         });
+                      _saveUserLogoutStatus();
                       } else {
                         _showLoginAlertDialog();
                       }
