@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:itnew/Models/FontChange.dart';
 import 'package:itnew/Views/BottomNavi.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../Models/ThemeProvider.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:itnew/Models/FontChange.dart';
 
 class CaiDat extends StatefulWidget {
   const CaiDat({super.key});
@@ -14,9 +17,97 @@ class CaiDat extends StatefulWidget {
 }
 
 class _CaiDatState extends State<CaiDat> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+  bool isUserLoggedIn = false;
+  String userName = '';
+
   bool light = false;
 
   String status = 'Dark Theme';
+
+  @override
+  void initState() {
+    super.initState();
+    // Khởi tạo trạng thái đăng nhập từ SharedPreferences khi widget được tạo ra
+    _loadUserLoginStatus();
+  }
+
+  // Hàm để lấy trạng thái đăng nhập từ SharedPreferences
+  void _loadUserLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    String savedUserName = prefs.getString('userName') ?? '';
+
+    setState(() {
+      isUserLoggedIn = isLoggedIn;
+      userName = savedUserName;
+    });
+  }
+
+  // Hàm để lưu trạng thái đăng nhập vào SharedPreferences
+  void _saveUserLoginStatus(bool isLoggedIn, String userName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', isLoggedIn);
+    prefs.setString('userName', userName);
+  }
+
+  // Hàm để lưu trạng thái đăng xuất vào SharedPreferences
+  void _saveUserLogoutStatus() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setBool('isLoggedIn', false);
+  prefs.remove('userName');
+  }
+
+  // Hàm để xóa tài khoản trên firebase
+  Future<void> _deleteAccount() async {
+  try {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      // Xóa tài khoản trên Firebase
+      await user.delete();
+
+      // Đăng xuất người dùng
+      await _auth.signOut();
+
+      setState(() {
+        userName = '';
+        isUserLoggedIn = false;
+      });
+      _saveUserLogoutStatus();
+    } else {
+      _showLoginAlertDialog();
+    }
+  } catch (error) {
+    print('Error deleting account: $error');
+  }
+}
+
+  void _showLoginAlertDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Yêu cầu đăng nhập', 
+            //style: TextStyle(fontFamily: fontProvider.selectedFont == 'Inter' ? 'Inter' : 'Kalam',),
+          ),
+          content: Text('Vui lòng đăng nhập để sử dụng chức năng này.', 
+            //style: TextStyle(fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',)
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK',
+                //style: TextStyle(fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',)
+              )
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,8 +162,50 @@ class _CaiDatState extends State<CaiDat> {
                         ),
                       ),
                     ),
+                    isUserLoggedIn
+                    ? Text(
+                        userName,
+                        style: TextStyle(
+                          fontFamily: fontProvider.selectedFont == 'Inter' ? 'Inter' : 'Kalam',
+                          color: textColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    :
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        try {
+                        // Đăng xuất tài khoản Google hiện tại (nếu có)
+                        await _googleSignIn.signOut();
+
+                        // Đăng nhập với tài khoản Google mới
+                        GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+                        if (googleUser == null) {
+                          // Người dùng hủy đăng nhập hoặc không chọn tài khoản
+                          return;
+                        }
+
+                        GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+                        AuthCredential credential = GoogleAuthProvider.credential(
+                          accessToken: googleAuth.accessToken,
+                          idToken: googleAuth.idToken,
+                        );
+
+                        UserCredential authResult = await _auth.signInWithCredential(credential);
+                        User? user = authResult.user;
+
+                        if (user != null) {
+                          setState(() {
+                            userName = user.displayName ?? '';
+                            isUserLoggedIn = true;
+                          });
+                          _saveUserLoginStatus(true, userName);
+                        }
+                      } catch (error) {
+                        print('Error signing in with Google: $error');
+                      }
+                      },
                       style: ElevatedButton.styleFrom(
                         side: BorderSide(
                           color: textColor, // Màu của viền
@@ -241,7 +374,9 @@ class _CaiDatState extends State<CaiDat> {
                       height: 70,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        _deleteAccount();
+                      },
                       child: Row(
                         children: [
                           Text(
@@ -265,7 +400,23 @@ class _CaiDatState extends State<CaiDat> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        try {
+                      if (isUserLoggedIn) {
+                        // Đăng xuất
+                        await _auth.signOut();
+                        setState(() {
+                          userName = '';
+                          isUserLoggedIn = false;
+                        });
+                      _saveUserLogoutStatus();
+                      } else {
+                        _showLoginAlertDialog();
+                      }
+                    } catch (error) {
+                      print('Error signing in/out with Google: $error');
+                    }
+                      },
                       style: ElevatedButton.styleFrom(
                         side: const BorderSide(
                           color: Colors.black, // Màu của viền

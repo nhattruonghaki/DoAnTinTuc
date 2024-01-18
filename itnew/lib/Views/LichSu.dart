@@ -31,7 +31,7 @@ class _LichSuState extends State<LichSu> {
           appBar: AppBar(
             backgroundColor: Color.fromARGB(222, 0, 183, 255),
             title: Text(
-              'Lịch Sử',
+              'History',
               style: TextStyle(
                   fontFamily:
                       fontProvider.selectedFont == 'Inter' ? 'Inter' : 'Kalam',

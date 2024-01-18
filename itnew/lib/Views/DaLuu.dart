@@ -31,7 +31,7 @@ class _DaLuuState extends State<DaLuu> {
           appBar: AppBar(
             backgroundColor: const Color.fromARGB(222, 0, 183, 255),
             title: Text(
-              'Đã lưu',
+              'Saved',
               style: TextStyle(
                   fontFamily:
                       fontProvider.selectedFont == 'Inter' ? 'Inter' : 'Kalam',
