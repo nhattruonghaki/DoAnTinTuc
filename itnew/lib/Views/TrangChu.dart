@@ -1,8 +1,14 @@
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:itnew/Models/FontChange.dart';
+import 'package:itnew/Models/SaveArticle.dart';
+import 'package:itnew/Models/User.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:itnew/Models/User.dart' as custom_user;
 import 'package:itnew/Views/BottomNavi.dart';
 import 'package:itnew/Views/TimKiem.dart';
 import 'package:itnew/Views/TrangChiTiet.dart';
@@ -29,7 +35,7 @@ class _TrangChuState extends State<TrangChu>
   List NewsScience = [];
   List NewsSports = [];
   Future NewsTechnologyFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/4FGuBtpfMOLaWfw7.xml');
+    final url = Uri.parse('https://rss.app/feeds/KhqHMrKkFKlBTf9E.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
@@ -39,7 +45,7 @@ class _TrangChuState extends State<TrangChu>
   }
 
   Future NewsBusinessFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/fGINtZMwa8BkiOrW.xml');
+    final url = Uri.parse('https://rss.app/feeds/Qa0ZI0RYNsqyILBD.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
@@ -49,7 +55,7 @@ class _TrangChuState extends State<TrangChu>
   }
 
   Future NewsScienceFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/tVgCJMHl1jUIuvk5.xml');
+    final url = Uri.parse('https://rss.app/feeds/1MgF5rDIuUpoc6Xf.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
@@ -59,7 +65,7 @@ class _TrangChuState extends State<TrangChu>
   }
 
   Future NewsSportsFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/vrXylEUtQ94wyXRK.xml');
+    final url = Uri.parse('https://rss.app/feeds/tPntrIpmOEuhJDQk.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
@@ -69,10 +75,16 @@ class _TrangChuState extends State<TrangChu>
   }
 
   TabController? _tabController;
+  late User? user;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late firebase_auth.User? firebaseUser;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
+    //user = FirebaseAuth.instance.currentUser;
+
+    firebaseUser = firebase_auth.FirebaseAuth.instance.currentUser;
   }
 
   // void saveDarkModeToPreferences(bool isDarkMode) async {
@@ -89,9 +101,6 @@ class _TrangChuState extends State<TrangChu>
 
   @override
   Widget build(BuildContext context) {
-    //return DefaultTabController(
-    //  length: 2,
-    //child:
     NewsTechnologyFeed();
     NewsBusinessFeed();
     NewsScienceFeed();
@@ -175,7 +184,7 @@ class _TrangChuState extends State<TrangChu>
                       themeProvider.isDarkMode ? Colors.white : Colors.black,
 
                   indicatorPadding: EdgeInsets.zero,
-                  labelPadding: EdgeInsets.symmetric(horizontal: 1),
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 1),
 
                   // unfocus
 
@@ -216,7 +225,7 @@ class _TrangChuState extends State<TrangChu>
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(width: 1),
+                          const SizedBox(width: 1),
                           Text(
                             'Science',
                             style: TextStyle(
@@ -363,14 +372,57 @@ class _TrangChuState extends State<TrangChu>
                                           vertical: 5),
                                       decoration: BoxDecoration(
                                         color: themeProvider.isDarkMode
-                                            ? Color.fromARGB(255, 57, 55, 55)
-                                            : Color.fromARGB(
+                                            ? const Color.fromARGB(
+                                                255, 57, 55, 55)
+                                            : const Color.fromARGB(
                                                 255, 246, 242, 242),
                                         borderRadius: BorderRadius.circular(
                                             8), // Bo tròn góc
                                       ),
                                       child: InkWell(
                                         onTap: () {
+
+
+                        
+
+                    
+
+
+
+
+
+                                          _firestore
+                                              .collection('noUsers')
+                                             
+                                              .add({
+                                            'title': NewsTechnology[index]
+                                                ['title']['__cdata'],
+                                            'imagedata': NewsTechnology[index][
+                                                            'media\$content'] !=
+                                                        null &&
+                                                    NewsTechnology[index][
+                                                                'media\$content']
+                                                            ['url'] !=
+                                                        null
+                                                ? NewsTechnology[index]
+                                                    ['media\$content']['url']
+                                                : null,
+                                            'description': NewsTechnology[index]
+                                                            ['description'] !=
+                                                        null &&
+                                                    NewsTechnology[index]
+                                                                ['description']
+                                                            ['__cdata'] !=
+                                                        null
+                                                ? NewsTechnology[index]
+                                                    ['description']['__cdata']
+                                                : null,
+                                            'date': NewsTechnology[index]
+                                                ['pubDate'],
+                                            'link': NewsTechnology[index]
+                                                ['link'],
+                                          });
+
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -562,14 +614,48 @@ class _TrangChuState extends State<TrangChu>
                                           vertical: 5),
                                       decoration: BoxDecoration(
                                         color: themeProvider.isDarkMode
-                                            ? Color.fromARGB(255, 57, 55, 55)
-                                            : Color.fromARGB(
+                                            ? const Color.fromARGB(
+                                                255, 57, 55, 55)
+                                            : const Color.fromARGB(
                                                 255, 246, 242, 242),
                                         borderRadius: BorderRadius.circular(
                                             8), // Bo tròn góc
                                       ),
                                       child: InkWell(
                                         onTap: () {
+                                          
+
+                                          _firestore
+                                              .collection('noUsers')
+                                              
+                                              .add({
+                                            'title': NewsBusiness[index]
+                                                ['title']['__cdata'],
+                                            'imagedata': NewsBusiness[index][
+                                                            'media\$content'] !=
+                                                        null &&
+                                                    NewsBusiness[index][
+                                                                'media\$content']
+                                                            ['url'] !=
+                                                        null
+                                                ? NewsBusiness[index]
+                                                    ['media\$content']['url']
+                                                : null,
+                                            'description': NewsBusiness[index]
+                                                            ['description'] !=
+                                                        null &&
+                                                    NewsBusiness[index]
+                                                                ['description']
+                                                            ['__cdata'] !=
+                                                        null
+                                                ? NewsBusiness[index]
+                                                    ['description']['__cdata']
+                                                : null,
+                                            'date': NewsBusiness[index]
+                                                ['pubDate'],
+                                            'link': NewsBusiness[index]['link'],
+                                          });
+
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -761,14 +847,48 @@ class _TrangChuState extends State<TrangChu>
                                           vertical: 5),
                                       decoration: BoxDecoration(
                                         color: themeProvider.isDarkMode
-                                            ? Color.fromARGB(255, 57, 55, 55)
-                                            : Color.fromARGB(
+                                            ? const Color.fromARGB(
+                                                255, 57, 55, 55)
+                                            : const Color.fromARGB(
                                                 255, 246, 242, 242),
                                         borderRadius: BorderRadius.circular(
                                             8), // Bo tròn góc
                                       ),
                                       child: InkWell(
                                         onTap: () {
+                                         
+
+                                          _firestore
+                                              .collection('noUsers')
+                                              
+                                              .add({
+                                            'title': NewsScience[index]['title']
+                                                ['__cdata'],
+                                            'imagedata': NewsScience[index][
+                                                            'media\$content'] !=
+                                                        null &&
+                                                    NewsScience[index][
+                                                                'media\$content']
+                                                            ['url'] !=
+                                                        null
+                                                ? NewsScience[index]
+                                                    ['media\$content']['url']
+                                                : null,
+                                            'description': NewsScience[index]
+                                                            ['description'] !=
+                                                        null &&
+                                                    NewsScience[index]
+                                                                ['description']
+                                                            ['__cdata'] !=
+                                                        null
+                                                ? NewsScience[index]
+                                                    ['description']['__cdata']
+                                                : null,
+                                            'date': NewsScience[index]
+                                                ['pubDate'],
+                                            'link': NewsScience[index]['link'],
+                                          });
+
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -958,14 +1078,50 @@ class _TrangChuState extends State<TrangChu>
                                           vertical: 5),
                                       decoration: BoxDecoration(
                                         color: themeProvider.isDarkMode
-                                            ? Color.fromARGB(255, 57, 55, 55)
-                                            : Color.fromARGB(
+                                            ? const Color.fromARGB(
+                                                255, 57, 55, 55)
+                                            : const Color.fromARGB(
                                                 255, 246, 242, 242),
                                         borderRadius: BorderRadius.circular(
                                             8), // Bo tròn góc
                                       ),
                                       child: InkWell(
+
+                                        
                                         onTap: () {
+                                          
+
+                                          _firestore
+                                              .collection('noUsers')
+                                              
+                                              .add({
+                                            'title': NewsSports[index]['title']
+                                                ['__cdata'],
+                                            'imagedata': NewsSports[index][
+                                                            'media\$content'] !=
+                                                        null &&
+                                                    NewsSports[index][
+                                                                'media\$content']
+                                                            ['url'] !=
+                                                        null
+                                                ? NewsSports[index]
+                                                    ['media\$content']['url']
+                                                : null,
+                                            'description': NewsSports[index]
+                                                            ['description'] !=
+                                                        null &&
+                                                    NewsSports[index]
+                                                                ['description']
+                                                            ['__cdata'] !=
+                                                        null
+                                                ? NewsSports[index]
+                                                    ['description']['__cdata']
+                                                : null,
+                                            'date': NewsSports[index]
+                                                ['pubDate'],
+                                            'link': NewsSports[index]['link'],
+                                          });
+
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(

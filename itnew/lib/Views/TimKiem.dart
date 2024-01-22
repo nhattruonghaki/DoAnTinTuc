@@ -26,48 +26,43 @@ class _TimKiemState extends State<TimKiem> {
   List<dynamic> filteredNews = [];
 
   Future NewsTechnologyFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/4FGuBtpfMOLaWfw7.xml');
+    final url = Uri.parse('https://rss.app/feeds/KhqHMrKkFKlBTf9E.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
-    setState(() {
-      NewsTechnology = data['rss']['channel']['item'];
-      filteredNews = NewsTechnology; // Ban đầu, hiển thị tất cả các bài báo
-    });
+    NewsTechnology = data['rss']['channel']['item'];
+    print(NewsTechnology);
   }
 
   Future NewsBusinessFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/fGINtZMwa8BkiOrW.xml');
+    final url = Uri.parse('https://rss.app/feeds/Qa0ZI0RYNsqyILBD.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
-    setState(() {
-      NewsBusiness = data['rss']['channel']['item'];
-    });
+    NewsBusiness = data['rss']['channel']['item'];
+    print(NewsBusiness);
   }
 
   Future NewsScienceFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/tVgCJMHl1jUIuvk5.xml');
+    final url = Uri.parse('https://rss.app/feeds/1MgF5rDIuUpoc6Xf.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
-    setState(() {
-      NewsScience = data['rss']['channel']['item'];
-    });
+    NewsScience = data['rss']['channel']['item'];
+    print(NewsScience);
   }
 
   Future NewsSportsFeed() async {
-    final url = Uri.parse('https://rss.app/feeds/vrXylEUtQ94wyXRK.xml');
+    final url = Uri.parse('https://rss.app/feeds/tPntrIpmOEuhJDQk.xml');
     final response = await http.get(url);
     xml2json.parse(response.body.toString());
     var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
-    setState(() {
-      NewsSports = data['rss']['channel']['item'];
-    });
+    NewsSports = data['rss']['channel']['item'];
+    print(NewsSports);
   }
   
   void filterNews(String query) {
