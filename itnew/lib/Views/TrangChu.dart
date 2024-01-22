@@ -75,7 +75,7 @@ class _TrangChuState extends State<TrangChu>
   }
 
   TabController? _tabController;
-  late User? user;
+  //late User? user;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late firebase_auth.User? firebaseUser;
   @override
@@ -392,7 +392,7 @@ class _TrangChuState extends State<TrangChu>
 
 
                                           _firestore
-                                              .collection('noUsers')
+                                              .collection('noUser')
                                              
                                               .add({
                                             'title': NewsTechnology[index]
@@ -626,7 +626,7 @@ class _TrangChuState extends State<TrangChu>
                                           
 
                                           _firestore
-                                              .collection('noUsers')
+                                              .collection('noUser')
                                               
                                               .add({
                                             'title': NewsBusiness[index]
@@ -859,7 +859,7 @@ class _TrangChuState extends State<TrangChu>
                                          
 
                                           _firestore
-                                              .collection('noUsers')
+                                              .collection('noUser')
                                               
                                               .add({
                                             'title': NewsScience[index]['title']
@@ -1092,7 +1092,7 @@ class _TrangChuState extends State<TrangChu>
                                           
 
                                           _firestore
-                                              .collection('noUsers')
+                                              .collection('noUser')
                                               
                                               .add({
                                             'title': NewsSports[index]['title']

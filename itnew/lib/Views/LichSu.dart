@@ -75,9 +75,9 @@ class _LichSuState extends State<LichSu> {
                             ),
                             TextButton(
                               onPressed: () async {
-                                String userId = user!.uid;
+                                //String userId = user!.uid;
                                 await SaveArticle()
-                                    .removeAllHistorySavedArticles(userId);
+                                    .removeAllHistorySavedArticles();
                                 Navigator.of(context).pop(); // Đóng hộp thoại
                                 // Load lại trang
                                 Navigator.pushReplacement(
