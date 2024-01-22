@@ -86,7 +86,8 @@ class _CaiDatState extends State<CaiDat> {
                       await _auth.signOut();
 
                       setState(() {
-                        // userName = '';
+                        //userName = '';
+                        userName = user.displayName ?? '';
                         isUserLoggedIn = false;
                       });
                       _saveUserLogoutStatus();
@@ -479,6 +480,9 @@ class _CaiDatState extends State<CaiDat> {
                                           print(
                                               'Error when signing in/signing out with Google: $error');
                                         }
+                                                            Navigator.of(context)
+                        .pop(); // Đóng hộp thoại sau khi xử lý xong
+
                                       },
                                     ),
                                   ],
