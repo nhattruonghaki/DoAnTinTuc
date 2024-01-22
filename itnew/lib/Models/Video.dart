@@ -1,11 +1,31 @@
-import 'package:itnew/Models/User.dart';
-
 class Video {
-  final String videoUrl;
-  final User posteBy;
-  final String caption;
-  final String likes;
-  final String dislikes;
+  late String videoUrl;
+  late String username;
+  late String caption;
+  late int likes;
+  late int dislikes;
 
-  Video(this.videoUrl, this.posteBy, this.caption, this.likes, this.dislikes);
+  Video({
+    required this.videoUrl,
+    required this.username,
+    required this.caption,
+    required this.likes,
+    required this.dislikes,
+  });
+  factory Video.fromJson(Map<String, dynamic> json) {
+    return Video(
+      videoUrl: json['videoUrl'],
+      username: json['username'],
+      caption: json['caption'],
+      likes: json['likes'],
+      dislikes: json['dislikes'],
+    );
+  }
+  static List<Video> listFromJson(Map<String, dynamic> json) {
+    List<Video> videos = [];
+    json.forEach((key, value) {
+      videos.add(Video.fromJson(value));
+    });
+    return videos;
+  }
 }

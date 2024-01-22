@@ -3,81 +3,84 @@ import 'package:itnew/Models/Video.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoTitle extends StatefulWidget {
-  const VideoTitle(
-      {super.key,
-      required this.video,
-      required this.currentIndex,
-      required this.snappedPageIndex});
   final Video video;
-  final int snappedPageIndex;
-  final int currentIndex;
+  const VideoTitle({
+    super.key,
+    required this.video,
+  });
 
   @override
   State<VideoTitle> createState() => _VideoTitleState();
 }
 
 class _VideoTitleState extends State<VideoTitle> {
-  late VideoPlayerController _videoController;
-  late Future _initializeVideoPlayer;
-  bool _isVideoPlaying = true;
+  late VideoPlayerController _videoPlayerController;
+
+  bool _isVideoPlaying = false;
+
   @override
   void initState() {
-    _videoController =
-        VideoPlayerController.asset('assets/video/${widget.video.videoUrl}');
-
-    _initializeVideoPlayer = _videoController.initialize();
-    _videoController.setLooping(true);
-    _videoController.play();
     super.initState();
+    _videoPlayerController = VideoPlayerController.networkUrl(
+      Uri.parse(widget.video.videoUrl),
+    )..initialize().then((_) {
+        setState(() {
+          // Đảm bảo rằng video đã được khởi tạo trước khi hiển thị
+        });
+      });
   }
 
   @override
   void dispose() {
-    _videoController.dispose();
+    _videoPlayerController.dispose();
     super.dispose();
   }
 
   void _pausePlayVideo() {
-    _isVideoPlaying ? _videoController.pause() : _videoController.play();
-
     setState(() {
       _isVideoPlaying = !_isVideoPlaying;
+      if (_isVideoPlaying) {
+        _videoPlayerController.play();
+      } else {
+        _videoPlayerController.pause();
+      }
     });
   }
 
+  // void _pausePlayVideo() {
+  //   _isVideoPlaying ? _videoPlayerController.pause() : _videoPlayerController.play();
+
+  //   setState(() {
+  //     _isVideoPlaying = !_isVideoPlaying;
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
-    (widget.snappedPageIndex == widget.currentIndex && _isVideoPlaying)
-        ? _videoController.play()
-        : _videoController.pause();
     return Container(
       color: Colors.black,
-      child: FutureBuilder(
-        future: _initializeVideoPlayer,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return GestureDetector(
-              onTap: () => {_pausePlayVideo()},
+      child: _videoPlayerController.value.isInitialized
+          ? GestureDetector(
+              onTap: _pausePlayVideo,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  VideoPlayer(_videoController),
-                  IconButton(
-                    onPressed: () => {_pausePlayVideo()},
-                    icon: Icon(Icons.play_arrow),
-                    color: Colors.white.withOpacity(_isVideoPlaying ? 0 : 0.5),
-                    iconSize: 70,
-                  )
+                  AspectRatio(
+                    aspectRatio: _videoPlayerController.value.aspectRatio,
+                    child: VideoPlayer(_videoPlayerController),
+                  ),
+                  if (!_isVideoPlaying)
+                    IconButton(
+                      onPressed: _pausePlayVideo,
+                      icon: Icon(Icons.play_arrow),
+                      color:
+                          Colors.white.withOpacity(_isVideoPlaying ? 0 : 0.5),
+                      iconSize: 70,
+                    ),
                 ],
               ),
-            );
-          } else {
-            return Container(
-              color: Colors.black,
-            );
-          }
-        },
-      ),
+            )
+          : null,
     );
   }
 }
