@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itnew/Models/Video.dart';
+import 'package:itnew/ViewModels/HomeSideBar.dart';
 
 class VideoDetail extends StatelessWidget {
   const VideoDetail({super.key, required this.video});
@@ -14,7 +15,7 @@ class VideoDetail extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            "${video.posteBy.username}",
+            "${video.username}",
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),
           ),
@@ -30,7 +31,28 @@ class VideoDetail extends StatelessWidget {
                 ),
           ),
           const SizedBox(
-            height: 8,
+            height: 10,
+          ),
+          const Divider(
+            thickness: 2, // ------------------------- ĐỘ DÀY
+            color: Colors.grey, // ----------------- MÀU SẮC
+            indent: 1, // ---------------------------- LÙI SANG TRÁI
+            endIndent: 1, // ------------------------- LÙI SANG PHẢI
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: HomeSideBar(
+                  video: video,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 5,
           ),
         ],
       ),

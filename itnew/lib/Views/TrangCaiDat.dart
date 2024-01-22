@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import '../Models/ThemeProvider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:itnew/Models/FontChange.dart';
 
 class CaiDat extends StatefulWidget {
   const CaiDat({super.key});
@@ -82,20 +81,21 @@ class _CaiDatState extends State<CaiDat> {
                   child: Text('Yes'),
                   onPressed: () async {
                     try {
-                    
-                       await user.delete();
+                      await user.delete();
 
-        await _auth.signOut();
+                      await _auth.signOut();
 
-        setState(() {
-          // userName = '';
-          isUserLoggedIn = false;
-        });
-        _saveUserLogoutStatus();
+                      setState(() {
+                        // userName = '';
+                        isUserLoggedIn = false;
+                      });
+                      _saveUserLogoutStatus();
                     } catch (error) {
-                      print('Error when signing in/signing out with Google: $error');
+                      print(
+                          'Error when signing in/signing out with Google: $error');
                     }
-                    Navigator.of(context).pop(); // Đóng hộp thoại sau khi xử lý xong
+                    Navigator.of(context)
+                        .pop(); // Đóng hộp thoại sau khi xử lý xong
                   },
                 ),
               ],
@@ -108,11 +108,9 @@ class _CaiDatState extends State<CaiDat> {
     } catch (error) {
       print('Error deleting account: $error');
     }
-      
-    
   }
 
-void _showLoginAlertDialog() {
+  void _showLoginAlertDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -139,9 +137,6 @@ void _showLoginAlertDialog() {
       },
     );
   }
-
- 
-  
 
   @override
   Widget build(BuildContext context) {
@@ -303,9 +298,8 @@ void _showLoginAlertDialog() {
                       onTap: () {
                         // User? user = _auth.currentUser;
                         // if (user != null) {
-                          Navigator.popUntil(
-                              context, (route) => route.isCurrent);
-                          Navigator.pushNamed(context, '/lichsu');
+                        Navigator.popUntil(context, (route) => route.isCurrent);
+                        Navigator.pushNamed(context, '/lichsu');
                         // } else {
                         //   _showLoginAlertDialog();
                         // }
@@ -427,7 +421,6 @@ void _showLoginAlertDialog() {
                     ),
                     GestureDetector(
                       onTap: () {
-                        
                         _deleteAccount();
                       },
                       child: Row(
@@ -454,49 +447,52 @@ void _showLoginAlertDialog() {
                   children: [
                     ElevatedButton(
                       onPressed: () async {
-    try {
-      if (isUserLoggedIn) {
-        // Hiển thị hộp thoại xác nhận đăng xuất
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Confirm Log Out'),
-              content: Text('Are you sure you want to log out?'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('No'),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Đóng hộp thoại
-                  },
-                ),
-                TextButton(
-                  child: Text('Yes'),
-                  onPressed: () async {
-                    try {
-                      // Xử lý đăng xuất ở đây
-                      await _auth.signOut();
-                      setState(() {
-                        isUserLoggedIn = false;
-                      });
-                      _saveUserLogoutStatus();
-                    } catch (error) {
-                      print('Error when signing in/signing out with Google: $error');
-                    }
-                    Navigator.of(context).pop(); // Đóng hộp thoại sau khi xử lý xong
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        _showLoginAlertDialog();
-      }
-    } catch (error) {
-      print('Error when signing in/signing out with Google: $error');
-    }
-  },
+                        try {
+                          if (isUserLoggedIn) {
+                            // Hiển thị hộp thoại xác nhận đăng xuất
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Confirm Log Out'),
+                                  content:
+                                      Text('Are you sure you want to log out?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text('No'),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pop(); // Đóng hộp thoại
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text('Yes'),
+                                      onPressed: () async {
+                                        try {
+                                          // Xử lý đăng xuất ở đây
+                                          await _auth.signOut();
+                                          setState(() {
+                                            isUserLoggedIn = false;
+                                          });
+                                          _saveUserLogoutStatus();
+                                        } catch (error) {
+                                          print(
+                                              'Error when signing in/signing out with Google: $error');
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          } else {
+                            _showLoginAlertDialog();
+                          }
+                        } catch (error) {
+                          print(
+                              'Error when signing in/signing out with Google: $error');
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         side: const BorderSide(
                           color: Colors.black, // Màu của viền
