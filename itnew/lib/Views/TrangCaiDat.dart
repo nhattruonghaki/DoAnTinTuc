@@ -86,7 +86,8 @@ class _CaiDatState extends State<CaiDat> {
                       await _auth.signOut();
 
                       setState(() {
-                        // userName = '';
+                        //userName = '';
+                        userName = user.displayName ?? '';
                         isUserLoggedIn = false;
                       });
                       _saveUserLogoutStatus();
@@ -482,6 +483,7 @@ class _CaiDatState extends State<CaiDat> {
                                         }
                                         Navigator.of(context)
                                             .pop(); // Đóng hộp thoại
+
                                       },
                                     ),
                                   ],
