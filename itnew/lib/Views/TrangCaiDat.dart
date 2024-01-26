@@ -240,6 +240,7 @@ class _CaiDatState extends State<CaiDat> {
                               } catch (error) {
                                 print('Error signing in with Google: $error');
                               }
+                              Navigator.of(context).pop(); // Đóng hộp thoại
                             },
                             style: ElevatedButton.styleFrom(
                               side: BorderSide(
@@ -480,8 +481,8 @@ class _CaiDatState extends State<CaiDat> {
                                           print(
                                               'Error when signing in/signing out with Google: $error');
                                         }
-                                                            Navigator.of(context)
-                        .pop(); // Đóng hộp thoại sau khi xử lý xong
+                                        Navigator.of(context)
+                                            .pop(); // Đóng hộp thoại
 
                                       },
                                     ),

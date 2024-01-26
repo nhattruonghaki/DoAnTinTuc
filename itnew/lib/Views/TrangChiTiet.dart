@@ -32,82 +32,41 @@ class _TrangChiTietState extends State<TrangChiTiet> {
   bool isArticleSaved = false;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late String userId;
+  void _showLoginAlertDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Login required.',
+            //style: TextStyle(fontFamily: fontProvider.selectedFont == 'Inter' ? 'Inter' : 'Kalam',),
+          ),
+          content: const Text(
+            'Please log in to use this function.',
+            //style: TextStyle(fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',)
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'OK',
+                  //style: TextStyle(fontFamily: fontsChu.fontInter == 'Inter' ? 'Inter' : 'Kalam',)
+                )),
+          ],
+        );
+      },
+    );
+  }
 
-  // late QuerySnapshot _newsSnapshot;
-
-  // Hàm để lắng nghe sự kiện thay đổi
-// void _listenForNewsChanges() {
-//   _firestore
-//       .collection('users')
-//       .doc(userId)
-//       .collection('saved_articles')
-//       //.orderBy('timestamp', descending: true)
-//       .snapshots()
-//       .listen((QuerySnapshot snapshot) {
-//     setState(() {
-//       _newsSnapshot = snapshot;
-//     });
-//   });
-// }
-
-
-// // Hàm để lấy tin đã lưu mới nhất
-//   Map<String, dynamic>? _getLatestSavedNews() {
-//     if (_newsSnapshot.docs.isNotEmpty) {
-//       final latestSavedNewsDoc = _newsSnapshot.docs.first;
-//       return latestSavedNewsDoc.data() as Map<String, dynamic>;
-//     }
-//     return null;
-//   }
-
-//   // Hàm để xoá tin tức mới nhất
-//   Future<void> _removeLatestNews() async {
-//     final latestNews = _getLatestSavedNews();
-//     try {
-//       if (latestNews != null) {
-//         // Lấy danh sách tất cả các tài liệu trong bộ sưu tập 'saved_articles'
-//         final savedArticlesCollection = _firestore
-//             .collection('users')
-//             .doc(userId)
-//             .collection('saved_articles');
-//         final allSavedArticles = await savedArticlesCollection.get();
-
-//         // Lặp qua từng tài liệu và kiểm tra xem nó có phải là tài liệu cần xoá không
-//         for (final doc in allSavedArticles.docs) {
-//           final data = doc.data();
-//           if (data['newsId'] == latestNews['newsId']) {
-//             await savedArticlesCollection.doc(doc.id).delete();
-//             print('Đã xoá tin tức mới nhất ${latestNews['newsId']}');
-//             return;
-//           }
-//         }
-
-//         // Không tìm thấy tài liệu cần xoá
-//         print('Không có tin tức nào để xoá.');
-//       } else {
-//         print('Không có tin tức nào để xoá.');
-//       }
-//     } catch (e) {
-//       print('Lỗi.$e');
-//     }
-//   }
-
-void _showSnackBar(String mess) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(mess),
-      duration: const Duration(seconds: 1),
-    ),
-  );
-}
-
-
-
-  @override
-  void initState() {
-super.initState();
-    //userId = user!.uid;
-    // _listenForNewsChanges();
+  void _showSnackBar(String mess) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(mess),
+        duration: const Duration(seconds: 1),
+      ),
+    );
   }
 
   @override
@@ -135,33 +94,33 @@ super.initState();
                   color: Colors.white,
                 ),
               ),
-              
               centerTitle: true,
               iconTheme: const IconThemeData(color: Colors.black),
               actions: [
                 IconButton(
                   onPressed: () async {
                     try {
-                      String userId = user!.uid;
-                      Map<String, dynamic> articleData = {
-                        'title': widget.title,
-                        'imagedata': widget.imagedata,
-                        'description': widget.description,
-                        'date': widget.date,
-                        'link': widget.link,
-                      };
+                      if (user != null) {
+                        String userId = user!.uid;
+                        Map<String, dynamic> articleData = {
+                          'title': widget.title,
+                          'imagedata': widget.imagedata,
+                          'description': widget.description,
+                          'date': widget.date,
+                          'link': widget.link,
+                        };
 
-
-                      print('mã tài khoản: $userId');
+                        print('mã tài khoản: $userId');
                         print('lưu thành công');
                         await SaveArticle().saveArticle(userId, articleData);
                         _showSnackBar('Đã lưu tin tức vào danh sách');
 
-
-                      setState(() {
-                        isArticleSaved = !isArticleSaved;
-                        
-                      });
+                        setState(() {
+                          isArticleSaved = !isArticleSaved;
+                        });
+                      } else {
+                        _showLoginAlertDialog();
+                      }
                     } catch (e) {
                       print('Lỗi: $e');
                     }
@@ -169,7 +128,7 @@ super.initState();
                   icon: Icon(
                     isArticleSaved ? Icons.bookmark : Icons.bookmark_outline,
                     color: isArticleSaved ? Colors.yellow : Colors.black,
-size: 40,
+                    size: 40,
                   ),
                 )
               ],
@@ -236,7 +195,7 @@ size: 40,
                         ),
                       ),
                     ],
-),
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {

@@ -43,16 +43,6 @@ class FontTextProvider extends ChangeNotifier {
     }
   }
 
-void selectBookmark(bool newBookmark){
-  
-  checkBookmark = newBookmark;
-  _storage.setBool('bookmark',newBookmark);
-  notifyListeners();
-}
-// Đọc trạng thái bookmark từ SharedPreferences
-// bool getBookmarkStatus() {
-//   return _storage.getBool('bookmark') ?? false;
-// }
   Future<void> init() async {
     _storage = await SharedPreferences.getInstance();
     _selectedFont = _storage.getString('selectedFont') ?? 'Inter';
