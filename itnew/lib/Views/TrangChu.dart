@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 
 import 'package:itnew/Models/FontChange.dart';
 import 'package:itnew/Models/SaveArticle.dart';
-import 'package:itnew/Models/User.dart';
+
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:itnew/Models/User.dart' as custom_user;
+
 import 'package:itnew/Views/BottomNavi.dart';
 import 'package:itnew/Views/TimKiem.dart';
 import 'package:itnew/Views/TrangChiTiet.dart';
@@ -381,20 +381,7 @@ class _TrangChuState extends State<TrangChu>
                                       ),
                                       child: InkWell(
                                         onTap: () {
-
-
-                        
-
-                    
-
-
-
-
-
-                                          _firestore
-                                              .collection('noUser')
-                                             
-                                              .add({
+                                          _firestore.collection('noUser').add({
                                             'title': NewsTechnology[index]
                                                 ['title']['__cdata'],
                                             'imagedata': NewsTechnology[index][
@@ -623,12 +610,7 @@ class _TrangChuState extends State<TrangChu>
                                       ),
                                       child: InkWell(
                                         onTap: () {
-                                          
-
-                                          _firestore
-                                              .collection('noUser')
-                                              
-                                              .add({
+                                          _firestore.collection('noUser').add({
                                             'title': NewsBusiness[index]
                                                 ['title']['__cdata'],
                                             'imagedata': NewsBusiness[index][
@@ -856,12 +838,7 @@ class _TrangChuState extends State<TrangChu>
                                       ),
                                       child: InkWell(
                                         onTap: () {
-                                         
-
-                                          _firestore
-                                              .collection('noUser')
-                                              
-                                              .add({
+                                          _firestore.collection('noUser').add({
                                             'title': NewsScience[index]['title']
                                                 ['__cdata'],
                                             'imagedata': NewsScience[index][
@@ -1086,15 +1063,8 @@ class _TrangChuState extends State<TrangChu>
                                             8), // Bo tròn góc
                                       ),
                                       child: InkWell(
-
-                                        
                                         onTap: () {
-                                          
-
-                                          _firestore
-                                              .collection('noUser')
-                                              
-                                              .add({
+                                          _firestore.collection('noUser').add({
                                             'title': NewsSports[index]['title']
                                                 ['__cdata'],
                                             'imagedata': NewsSports[index][
